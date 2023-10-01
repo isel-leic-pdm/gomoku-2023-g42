@@ -8,6 +8,7 @@ import com.example.gomoku.model.toColumnOrNull
 import com.example.gomoku.model.toRowOrNull
 
 class Cell private constructor(val row: Row, val col: Column) {
+
     val rowIndex: Int = row.index
     val colIndex: Int = col.index
 

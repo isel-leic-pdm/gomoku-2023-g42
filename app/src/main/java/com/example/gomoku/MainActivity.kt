@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.gomoku.model.BOARD_DIM
 import com.example.gomoku.model.Player
 import com.example.gomoku.ui.theme.GomokuTheme
+import com.example.gomoku.ui.theme.*
 
 /*const val BOARD_LINE_SIZE = 2
 const val BOARD_CELL_SIZE = 64
@@ -51,7 +53,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    boardView(mapOf<Cell,Player>( Cell(2,2) to Player.WHITE) )
+                    //authorScreen()
+                   // homeScreen()
+                    Column (modifier = Modifier.fillMaxSize()){
+
+                        boardView(mapOf<Cell,Player>(
+                            Cell(0,0) to Player.WHITE,
+                            Cell(0,1) to Player.WHITE,
+                            Cell(1,0) to Player.WHITE,
+                            Cell(1,1) to Player.WHITE
+                        ) )
+                    }
+
                 }
             }
         }
@@ -96,13 +109,10 @@ fun homeScreen() {
         ) {
             Button(onClick = { }) { Text(text = "Play") }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = { }) { Text(text = "Authors") }
+            Button(onClick = {  }) { Text(text = "Authors") }
         }
     }
 }
 
-@Composable
-fun boardView(boardState: Map<Cell, Player>) {
 
-}
 
