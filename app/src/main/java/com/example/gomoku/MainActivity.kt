@@ -61,8 +61,14 @@ class MainActivity : ComponentActivity() {
                             Cell(0,0) to Player.WHITE,
                             Cell(0,1) to Player.WHITE,
                             Cell(1,0) to Player.WHITE,
-                            Cell(1,1) to Player.WHITE
-                        ) )
+                            Cell(1,1) to Player.WHITE,
+                            Cell(0,0) to Player.WHITE,
+                            Cell(0,1) to Player.WHITE,
+                            Cell(1,0) to Player.WHITE,
+                            Cell(1,1) to Player.WHITE,
+                            Cell(1,1) to Player.WHITE,
+
+                            ) )
                     }
 
                 }

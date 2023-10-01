@@ -3,42 +3,32 @@ package com.example.gomoku.ui.theme
 import Cell
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.gomoku.model.BOARD_DIM
 import com.example.gomoku.model.Player
-import com.example.gomoku.model.indexToColumn
-import com.example.gomoku.model.toRow
+
 
 val cellSize = 65.dp
-val lineSize = 1.dp
+val lineSize = (cellSize.value * 1.5).toFloat()
 @Composable
 fun boardView(boardState: Map<Cell, Player?>) {
     Column{
-        repeat(2){r->
+        // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
+        repeat(BOARD_DIM){ r->
             Row {
-                repeat(2){ c->
+                repeat( BOARD_DIM){ c->
                     val cell = Cell(r,c)
                     CellView(cell = cell)
             }
@@ -54,51 +44,177 @@ fun boardView(boardState: Map<Cell, Player?>) {
 @Composable
 fun CellView(
     cell: Cell,
-    modifier: Modifier = Modifier
-        .size(cellSize)
-        .background(Color.DarkGray)
-        .border(lineSize, Color.Black))
-{
-    Box(modifier = modifier, Alignment.Center){
-
-        Canvas(Modifier){
-            //seg esq
-            drawLine(
-                start = Offset(0f, 0f),
-
-                end = Offset(-cellSize.value-20, 0f),
-                color = Color.Yellow,
-                strokeWidth = 5F
-            )
-            //seg cima
-            drawLine(
-                start = Offset(0f, 0f),
-                end = Offset(0f, -cellSize.value-20),
-                color = Color.Blue,
-                strokeWidth = 5F
-            )
-            //seg down
-            drawLine(
-                start = Offset(0f, 0f),
-                end = Offset(0f, (cellSize.value + 20)),
-                color = Color.Red,
-                strokeWidth = 5F
-            )
-            drawLine(
-                start = Offset(0f, 0f),
-                end = Offset((cellSize.value + 20) , 0f),
-                color = Color.Green,
-                strokeWidth = 5F
-            )
-
+    modifier: Modifier = Modifier.size(cellSize))
+        {
+    Box(modifier = modifier, Alignment.Center) {
+        drawLine(Pair(cell.rowIndex, cell.colIndex))
+        Box(modifier = Modifier
+            .size(cellSize / 4)
+            .clickable(true) { {} }
+            .background(Color.Transparent)) {
         }
-        Box(modifier = Modifier.size(cellSize / 4)
-            .clickable(true) { {}}
-            .background(Color.Cyan))
 
+
+    }
+}
+@Composable
+fun drawLine (cord:Pair<Int,Int>) {
+
+    when (cord){
+
+            Pair(0,0) -> leftUpCorner()
+            Pair(0, BOARD_DIM-1) -> rightUpCorner()
+            Pair(BOARD_DIM-1,0) -> leftDownCorner()
+            Pair(BOARD_DIM-1, BOARD_DIM-1) -> rightDownCorner()
+            else -> {
+                if (cord.first == 0){
+                    upWall()
+                    return
+                }
+                if(cord.second == 0){
+                    leftWall()
+                    return
+                }
+                if(cord.first == BOARD_DIM-1 ){
+                    downWall()
+                    return
+                }
+                if (cord.second == BOARD_DIM-1){
+                    rightWall()
+                    return
+                }
+                else {
+                    innerWall()
+                    return
+                }
+            }
+
+    }
+}
+
+@Composable
+fun up (){
+    //segmento vertical superior
+    Canvas(Modifier) {
+        drawLine(
+            start = Offset(0f, 0f),
+            end = Offset(0f, -lineSize),
+            color = Color.Black,
+            strokeWidth = 5F,
+            cap = StrokeCap.Round
+        )
     }
 
 }
+
+@Composable
+fun down(){
+    //desenha o segmento vertical inferior
+    Canvas(Modifier) {
+
+        drawLine(
+            start = Offset(0f, 0f),
+            end = Offset(0f, lineSize),
+            color = Color.Black,
+            strokeWidth = 5F,
+            cap = StrokeCap.Round
+        )
+    }
+
+}
+
+@Composable
+fun left(){
+    //desenha segmento horizontal à esquerda
+    Canvas(Modifier) {
+
+        drawLine(
+            start = Offset(0f, 0f),
+            end = Offset(-lineSize, 0f),
+            color = Color.Black,
+            strokeWidth = 5F,
+            cap = StrokeCap.Round
+        )
+    }
+
+}
+
+@Composable
+fun right(){
+    //desenha segmento horizontal à direita
+    Canvas(Modifier) {
+
+        drawLine(
+            start = Offset(0f, 0f),
+            end = Offset(lineSize, 0f),
+            color = Color.Black,
+            strokeWidth = 5F,
+            cap = StrokeCap.Round
+        )
+    }
+
+}
+@Composable
+fun rightDownCorner() {
+    up()
+    left()
+}
+@Composable
+fun leftDownCorner() {
+    up()
+    right()
+}
+@Composable
+fun rightUpCorner() {
+    down()
+    left()
+
+}
+
+@Composable
+fun leftUpCorner (){
+    down()
+    right()
+
+}
+
+@Composable
+fun innerWall() {
+    up()
+    down()
+    left()
+    right()
+}
+@Composable
+fun rightWall() {
+    up()
+    down()
+    left()
+}
+@Composable
+fun downWall() {
+    left()
+    up()
+    right()
+
+}
+
+@Composable
+fun upWall(){
+    left()
+    right()
+    down()
+
+}
+
+@Composable
+fun leftWall() {
+   up()
+    down()
+    right()
+}
+
+
 
 
 
