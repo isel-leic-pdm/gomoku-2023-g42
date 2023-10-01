@@ -23,7 +23,7 @@ import com.example.gomoku.model.Player
 val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 @Composable
-fun boardView(boardState: Map<Cell, Player?>) {
+fun BoardView(boardState: Map<Cell, Player?>) {
     Column{
         // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
         repeat(BOARD_DIM){ r->
@@ -47,7 +47,7 @@ fun CellView(
     modifier: Modifier = Modifier.size(cellSize))
         {
     Box(modifier = modifier, Alignment.Center) {
-        drawLine(Pair(cell.rowIndex, cell.colIndex))
+        DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(modifier = Modifier
             .size(cellSize / 4)
             .clickable(true) { {} }
@@ -58,33 +58,33 @@ fun CellView(
     }
 }
 @Composable
-fun drawLine (cord:Pair<Int,Int>) {
+fun DrawLine (cord:Pair<Int,Int>) {
 
     when (cord){
 
-            Pair(0,0) -> leftUpCorner()
-            Pair(0, BOARD_DIM-1) -> rightUpCorner()
-            Pair(BOARD_DIM-1,0) -> leftDownCorner()
-            Pair(BOARD_DIM-1, BOARD_DIM-1) -> rightDownCorner()
+            Pair(0,0) -> LeftUpCorner()
+            Pair(0, BOARD_DIM-1) -> RightUpCorner()
+            Pair(BOARD_DIM-1,0) -> LeftDownCorner()
+            Pair(BOARD_DIM-1, BOARD_DIM-1) -> RightDownCorner()
             else -> {
                 if (cord.first == 0){
-                    upWall()
+                    UpWall()
                     return
                 }
                 if(cord.second == 0){
-                    leftWall()
+                    LeftWall()
                     return
                 }
                 if(cord.first == BOARD_DIM-1 ){
-                    downWall()
+                    DownWall()
                     return
                 }
                 if (cord.second == BOARD_DIM-1){
-                    rightWall()
+                    RightWall()
                     return
                 }
                 else {
-                    innerWall()
+                    InnerWall()
                     return
                 }
             }
@@ -93,7 +93,7 @@ fun drawLine (cord:Pair<Int,Int>) {
 }
 
 @Composable
-fun up (){
+fun Up (){
     //segmento vertical superior
     Canvas(Modifier) {
         drawLine(
@@ -108,7 +108,7 @@ fun up (){
 }
 
 @Composable
-fun down(){
+fun Down(){
     //desenha o segmento vertical inferior
     Canvas(Modifier) {
 
@@ -124,7 +124,7 @@ fun down(){
 }
 
 @Composable
-fun left(){
+fun Left(){
     //desenha segmento horizontal à esquerda
     Canvas(Modifier) {
 
@@ -140,7 +140,7 @@ fun left(){
 }
 
 @Composable
-fun right(){
+fun Right(){
     //desenha segmento horizontal à direita
     Canvas(Modifier) {
 
@@ -155,63 +155,63 @@ fun right(){
 
 }
 @Composable
-fun rightDownCorner() {
-    up()
-    left()
+fun RightDownCorner() {
+    Up()
+    Left()
 }
 @Composable
-fun leftDownCorner() {
-    up()
-    right()
+fun LeftDownCorner() {
+    Up()
+    Right()
 }
 @Composable
-fun rightUpCorner() {
-    down()
-    left()
+fun RightUpCorner() {
+    Down()
+    Left()
 
 }
 
 @Composable
-fun leftUpCorner (){
-    down()
-    right()
+fun LeftUpCorner (){
+    Down()
+    Right()
 
 }
 
 @Composable
-fun innerWall() {
-    up()
-    down()
-    left()
-    right()
+fun InnerWall() {
+    Up()
+    Down()
+    Left()
+    Right()
 }
 @Composable
-fun rightWall() {
-    up()
-    down()
-    left()
+fun RightWall() {
+    Up()
+    Down()
+    Left()
 }
 @Composable
-fun downWall() {
-    left()
-    up()
-    right()
+fun DownWall() {
+    Left()
+    Up()
+    Right()
 
 }
 
 @Composable
-fun upWall(){
-    left()
-    right()
-    down()
+fun UpWall(){
+    Left()
+    Right()
+    Down()
 
 }
 
 @Composable
-fun leftWall() {
-   up()
-    down()
-    right()
+fun LeftWall() {
+   Up()
+    Down()
+    Right()
 }
 
 
