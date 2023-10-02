@@ -9,30 +9,39 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.gomoku.R
 import com.example.gomoku.model.BOARD_DIM
+import com.example.gomoku.model.Board
 import com.example.gomoku.model.Player
+import com.example.gomoku.model.add
 
 
 val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
-@Composable
-fun BoardView(boardState: Map<Cell, Player?>) {
-    Column{
-        // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
-        repeat(BOARD_DIM){ r->
-            Row {
-                repeat( BOARD_DIM){ c->
-                    val cell = Cell(r,c)
-                    CellView(cell = cell)
-            }
 
+@Composable
+fun BoardView(boardState: MutableState<Board>) {
+    Column {
+        // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
+        repeat(BOARD_DIM) { r ->
+            Row {
+                repeat(BOARD_DIM) { c ->
+                    val cell = Cell(r, c)
+                    CellView(cell = cell) {
+                        val updatedBoard = boardState.value.add(cell, boardState.value.turn)
+                        boardState.value = updatedBoard
+                    }
+
+                }
 
 
             }
@@ -44,56 +53,57 @@ fun BoardView(boardState: Map<Cell, Player?>) {
 @Composable
 fun CellView(
     cell: Cell,
-    modifier: Modifier = Modifier.size(cellSize))
-        {
+    modifier: Modifier = Modifier.size(cellSize),
+    onClick: () -> Unit
+) {
     Box(modifier = modifier, Alignment.Center) {
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(modifier = Modifier
             .size(cellSize / 4)
-            .clickable(true) { {} }
+            .clickable(true) { onClick() }
             .background(Color.Transparent)) {
         }
 
 
     }
 }
+
 @Composable
-fun DrawLine (cord:Pair<Int,Int>) {
+fun DrawLine(cord: Pair<Int, Int>) {
 
-    when (cord){
+    when (cord) {
 
-            Pair(0,0) -> LeftUpCorner()
-            Pair(0, BOARD_DIM-1) -> RightUpCorner()
-            Pair(BOARD_DIM-1,0) -> LeftDownCorner()
-            Pair(BOARD_DIM-1, BOARD_DIM-1) -> RightDownCorner()
-            else -> {
-                if (cord.first == 0){
-                    UpWall()
-                    return
-                }
-                if(cord.second == 0){
-                    LeftWall()
-                    return
-                }
-                if(cord.first == BOARD_DIM-1 ){
-                    DownWall()
-                    return
-                }
-                if (cord.second == BOARD_DIM-1){
-                    RightWall()
-                    return
-                }
-                else {
-                    InnerWall()
-                    return
-                }
+        Pair(0, 0) -> LeftUpCorner()
+        Pair(0, BOARD_DIM - 1) -> RightUpCorner()
+        Pair(BOARD_DIM - 1, 0) -> LeftDownCorner()
+        Pair(BOARD_DIM - 1, BOARD_DIM - 1) -> RightDownCorner()
+        else -> {
+            if (cord.first == 0) {
+                UpWall()
+                return
             }
+            if (cord.second == 0) {
+                LeftWall()
+                return
+            }
+            if (cord.first == BOARD_DIM - 1) {
+                DownWall()
+                return
+            }
+            if (cord.second == BOARD_DIM - 1) {
+                RightWall()
+                return
+            } else {
+                InnerWall()
+                return
+            }
+        }
 
     }
 }
 
 @Composable
-fun Up (){
+fun Up() {
     //segmento vertical superior
     Canvas(Modifier) {
         drawLine(
@@ -108,7 +118,7 @@ fun Up (){
 }
 
 @Composable
-fun Down(){
+fun Down() {
     //desenha o segmento vertical inferior
     Canvas(Modifier) {
 
@@ -124,7 +134,7 @@ fun Down(){
 }
 
 @Composable
-fun Left(){
+fun Left() {
     //desenha segmento horizontal à esquerda
     Canvas(Modifier) {
 
@@ -140,7 +150,7 @@ fun Left(){
 }
 
 @Composable
-fun Right(){
+fun Right() {
     //desenha segmento horizontal à direita
     Canvas(Modifier) {
 
@@ -154,16 +164,19 @@ fun Right(){
     }
 
 }
+
 @Composable
 fun RightDownCorner() {
     Up()
     Left()
 }
+
 @Composable
 fun LeftDownCorner() {
     Up()
     Right()
 }
+
 @Composable
 fun RightUpCorner() {
     Down()
@@ -172,7 +185,7 @@ fun RightUpCorner() {
 }
 
 @Composable
-fun LeftUpCorner (){
+fun LeftUpCorner() {
     Down()
     Right()
 
@@ -185,12 +198,14 @@ fun InnerWall() {
     Left()
     Right()
 }
+
 @Composable
 fun RightWall() {
     Up()
     Down()
     Left()
 }
+
 @Composable
 fun DownWall() {
     Left()
@@ -200,7 +215,7 @@ fun DownWall() {
 }
 
 @Composable
-fun UpWall(){
+fun UpWall() {
     Left()
     Right()
     Down()
@@ -209,7 +224,7 @@ fun UpWall(){
 
 @Composable
 fun LeftWall() {
-   Up()
+    Up()
     Down()
     Right()
 }

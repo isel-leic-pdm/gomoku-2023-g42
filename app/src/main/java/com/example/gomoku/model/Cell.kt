@@ -17,7 +17,7 @@ class Cell private constructor(val row: Row, val col: Column) {
     companion object {
         private val values =
             List(BOARD_DIM * BOARD_DIM) { Cell((it / BOARD_DIM).indexToRow(), (it % BOARD_DIM).indexToColumn()) }
-        val INVALID = Cell(-1, -1)
+        val INVALID = Cell(-1, 1)
 
         operator fun invoke(rowIndex: Int, colIndex: Int): Cell {
             return if (rowIndex in 0 until BOARD_DIM && colIndex in 0 until BOARD_DIM) {

@@ -1,6 +1,7 @@
 package com.example.gomoku
 
 import Cell
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,13 +17,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.gomoku.model.Board
 import com.example.gomoku.model.Player
+import com.example.gomoku.model.emptyBoard
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
 
@@ -31,6 +36,7 @@ const val BOARD_CELL_SIZE = 64
 const val AXIS_SIZE = 20*/
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnrememberedMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,19 +49,8 @@ class MainActivity : ComponentActivity() {
                     //authorScreen()
                    // homeScreen()
                     Column (modifier = Modifier.fillMaxSize()){
-
-                        BoardView(mapOf<Cell,Player>(
-                            Cell(0,0) to Player.WHITE,
-                            Cell(0,1) to Player.WHITE,
-                            Cell(1,0) to Player.WHITE,
-                            Cell(1,1) to Player.WHITE,
-                            Cell(0,0) to Player.WHITE,
-                            Cell(0,1) to Player.WHITE,
-                            Cell(1,0) to Player.WHITE,
-                            Cell(1,1) to Player.WHITE,
-                            Cell(1,1) to Player.WHITE,
-
-                            ) )
+                        val board = mutableStateOf(emptyBoard)
+                        BoardView(board)
                     }
 
                 }
