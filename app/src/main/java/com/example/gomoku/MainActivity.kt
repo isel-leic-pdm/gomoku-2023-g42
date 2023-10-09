@@ -1,6 +1,5 @@
 package com.example.gomoku
 
-import Cell
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,9 +23,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.gomoku.model.Board
-import com.example.gomoku.model.Player
-import com.example.gomoku.model.emptyBoard
+import com.example.demo.domain.BoardRun
+import com.example.demo.domain.Player
+import com.example.demo.domain.createBoard
+
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
 
@@ -47,9 +46,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //authorScreen()
-                   // homeScreen()
-                    Column (modifier = Modifier.fillMaxSize()){
-                        val board = mutableStateOf(emptyBoard)
+                    // homeScreen()
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        val board = mutableStateOf(createBoard(Player.WHITE))
                         BoardView(board)
                     }
 
@@ -97,7 +96,7 @@ fun homeScreen() {
         ) {
             Button(onClick = { }) { Text(text = "Play") }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = {  }) { Text(text = "Authors") }
+            Button(onClick = { }) { Text(text = "Authors") }
         }
     }
 }

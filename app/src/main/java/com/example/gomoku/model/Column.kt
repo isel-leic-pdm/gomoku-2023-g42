@@ -1,5 +1,7 @@
 package com.example.gomoku.model
 
+import com.example.demo.domain.BOARD_DIM
+
 class Column private constructor(val symbol: Char) {
     val index get() = values.indexOf(this)
 

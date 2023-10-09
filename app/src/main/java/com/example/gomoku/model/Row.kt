@@ -1,4 +1,5 @@
 package com.example.gomoku.model
+import com.example.demo.domain.BOARD_DIM
 
 class Row private constructor(val number: Int) {
     val index = number - 1

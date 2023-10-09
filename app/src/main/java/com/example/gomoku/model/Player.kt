@@ -1,4 +1,4 @@
-package com.example.gomoku.model
+package com.example.demo.domain
 
 enum class Player(val string:String){
     WHITE("X"),

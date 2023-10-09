@@ -1,7 +1,8 @@
 package com.example.gomoku.ui.theme
 
-import Cell
+
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,29 +19,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.demo.domain.BOARD_DIM
+import com.example.demo.domain.Board
+import com.example.demo.domain.BoardRun
+import com.example.demo.domain.Player
+import com.example.demo.domain.Position
 import com.example.gomoku.R
-import com.example.gomoku.model.BOARD_DIM
-import com.example.gomoku.model.Board
-import com.example.gomoku.model.Player
-import com.example.gomoku.model.add
 
 
 val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
+//TODO rever esta function
 @Composable
-fun BoardView(boardState: MutableState<Board>) {
+fun BoardView(boardState: MutableState<BoardRun>) {
     Column {
         // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
         repeat(BOARD_DIM) { r ->
             Row {
                 repeat(BOARD_DIM) { c ->
-                    val cell = Cell(r, c)
-                    CellView(cell = cell) {
-                        val updatedBoard = boardState.value.add(cell, boardState.value.turn)
-                        boardState.value = updatedBoard
-                    }
+                    val cell = Position(r, c)
+                    CellView(cell = cell, turn = boardState.value.turn) {
+                        val updatedBoard =
+                            boardState.value.turn.let {
+                                boardState.value.play(
+                                    cell,
+                                    it
+                                )
+                            }
+                        boardState.value = updatedBoard as BoardRun
 
+                    }
                 }
 
 
@@ -52,21 +61,37 @@ fun BoardView(boardState: MutableState<Board>) {
 
 @Composable
 fun CellView(
-    cell: Cell,
+    cell: Position,
     modifier: Modifier = Modifier.size(cellSize),
-    onClick: () -> Unit
+    turn: Player?,
+    onClick: () -> Unit,
 ) {
     Box(modifier = modifier, Alignment.Center) {
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(modifier = Modifier
             .size(cellSize / 4)
-            .clickable(true) { onClick() }
+            .clickable(true) {
+                /*if (turn == null)   //Colocar a turn com o valor Player.WHITE
+                    onClick()*/
+            }
             .background(Color.Transparent)) {
+            if (turn != null) {
+                val imageResource = if (turn == Player.WHITE) {
+                    painterResource(id = R.drawable.whitestone)
+                } else {
+                    painterResource(id = R.drawable.blackstone)
+                }
+                Image(
+                    painter = imageResource,
+                    contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone"
+                )
+            }
         }
-
-
     }
+
+
 }
+
 
 @Composable
 fun DrawLine(cord: Pair<Int, Int>) {
