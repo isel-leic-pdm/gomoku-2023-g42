@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.demo.domain.createBoard
 
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     // homeScreen()
                     Column(modifier = Modifier.fillMaxSize()) {
                         val board = mutableStateOf(createBoard(Player.WHITE))
-                        BoardView(board)
+                        BoardRunView(board)
                     }
 
                 }
@@ -59,7 +58,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun authorScreen() {
+fun AuthorScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -72,7 +71,7 @@ fun authorScreen() {
 }
 
 @Composable
-fun homeScreen() {
+fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -1,7 +1,6 @@
 package com.example.gomoku.ui.theme
 
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,9 +9,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -22,8 +21,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.demo.domain.BOARD_DIM
-import com.example.demo.domain.Board
+import com.example.demo.domain.BoardDraw
 import com.example.demo.domain.BoardRun
+import com.example.demo.domain.Moves
 import com.example.demo.domain.Player
 import com.example.demo.domain.Position
 import com.example.gomoku.R
@@ -33,9 +33,8 @@ val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
 //TODO rever esta function
-@SuppressLint("UnrememberedMutableState")
 @Composable
-fun BoardView(boardState: MutableState<BoardRun>) {
+fun BoardRunView(boardState: MutableState<BoardRun>) {
     Column {
         // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
         //val t = mutableStateOf(null)
@@ -43,9 +42,11 @@ fun BoardView(boardState: MutableState<BoardRun>) {
             Row {
                 repeat(BOARD_DIM) { c ->
                     val cell = Position(r, c)
-                    val hasPiece = boardState.value.moves[cell] != null
-                    CellView(cell = cell, turn = boardState.value.turn, hasPiece = hasPiece) {
-
+                    CellView(
+                        cell = cell,
+                        turn = boardState.value.turn,
+                        moves = boardState.value.moves
+                    ) {
                         val updatedBoard =
                             boardState.value.turn.let {
                                 boardState.value.play(
@@ -56,45 +57,44 @@ fun BoardView(boardState: MutableState<BoardRun>) {
                         boardState.value = updatedBoard as BoardRun
                     }
                 }
-
-
             }
         }
     }
+}
 
+@Composable
+fun BoardDrawView(boardState: MutableState<BoardDraw>) {
+    Column {
+        Text("The game ended in a draw")
+    }
 }
 
 @Composable
 fun CellView(
     cell: Position,
     modifier: Modifier = Modifier.size(cellSize),
-    turn: Player?,
-    hasPiece:Boolean,
-    onClick: () -> Unit,
+    turn: Player,
+    moves: Moves,
+    onClick: () -> Unit
 ) {
     Box(modifier = modifier, Alignment.Center) {
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
-        Box(modifier = Modifier
-            .size(cellSize / 4)
-            .clickable(true, onClick = { onClick() })
-            .background(Color.Transparent)) {
-
-            /*if (turn != null) {
-                val imageResource = if (turn == Player.WHITE) {
-                    painterResource(id = R.drawable.whitestone)
-                } else {
-                    painterResource(id = R.drawable.blackstone)
-                }
+        val player = moves[cell]
+        Box(
+            modifier = Modifier
+                .size(cellSize / 4)
+                .clickable(player == null, onClick = { onClick() })
+                .background(Color.Transparent)
+        ) {
+            if (moves[cell] != null) {
                 Image(
-                    painter = imageResource,
+                    painter = if (player == Player.WHITE) painterResource(id = R.drawable.whitestone)
+                    else painterResource(id = R.drawable.blackstone),
                     contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone"
                 )
-            }*/
-
+            }
         }
     }
-
-
 }
 
 
