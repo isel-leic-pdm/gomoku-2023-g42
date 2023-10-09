@@ -1,6 +1,7 @@
 package com.example.gomoku.ui.theme
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -31,15 +33,19 @@ val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
 //TODO rever esta function
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun BoardView(boardState: MutableState<BoardRun>) {
     Column {
         // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
+        //val t = mutableStateOf(null)
         repeat(BOARD_DIM) { r ->
             Row {
                 repeat(BOARD_DIM) { c ->
                     val cell = Position(r, c)
-                    CellView(cell = cell, turn = boardState.value.turn) {
+                    val hasPiece = boardState.value.moves[cell] != null
+                    CellView(cell = cell, turn = boardState.value.turn, hasPiece = hasPiece) {
+
                         val updatedBoard =
                             boardState.value.turn.let {
                                 boardState.value.play(
@@ -48,7 +54,6 @@ fun BoardView(boardState: MutableState<BoardRun>) {
                                 )
                             }
                         boardState.value = updatedBoard as BoardRun
-
                     }
                 }
 
@@ -64,18 +69,17 @@ fun CellView(
     cell: Position,
     modifier: Modifier = Modifier.size(cellSize),
     turn: Player?,
+    hasPiece:Boolean,
     onClick: () -> Unit,
 ) {
     Box(modifier = modifier, Alignment.Center) {
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(modifier = Modifier
             .size(cellSize / 4)
-            .clickable(true) {
-                /*if (turn == null)   //Colocar a turn com o valor Player.WHITE
-                    onClick()*/
-            }
+            .clickable(true, onClick = { onClick() })
             .background(Color.Transparent)) {
-            if (turn != null) {
+
+            /*if (turn != null) {
                 val imageResource = if (turn == Player.WHITE) {
                     painterResource(id = R.drawable.whitestone)
                 } else {
@@ -85,7 +89,8 @@ fun CellView(
                     painter = imageResource,
                     contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone"
                 )
-            }
+            }*/
+
         }
     }
 
