@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.authorScreen
+import com.example.gomoku.AuthorScreen
 
 class HomeToAuthorActivity : ComponentActivity() {
 
@@ -13,7 +13,6 @@ class HomeToAuthorActivity : ComponentActivity() {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, HomeToAuthorActivity::class.java)
             origin.startActivity(intent)
-
         }
     }
 
@@ -21,9 +20,8 @@ class HomeToAuthorActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.v("AboutActivity", "onCreate")
         setContent{
-            authorScreen()
+            AuthorScreen()
         }
-
     }
 }
 

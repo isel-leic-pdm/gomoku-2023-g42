@@ -24,9 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.gomoku.R
 import com.example.gomoku.ui.theme.GomokuTheme
 
-
 @Composable
-
 fun HomeScreen() {
     GomokuTheme {
         Column(
@@ -53,7 +51,6 @@ fun HomeScreen() {
                     contentDescription = null
                 )
             }
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
@@ -64,12 +61,10 @@ fun HomeScreen() {
             }
         }
     }
-
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun HomeViewPreview(){
     HomeScreen()
-
 }

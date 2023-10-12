@@ -25,8 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.gomoku.about.AuthorToEmailActivity
-import com.example.gomoku.authors.AuthorScreen
-
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
 import kotlinx.coroutines.launch
@@ -51,23 +49,22 @@ class MainActivity : ComponentActivity() {
                             onInfoRequested = { AboutActivity.navigateTo(this) }
                         )
                     }*/
-                    authorScreen(
+                    AuthorScreen(
                         onInfoRequested = { AuthorToEmailActivity.navigateTo(this) }
                     )
 
                     /*Column(modifier = Modifier.fillMaxSize()) {
                         val board = remember { mutableStateOf(createBoard(Player.WHITE)) }
                         BoardView(board)*/
-                    }
-
                 }
             }
         }
     }
+}
 
 
 @Composable
-fun authorScreen(
+fun AuthorScreen(
     onInfoRequested: () -> Unit = {},
     openUrlRequested: (Uri) -> Unit = {},
     url: Uri = Uri.EMPTY
@@ -90,7 +87,7 @@ fun authorScreen(
 }
 
 @Composable
-fun homeScreen(onInfoRequested : () -> Unit) {
+fun HomeScreen(onInfoRequested : () -> Unit) {
     val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier.fillMaxSize(),

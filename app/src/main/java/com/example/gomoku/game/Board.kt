@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -28,7 +27,6 @@ import com.example.demo.domain.Player
 import com.example.demo.domain.Position
 import com.example.gomoku.R
 
-
 val cellSize = 65.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
@@ -43,9 +41,7 @@ fun BoardView(boardState: MutableState<BoardRun>) {
             Row {
                 repeat(BOARD_DIM) { c ->
                     val cell = Position(r, c)
-
                     CellView(cell = cell, turn = boardState.value.turn, board = boardState.value) {
-
                         val updatedBoard =
                             boardState.value.turn.let {
                                 boardState.value.play(
@@ -56,22 +52,19 @@ fun BoardView(boardState: MutableState<BoardRun>) {
                         boardState.value = updatedBoard as BoardRun
                     }
                 }
-
             }
         }
     }
-
 }
 
 @Composable
 fun CellView(
     cell: Position,
-    modifier: Modifier = Modifier.size(cellSize),
     turn: Player?,
     board: Board,
     onClick: () -> Unit,
 ) {
-    Box(modifier = modifier, Alignment.Center) {
+    Box(modifier = Modifier.size(cellSize), Alignment.Center) {
         val piece = board.moves[cell]
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(
@@ -101,9 +94,7 @@ fun CellView(
 
 @Composable
 fun DrawLine(cord: Pair<Int, Int>) {
-
     when (cord) {
-
         Pair(0, 0) -> LeftUpCorner()
         Pair(0, BOARD_DIM - 1) -> RightUpCorner()
         Pair(BOARD_DIM - 1, 0) -> LeftDownCorner()
@@ -129,7 +120,6 @@ fun DrawLine(cord: Pair<Int, Int>) {
                 return
             }
         }
-
     }
 }
 
@@ -145,14 +135,12 @@ fun Up() {
             cap = StrokeCap.Round
         )
     }
-
 }
 
 @Composable
 fun Down() {
     //desenha o segmento vertical inferior
     Canvas(Modifier) {
-
         drawLine(
             start = Offset(0f, 0f),
             end = Offset(0f, lineSize),
@@ -161,14 +149,12 @@ fun Down() {
             cap = StrokeCap.Round
         )
     }
-
 }
 
 @Composable
 fun Left() {
     //desenha segmento horizontal à esquerda
     Canvas(Modifier) {
-
         drawLine(
             start = Offset(0f, 0f),
             end = Offset(-lineSize, 0f),
@@ -177,14 +163,12 @@ fun Left() {
             cap = StrokeCap.Round
         )
     }
-
 }
 
 @Composable
 fun Right() {
     //desenha segmento horizontal à direita
     Canvas(Modifier) {
-
         drawLine(
             start = Offset(0f, 0f),
             end = Offset(lineSize, 0f),
@@ -193,7 +177,6 @@ fun Right() {
             cap = StrokeCap.Round
         )
     }
-
 }
 
 @Composable
@@ -212,14 +195,12 @@ fun LeftDownCorner() {
 fun RightUpCorner() {
     Down()
     Left()
-
 }
 
 @Composable
 fun LeftUpCorner() {
     Down()
     Right()
-
 }
 
 @Composable
@@ -242,7 +223,6 @@ fun DownWall() {
     Left()
     Up()
     Right()
-
 }
 
 @Composable
@@ -250,7 +230,6 @@ fun UpWall() {
     Left()
     Right()
     Down()
-
 }
 
 @Composable

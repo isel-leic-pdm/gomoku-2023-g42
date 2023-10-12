@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.authorScreen
-
+import com.example.gomoku.AuthorScreen
 
 class AuthorToEmailActivity : ComponentActivity() {
+    private val url = Uri.parse("https://outlook.office.com/mail/")
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, AuthorToEmailActivity::class.java)
             origin.startActivity(intent)
-
         }
     }
 
@@ -24,11 +23,10 @@ class AuthorToEmailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.v("AboutActivity", "onCreate")
         setContent{
-            authorScreen(
+            AuthorScreen(
                 onInfoRequested = { openUrl(url) }
             )
         }
-
     }
 
     private fun openUrl(url : Uri) {
@@ -39,7 +37,5 @@ class AuthorToEmailActivity : ComponentActivity() {
             Log.e("AboutActivity", "No activity found to handle $url")
         }
     }
-
-    private val url = Uri.parse("https://outlook.office.com/mail/")
 }
 
