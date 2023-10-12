@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.demo.domain.Player
 import com.example.demo.domain.createBoard
+import com.example.gomoku.Game.BoardRunView
 
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*

@@ -1,3 +1,6 @@
 package com.example.gomoku.model
 
-//data class Gomoku(val board:Board,val turn:Player)
+import com.example.demo.domain.Board
+import com.example.demo.domain.Player
+
+class Gomoku(val board: Board, val playerB: Player, val playerW:Player)
