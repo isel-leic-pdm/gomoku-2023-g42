@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.gomoku.R
 import com.example.gomoku.ui.theme.GomokuTheme
 
@@ -41,6 +42,7 @@ fun HomeScreen() {
                 Text(
                     fontFamily = FontFamily.Serif,
                     text = "Gomoku",
+                    fontSize = 50.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
