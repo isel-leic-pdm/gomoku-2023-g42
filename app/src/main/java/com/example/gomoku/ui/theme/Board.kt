@@ -43,8 +43,8 @@ fun BoardView(boardState: MutableState<BoardRun>) {
             Row {
                 repeat(BOARD_DIM) { c ->
                     val cell = Position(r, c)
-                    val hasPiece = boardState.value.moves[cell] != null
-                    CellView(cell = cell, turn = boardState.value.turn, hasPiece = hasPiece) {
+
+                    CellView(cell = cell, turn = boardState.value.turn, board = boardState.value) {
 
                         val updatedBoard =
                             boardState.value.turn.let {
@@ -57,7 +57,6 @@ fun BoardView(boardState: MutableState<BoardRun>) {
                     }
                 }
 
-
             }
         }
     }
@@ -69,18 +68,20 @@ fun CellView(
     cell: Position,
     modifier: Modifier = Modifier.size(cellSize),
     turn: Player?,
-    hasPiece:Boolean,
+    board: Board,
     onClick: () -> Unit,
 ) {
     Box(modifier = modifier, Alignment.Center) {
+        val piece = board.moves[cell]
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
-        Box(modifier = Modifier
-            .size(cellSize / 4)
-            .clickable(true, onClick = { onClick() })
-            .background(Color.Transparent)) {
-
-            /*if (turn != null) {
-                val imageResource = if (turn == Player.WHITE) {
+        Box(
+            modifier = Modifier
+                .size(cellSize / 4)
+                .clickable(piece == null, onClick = { onClick() })
+                .background(Color.Transparent)
+        ) {
+            if (piece != null) {
+                val imageResource = if (piece == Player.WHITE) {
                     painterResource(id = R.drawable.whitestone)
                 } else {
                     painterResource(id = R.drawable.blackstone)
@@ -89,11 +90,11 @@ fun CellView(
                     painter = imageResource,
                     contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone"
                 )
-            }*/
+            }
 
         }
-    }
 
+    }
 
 }
 

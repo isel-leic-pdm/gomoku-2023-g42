@@ -16,19 +16,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.Player
-import com.example.demo.domain.createBoard
+import com.example.gomoku.about.AboutActivity
 
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
+import kotlinx.coroutines.launch
 
 /*const val BOARD_LINE_SIZE = 2
 const val BOARD_CELL_SIZE = 64
@@ -45,18 +44,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //authorScreen()
-                    // homeScreen()
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        val board = mutableStateOf(createBoard(Player.WHITE))
-                        BoardView(board)
+                    setContent{
+                        homeScreen(
+                            onInfoRequested = { AboutActivity.navigateTo(this) }
+                        )
+                    }
+
+                    /*Column(modifier = Modifier.fillMaxSize()) {
+                        val board = remember { mutableStateOf(createBoard(Player.WHITE)) }
+                        BoardView(board)*/
                     }
 
                 }
             }
         }
     }
-}
+
 
 @Composable
 fun authorScreen() {
@@ -72,7 +75,8 @@ fun authorScreen() {
 }
 
 @Composable
-fun homeScreen() {
+fun homeScreen(onInfoRequested : () -> Unit) {
+    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,7 +100,11 @@ fun homeScreen() {
         ) {
             Button(onClick = { }) { Text(text = "Play") }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = { }) { Text(text = "Authors") }
+            Button(onClick = {
+                scope.launch {
+                    onInfoRequested()
+                }
+            }) { Text(text = "Authors") }
         }
     }
 }
