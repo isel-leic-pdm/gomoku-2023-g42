@@ -26,7 +26,12 @@
 
         <!-- Add the AboutActivity here -->
         <activity
-            android:name=".about.AboutActivity"
+            android:name=".about.HomeToAuthorActivity"
+            android:label="About Activity">
+        </activity>
+
+        <activity
+            android:name=".about.AuthorToEmailActivity"
             android:label="About Activity">
         </activity>
 

@@ -1,6 +1,7 @@
 package com.example.gomoku
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,7 +24,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.gomoku.about.AboutActivity
+import com.example.gomoku.about.AuthorToEmailActivity
+import com.example.gomoku.authors.AuthorScreen
 
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
@@ -44,11 +46,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    setContent{
+                    /*setContent{
                         homeScreen(
                             onInfoRequested = { AboutActivity.navigateTo(this) }
                         )
-                    }
+                    }*/
+                    authorScreen(
+                        onInfoRequested = { AuthorToEmailActivity.navigateTo(this) }
+                    )
 
                     /*Column(modifier = Modifier.fillMaxSize()) {
                         val board = remember { mutableStateOf(createBoard(Player.WHITE)) }
@@ -62,7 +67,12 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun authorScreen() {
+fun authorScreen(
+    onInfoRequested: () -> Unit = {},
+    openUrlRequested: (Uri) -> Unit = {},
+    url: Uri = Uri.EMPTY
+) {
+    val scope = rememberCoroutineScope()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -70,7 +80,12 @@ fun authorScreen() {
         Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, number -> 48259")
         Text(fontFamily = FontFamily.Serif, text = "José Borges, number -> 48269")
         Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, number -> 46080")
-        Button(onClick = { }) { Text(text = "Send a message to support the creators") }
+        Button(onClick = {
+            scope.launch {
+                onInfoRequested()
+            }
+
+        } ) { Text(text = "Send a message to support the creators") }
     }
 }
 
