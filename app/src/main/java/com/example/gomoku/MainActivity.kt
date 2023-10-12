@@ -4,28 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.example.demo.domain.Player
-import com.example.demo.domain.createBoard
-import com.example.gomoku.Game.BoardRunView
+import com.example.gomoku.home.HomeScreen
 
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
@@ -45,12 +28,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //authorScreen()
-                    // homeScreen()
-                    Column(modifier = Modifier.fillMaxSize()) {
+                    //AuthorScreen()
+                    HomeScreen()
+                    /*Column(modifier = Modifier.fillMaxSize()) {
                         val board = mutableStateOf(createBoard(Player.WHITE))
                         BoardRunView(board)
                     }
+
+                     */
+
+
+
 
                 }
             }
@@ -58,48 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun AuthorScreen() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, number -> 48259")
-        Text(fontFamily = FontFamily.Serif, text = "José Borges, number -> 48269")
-        Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, number -> 46080")
-        Button(onClick = { }) { Text(text = "Send a message to support the creators") }
-    }
-}
 
-@Composable
-fun HomeScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                fontFamily = FontFamily.Serif,
-                text = "Gomoku",
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Button(onClick = { }) { Text(text = "Play") }
-            Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = { }) { Text(text = "Authors") }
-        }
-    }
-}
 
 
 

@@ -1,4 +1,4 @@
-package com.example.gomoku.Game
+package com.example.gomoku.game
 
 
 import androidx.compose.foundation.Canvas
