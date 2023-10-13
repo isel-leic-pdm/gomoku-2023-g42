@@ -16,7 +16,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Gomoku">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +29,6 @@
             android:label="About Activity">
         </activity>
 
-        <activity
-            android:name=".about.AuthorToEmailActivity"
-            android:label="About Activity">
-        </activity>
 
     </application>
 </manifest>
