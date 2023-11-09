@@ -34,8 +34,10 @@ import com.example.gomoku.ui.theme.GomokuTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginView() {
-    var username = remember{mutableStateOf("")}
+fun LoginView(
+    onInfoRequested : () -> Unit
+) {
+    val username = remember{mutableStateOf("")}
     val password = remember{mutableStateOf("")}
 
     GomokuTheme {
@@ -75,7 +77,12 @@ fun LoginView() {
                     visualTransformation = PasswordVisualTransformation()
                 )
                 Spacer(modifier = Modifier.width(30.dp))
-                Text(text = "Sign in")
+                //Text(text = "Sign in")
+                Button(onClick = {
+
+                }) {
+                    Text("Sign in")
+                }
             }
 
         }
@@ -83,10 +90,10 @@ fun LoginView() {
 
 }
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun LoginViewPreview(){
     LoginView()
-}
+}*/
 
 

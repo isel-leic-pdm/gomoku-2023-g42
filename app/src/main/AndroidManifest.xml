@@ -23,12 +23,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Add the AboutActivity here -->
+        <!-- Add the HomeToRankingsActivity here -->
         <activity
-            android:name=".about.HomeToAuthorActivity"
-            android:label="About Activity">
+            android:name=".about.HomeToRankingsActivity"
+            android:label="Rankings Activity">
         </activity>
 
+        <activity
+            android:name=".about.HomeToAuthorActivity"
+            android:label="Author Activity">
+        </activity>
 
     </application>
 </manifest>

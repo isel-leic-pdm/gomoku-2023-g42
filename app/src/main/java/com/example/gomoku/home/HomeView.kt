@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,10 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gomoku.R
+import com.example.gomoku.http.RankingRequest
 import com.example.gomoku.ui.theme.GomokuTheme
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 
 @Composable
-fun HomeView() {
+fun HomeView(
+    onInfoRequested1: () -> Unit,
+    onInfoRequested2: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
     GomokuTheme {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -57,14 +66,25 @@ fun HomeView() {
             ) {
                 Button(onClick = { }) { Text(text = "Play") }
                 Spacer(modifier = Modifier.width(10.dp))
-                Button(onClick = { }) { Text(text = "Authors") }
+                Button(onClick = {
+                    scope.launch {
+                        onInfoRequested2()
+
+                    }
+                }) { Text(text = "Rankings") }
+                Spacer(modifier = Modifier.width(10.dp))
+                Button(onClick = {
+                    scope.launch {
+                        onInfoRequested1()
+                    }
+                }) { Text(text = "Authors") }
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun HomeViewPreview(){
     HomeView()
-}
+}*/

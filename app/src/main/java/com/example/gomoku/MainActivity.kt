@@ -1,7 +1,6 @@
 package com.example.gomoku
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.gomoku.about.HomeToAuthorActivity
+import com.example.gomoku.about.HomeToRankingsActivity
+import com.example.gomoku.home.HomeView
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
 import kotlinx.coroutines.launch
@@ -45,11 +46,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     setContent {
-                        HomeScreen(
-                            onInfoRequested = { HomeToAuthorActivity.navigateTo(this) }
+                        HomeView(
+                            onInfoRequested1 = { HomeToAuthorActivity.navigateTo(this) },
+                            onInfoRequested2 = { HomeToRankingsActivity.navigateTo(this) }
                         )
 
 
+                        //LoginView()
                     }
 
 
@@ -69,6 +72,7 @@ fun AuthorScreen(
 ) {
     val scope = rememberCoroutineScope()
     Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -80,12 +84,12 @@ fun AuthorScreen(
                 onInfoRequested()
             }
 
-        } ) { Text(text = "Send a message to support the creators") }
+        }) { Text(text = "Send a message to support the creators") }
     }
 }
 
 @Composable
-fun HomeScreen(onInfoRequested : () -> Unit) {
+fun HomeScreen(onInfoRequested: () -> Unit) {
     val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier.fillMaxSize(),
