@@ -1,8 +1,6 @@
 package com.example.gomoku.about
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -10,11 +8,11 @@ import androidx.activity.compose.setContent
 import com.example.gomoku.authors.AuthorScreen
 import com.example.gomoku.home.HomeScreen
 
-class LoginToHomeActivity : ComponentActivity() {
+class AuthorsToHomeActivity : ComponentActivity() {
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
-            val intent = Intent(origin, LoginToHomeActivity::class.java)
+            val intent = Intent(origin, AuthorsToHomeActivity::class.java)
             origin.startActivity(intent)
         }
     }
@@ -30,4 +28,6 @@ class LoginToHomeActivity : ComponentActivity() {
 
         }
     }
+
+
 }

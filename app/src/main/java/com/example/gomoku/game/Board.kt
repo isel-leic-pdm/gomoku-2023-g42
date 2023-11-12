@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
@@ -19,15 +21,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.demo.domain.BOARD_DIM
 import com.example.demo.domain.Board
 import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.demo.domain.Position
+import com.example.demo.domain.createBoard
 import com.example.gomoku.R
 
-val cellSize = 65.dp
+val cellSize = 20.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
 //TODO rever esta function
@@ -57,6 +61,15 @@ fun BoardView(boardState: MutableState<BoardRun>) {
     }
 }
 
+@Preview(showSystemUi = true)
+@Composable
+fun BoardViewPreview(){
+    val board = remember {
+        mutableStateOf(createBoard(Player.BLACK))
+    }
+    BoardView(board)
+}
+
 @Composable
 fun CellView(
     cell: Position,
@@ -69,7 +82,7 @@ fun CellView(
         DrawLine(Pair(cell.rowIndex, cell.colIndex))
         Box(
             modifier = Modifier
-                .size(cellSize / 4)
+                .size(cellSize )
                 .clickable(piece == null, onClick = { onClick() })
                 .background(Color.Transparent)
         ) {

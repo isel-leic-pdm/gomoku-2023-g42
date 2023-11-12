@@ -6,8 +6,9 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.gomoku.http.RankingRequest
-import com.example.gomoku.rankings.rankingScreen
+import com.example.gomoku.rankings.RankingScreen
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 
 class HomeToRankingsActivity : ComponentActivity() {
@@ -26,12 +27,17 @@ class HomeToRankingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v("AboutActivity", "onCreate")
+        var result = "TESTE"
         setContent {
-            //rankingScreen()
+
+
+            RankingScreen(
+                rankings = result,
+            ) { RankingsToHomeActivity.navigateTo(this) }
         }
     }
 
-     suspend fun rankings(client: OkHttpClient, gson: Gson) = RankingRequest(client,gson).getRankings()
+     private suspend fun rankings(client: OkHttpClient, gson: Gson) = RankingRequest(client,gson).getRankings()
 
 
 }

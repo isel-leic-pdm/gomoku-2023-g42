@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.AuthorScreen
+import com.example.gomoku.authors.AuthorScreen
 
 class HomeToAuthorActivity : ComponentActivity() {
     private val url = Uri.parse("https://outlook.office.com/mail/")
@@ -24,7 +24,8 @@ class HomeToAuthorActivity : ComponentActivity() {
         Log.v("AboutActivity", "onCreate")
         setContent {
             AuthorScreen(
-                onInfoRequested = { openSendEmail() }
+                onInfoRequested = { openSendEmail() },
+                onHomeRequested = { AuthorsToHomeActivity.navigateTo(this) }
             )
         }
     }

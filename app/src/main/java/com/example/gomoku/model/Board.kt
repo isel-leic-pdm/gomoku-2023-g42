@@ -8,7 +8,7 @@ import kotlin.IllegalStateException
 import kotlin.math.pow
 
 
-const val SQUARE_DIM = 4
+const val SQUARE_DIM = 18
 
 const val BOARD_DIM = SQUARE_DIM + 1
 
