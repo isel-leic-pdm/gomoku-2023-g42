@@ -78,6 +78,7 @@ fun HomeScreen(
             ) {
                 Button(onClick = { showBoardSizeDialog = true })
                 { Text(text = "Play") }
+
                 if (showBoardSizeDialog) {
                     GameConfig(
                         onDismiss = { showBoardSizeDialog = false },
@@ -88,53 +89,28 @@ fun HomeScreen(
                         }
                     )
                 }
+
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
                     scope.launch {
                         onRankingsRequested()
 
                     }
-                }) { Text(text = "Rankings") }
+                })
+                { Text(text = "Rankings") }
+
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
                     scope.launch {
                         onAuthorsRequested()
                     }
-                }) { Text(text = "Authors") }
+                })
+                { Text(text = "Authors") }
             }
         }
     }
 }
-enum class BoardSize{
-    FIFTEEN,
-    NINETEEN;
 
-    @Override
-    override fun toString(): String {
-        return if (this == FIFTEEN) "15" else "19"
-    }
-    fun value(): Int = if (this == FIFTEEN) 15 else 19
-}
-
-enum class Rules{
-    PRO,
-    PRO_LONG;
-
-    @Override
-    override fun toString(): String {
-        return if (this == PRO) "Pro" else "Pro Long"
-    }
-}
-
-enum class Variant{
-    FREESTYLE,
-    SWAP;
-
-    @Override
-    override fun toString(): String {
-        return if (this == FREESTYLE) "Freestyle" else "Swap"
-    }
-}
 
 @Composable
 fun GameConfig(
@@ -145,112 +121,115 @@ fun GameConfig(
     var rules by remember { mutableStateOf(Rules.PRO) }
     var variant by remember { mutableStateOf(Variant.FREESTYLE) }
 
+    GomokuTheme {
 
-    Dialog(onDismissRequest = onDismiss) {
-        // Dialog content
-        Surface(
-            modifier = Modifier
-                .width(300.dp)
-                .padding(16.dp),
-            shape = MaterialTheme.shapes.medium
-        ) {
-            Column(
+        Dialog(onDismissRequest = onDismiss) {
+
+            Surface(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .width(300.dp)
+                    .padding(16.dp),
+                shape = MaterialTheme.shapes.medium
             ) {
-                Text(
-                    text = "Choose the board size: "
-                )
-
-                // Radio buttons
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    RadioButton(
-                        selected = boardSize == BoardSize.FIFTEEN,
-                        onClick = { boardSize = BoardSize.FIFTEEN },
-                        modifier = Modifier.padding(end = 8.dp)
+                    Text(
+                        text = "Choose the board size: "
                     )
-                    Text(text = BoardSize.FIFTEEN.toString())
 
-                    RadioButton(
-                        selected = boardSize == BoardSize.NINETEEN,
-                        onClick = { boardSize = BoardSize.NINETEEN },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = BoardSize.NINETEEN.toString())
-                }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = boardSize == BoardSize.FIFTEEN,
+                            onClick = { boardSize = BoardSize.FIFTEEN },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = BoardSize.FIFTEEN.toString())
+
+                        RadioButton(
+                            selected = boardSize == BoardSize.NINETEEN,
+                            onClick = { boardSize = BoardSize.NINETEEN },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = BoardSize.NINETEEN.toString())
+                    }
+
                     Text(
                         text = "Choose the rules: "
                     )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RadioButton(
-                        selected = rules == Rules.PRO,
-                        onClick = {  rules = Rules.PRO },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = Rules.PRO.toString())
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = rules == Rules.PRO,
+                            onClick = {  rules = Rules.PRO },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = Rules.PRO.toString())
 
-                    RadioButton(
-                        selected = rules == Rules.PRO_LONG,
-                        onClick = { rules = Rules.PRO_LONG },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = Rules.PRO_LONG.toString())
-                 }
-
-                Text(
-                    text = "Choose the gameplay variant: "
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RadioButton(
-                        selected = variant == Variant.FREESTYLE,
-                        onClick = {  variant = Variant.FREESTYLE },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = Variant.FREESTYLE.toString())
-
-                    RadioButton(
-                        selected = variant == Variant.SWAP,
-                        onClick = {  variant = Variant.SWAP },
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = Variant.SWAP.toString())
-                }
-
-                // Buttons for confirmation and dismissal
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(onClick = onDismiss) {
-                        Text("Cancel")
+                        RadioButton(
+                            selected = rules == Rules.PRO_LONG,
+                            onClick = { rules = Rules.PRO_LONG },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = Rules.PRO_LONG.toString())
                     }
 
-                    Button(onClick = {
-                        // Pass the selected option to the callback
-                        onConfirm()
-                    }) {
-                        Text("Confirm")
+                    Text(
+                        text = "Choose the gameplay variant: "
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = variant == Variant.FREESTYLE,
+                            onClick = {  variant = Variant.FREESTYLE },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = Variant.FREESTYLE.toString())
+
+                        RadioButton(
+                            selected = variant == Variant.SWAP,
+                            onClick = {  variant = Variant.SWAP },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(text = Variant.SWAP.toString())
+                    }
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("Cancel")
+                        }
+
+                        Button(onClick = {
+
+                            onConfirm()
+                        }) {
+                            Text("Confirm")
+                        }
                     }
                 }
             }

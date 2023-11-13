@@ -31,12 +31,22 @@
 
         <activity
             android:name=".about.HomeToAuthorActivity"
-            android:label="Author Activity">
+            android:label="Home To Author Activity">
+        </activity>
+
+        <activity
+            android:name=".about.AuthorsToHomeActivity"
+            android:label="Authors To HomeActivity">
         </activity>
 
         <activity
             android:name=".about.LoginToHomeActivity"
-            android:label="HomeActivity">
+            android:label="Login To HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".about.RankingsToHomeActivity"
+            android:label="Rankings To HomeActivity">
         </activity>
 
     </application>

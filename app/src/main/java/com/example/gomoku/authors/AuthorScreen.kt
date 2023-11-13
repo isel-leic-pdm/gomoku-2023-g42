@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -21,35 +22,39 @@ fun AuthorScreen(
     onInfoRequested: () -> Unit,
     onHomeRequested: ()-> Unit
 ) {
+
     val scope = rememberCoroutineScope()
-    Button(
-        onClick = {
-            scope.launch{
-                onHomeRequested()
+    GomokuTheme {
+
+        Button(
+            onClick = {
+                scope.launch{
+                    onHomeRequested()
+                }
             }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = null
+            )
+
         }
-    ) {
-        Icon(
-            imageVector = Icons.Filled.ArrowBack,
-            contentDescription = null
-        )
 
-    }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, number -> 48259")
+            Text(fontFamily = FontFamily.Serif, text = "José Borges, number -> 48269")
+            Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, number -> 46080")
+            Button(onClick = {
+                scope.launch {
+                    onInfoRequested()
+                }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, number -> 48259")
-        Text(fontFamily = FontFamily.Serif, text = "José Borges, number -> 48269")
-        Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, number -> 46080")
-        Button(onClick = {
-            scope.launch {
-                onInfoRequested()
-            }
-
-        }) { Text(text = "Send a message to support the creators") }
+            }) { Text(text = "Send a message to support the creators") }
+        }
     }
 }
 @Preview(showSystemUi = true)
