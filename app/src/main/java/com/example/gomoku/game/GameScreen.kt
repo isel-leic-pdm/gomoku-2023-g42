@@ -7,35 +7,29 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.isTraceInProgress
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.example.demo.domain.Board
 import com.example.demo.domain.BoardDraw
 import com.example.demo.domain.BoardRun
-import com.example.demo.domain.BoardWin
+import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Player
+import com.example.demo.domain.Rules
+import com.example.demo.domain.Variant
 import com.example.demo.domain.createBoard
 import com.example.gomoku.R
 import com.example.gomoku.ui.theme.BoardView
@@ -70,7 +64,7 @@ fun GameScreen(board: MutableState<Board>) {
                             verticalAlignment = Alignment.CenterVertically
                         ){
                             Text(text = "Turn: ")
-                            findTurn(turn = table.turn)
+                            ShowTurn(turn = table.turn)
                         }
                     }
 
@@ -101,15 +95,15 @@ fun GameScreen(board: MutableState<Board>) {
 }
 
     @Composable
-    private fun findTurn(turn: Player){
-        val imageResource = if (turn == Player.WHITE) {
+    private fun ShowTurn(turn: Player){
+        val imageResource = if (turn == Player.W) {
             painterResource(id = R.drawable.whitestone)
         } else {
             painterResource(id = R.drawable.blackstone)
         }
         Image(
             painter = imageResource,
-            contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone",
+            contentDescription = if (turn == Player.W) "White Stone" else "Black Stone",
             Modifier.size(30.dp)
         )
 
@@ -121,7 +115,7 @@ fun GameScreen(board: MutableState<Board>) {
 @Composable
 fun GameScreenPreview(){
     val board = remember {
-        mutableStateOf<Board>(createBoard(Player.BLACK))
+        mutableStateOf<Board>(createBoard(Player.B, BoardSize.BIG.size, Rules.PRO.string(), Variant.FREESTYLE.string()))
     }
     GameScreen(board)
 }

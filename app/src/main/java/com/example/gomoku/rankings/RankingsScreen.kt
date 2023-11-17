@@ -1,7 +1,10 @@
 package com.example.gomoku.rankings
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -18,14 +21,19 @@ import androidx.compose.ui.unit.dp
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun RankingScreen(
-    //onInfoRequested:(OkHttpClient, Gson) -> String,
-    rankings: String,
+    rankings: LoadState = Idle,
+    onFetch: () -> Unit,
+
     onHomeRequested: () -> Unit
 )
 {
     val scope = rememberCoroutineScope()
+
+
+    onFetch()
 
     GomokuTheme {
         Column {
@@ -49,7 +57,21 @@ fun RankingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
-            Text(rankings)
+            if (rankings is Loading) Text(text = "LOADING......................")
+            Spacer(modifier = Modifier.height(30.dp))
+            if( rankings is Loaded){
+
+                Row {
+                    Text("Position")
+                    Text(text ="Username", Modifier.clickable {onHomeRequested()})
+                    Text("Rank")
+
+                }
+
+                rankings.result.getOrNull()?.let { Text(text = it) }
+            }
+
+
         }
 
 

@@ -1,36 +1,50 @@
-package com.example.demo.domain
+package com.example.gomoku.model
 
-import com.example.gomoku.model.Column
-import com.example.gomoku.model.Direction
-import com.example.gomoku.model.Row
-import com.example.gomoku.model.indexToColumn
-import com.example.gomoku.model.indexToRow
-
+import com.example.demo.domain.Moves
+import com.example.demo.domain.Player
 
 class Position private constructor(val row: Row, val col: Column) {
 
-    val rowIndex: Int = row.index
-    val colIndex: Int = col.index
-
-    override fun toString(): String = if (this== INVALID) "INVALID Cell" else "${this.row.number}${this.col.symbol}"
+    override fun toString(): String = if (this == INVALID) "Invalid Cell" else "${this.row.number}${this.col.symbol}"
 
     companion object {
-        private val values =
-            List(BOARD_DIM * BOARD_DIM) { Position((it / BOARD_DIM).indexToRow(), (it % BOARD_DIM).indexToColumn()) }
-        val INVALID = Position(-1, 1)
+        lateinit var values: List<Position>
+        lateinit var INVALID: Position
 
-        operator fun invoke(rowIndex: Int, colIndex: Int): Position {
-            return if (rowIndex in 0 until BOARD_DIM && colIndex in 0 until BOARD_DIM) {
-                values[rowIndex * BOARD_DIM + colIndex]
+        operator fun invoke(rowIndex: Int, colIndex: Int, boardSize: Int): Position {
+            return if (rowIndex in 0 until boardSize && colIndex in 0 until boardSize) {
+                values[rowIndex * boardSize + colIndex]
             } else INVALID
         }
-
-        operator fun invoke(row: Row, col: Column): Position = Position(row.index, col.index)
+        operator fun invoke(row: Row, col: Column, boardSize: Int): Position = Position(row.index, col.index, boardSize)
     }
 
+    class Factory(private val boardDim: Int) {
+        fun createPositions() {
+            val rows = Row.Factory(boardDim).createRows()
+            val cols = Column.Factory(boardDim).createColumns()
+            values = List(boardDim * boardDim) { Position(rows[it / boardDim], cols[it % boardDim]) }
+            INVALID = Position(Row.Factory(boardDim).createRows().last(), Column.Factory(boardDim).createColumns().last())
+        }
+    }
 }
 
-operator fun Position.plus(dir: Direction): Position = Position(row.index + dir.difRow, col.index + dir.difCol)
+
+fun String.toPosition(boardSize: Int): Position {
+    val str = this.trim()
+    return if (str.length == 2) {
+        val row = str[0].digitToInt()
+        val col = str[1]
+        Position(row.toRow(), col.toColumn(), boardSize)
+    }
+    else{
+        val row = str.substring(0,2).toInt()
+        val col = str[2]
+        Position(row.toRow(), col.toColumn(), boardSize)
+    }
+}
+
+operator fun Position.plus(dir: Direction): Position = Position(row.index + dir.difRow, col.index + dir.difCol, row.boardSize)
 
 
 fun cellsInDirection(moves: Moves, player: Player, from: Position, dir: Direction): Int {
@@ -41,7 +55,7 @@ fun cellsInDirection(moves: Moves, player: Player, from: Position, dir: Directio
         counter++
         currentCell += currDir
     }
-    currDir = dir.invertDirection()
+    currDir = dir.reverse()
     currentCell = from + currDir
     while (currentCell != Position.INVALID && moves[currentCell] == player) {
         counter++

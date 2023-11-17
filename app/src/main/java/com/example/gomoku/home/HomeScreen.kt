@@ -31,6 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.demo.domain.BoardSize
+import com.example.demo.domain.Rules
+import com.example.demo.domain.Variant
 import com.example.gomoku.R
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
@@ -43,9 +46,9 @@ fun HomeScreen(
 ) {
     val scope = rememberCoroutineScope()
     var showBoardSizeDialog by remember { mutableStateOf(false) }
-    var selectedSize by remember { mutableIntStateOf(BoardSize.FIFTEEN.value()) }
-    var selectedRules by remember { mutableStateOf(Rules.PRO.toString()) }
-    var selectedVariant by remember { mutableStateOf(Variant.FREESTYLE.toString()) }
+    var selectedSize by remember { mutableIntStateOf(BoardSize.values()[0].size) }
+    var selectedRules by remember { mutableStateOf(Rules.values()[0].string()) }
+    var selectedVariant by remember { mutableStateOf(Variant.values()[0].string()) }
 
     GomokuTheme {
         Column(
@@ -117,9 +120,9 @@ fun GameConfig(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    var boardSize by remember { mutableStateOf(BoardSize.FIFTEEN) }
-    var rules by remember { mutableStateOf(Rules.PRO) }
-    var variant by remember { mutableStateOf(Variant.FREESTYLE) }
+    var boardSize by remember { mutableStateOf(BoardSize.values()[0])}
+    var rules by remember {mutableStateOf(Rules.values()[0])}
+    var variant by remember { mutableStateOf(Variant.values()[0]) }
 
     GomokuTheme {
 
@@ -141,7 +144,6 @@ fun GameConfig(
                         text = "Choose the board size: "
                     )
 
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -149,18 +151,18 @@ fun GameConfig(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = boardSize == BoardSize.FIFTEEN,
-                            onClick = { boardSize = BoardSize.FIFTEEN },
+                            selected = boardSize == BoardSize.SMALL,
+                            onClick = { boardSize = BoardSize.SMALL },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = BoardSize.FIFTEEN.toString())
+                        Text(text = BoardSize.SMALL.string())
 
                         RadioButton(
-                            selected = boardSize == BoardSize.NINETEEN,
-                            onClick = { boardSize = BoardSize.NINETEEN },
+                            selected = boardSize == BoardSize.BIG,
+                            onClick = { boardSize = BoardSize.BIG },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = BoardSize.NINETEEN.toString())
+                        Text(text = BoardSize.BIG.string())
                     }
 
                     Text(
@@ -178,14 +180,14 @@ fun GameConfig(
                             onClick = {  rules = Rules.PRO },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = Rules.PRO.toString())
+                        Text(text = Rules.PRO.string())
 
                         RadioButton(
                             selected = rules == Rules.PRO_LONG,
                             onClick = { rules = Rules.PRO_LONG },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = Rules.PRO_LONG.toString())
+                        Text(text = Rules.PRO_LONG.string())
                     }
 
                     Text(
@@ -202,14 +204,14 @@ fun GameConfig(
                             onClick = {  variant = Variant.FREESTYLE },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = Variant.FREESTYLE.toString())
+                        Text(text = Variant.FREESTYLE.string())
 
                         RadioButton(
                             selected = variant == Variant.SWAP,
                             onClick = {  variant = Variant.SWAP },
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        Text(text = Variant.SWAP.toString())
+                        Text(text = Variant.SWAP.string())
                     }
 
 

@@ -23,11 +23,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.BOARD_DIM
 import com.example.demo.domain.Board
 import com.example.demo.domain.BoardRun
+import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Player
-import com.example.demo.domain.Position
+import com.example.demo.domain.Rules
+import com.example.demo.domain.Variant
+import com.example.gomoku.model.Position
 import com.example.demo.domain.createBoard
 import com.example.gomoku.R
 
@@ -38,13 +40,18 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun BoardView(boardState: MutableState<BoardRun>) {
+   val boardSize =  boardState.value.size
+    Position.Factory(boardSize).createPositions()
     Column {
         // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
         //val t = mutableStateOf(null)
-        repeat(BOARD_DIM) { r ->
+
+
+        repeat(boardSize) { r ->
             Row {
-                repeat(BOARD_DIM) { c ->
-                    val cell = Position(r, c)
+                repeat(boardSize) { c ->
+
+                    val cell = Position(r, c, boardSize)
                     CellView(cell = cell, turn = boardState.value.turn, board = boardState.value) {
                         val updatedBoard =
                             boardState.value.turn.let {
@@ -65,7 +72,7 @@ fun BoardView(boardState: MutableState<BoardRun>) {
 @Composable
 fun BoardViewPreview(){
     val board = remember {
-        mutableStateOf(createBoard(Player.BLACK))
+        mutableStateOf(createBoard(Player.B, BoardSize.BIG.size, Rules.PRO.string(), Variant.FREESTYLE.string()))
     }
     BoardView(board)
 }
@@ -78,8 +85,9 @@ fun CellView(
     onClick: () -> Unit,
 ) {
     Box(modifier = Modifier.size(cellSize), Alignment.Center) {
+        //TODO(O qualquer acesso a moves retorna null mesmo que a pocição esteja ocupada)
         val piece = board.moves[cell]
-        DrawLine(Pair(cell.rowIndex, cell.colIndex))
+        DrawLine(Pair(cell.row.index, cell.col.index), board.size)
         Box(
             modifier = Modifier
                 .size(cellSize )
@@ -87,14 +95,14 @@ fun CellView(
                 .background(Color.Transparent)
         ) {
             if (piece != null) {
-                val imageResource = if (piece == Player.WHITE) {
+                val imageResource = if (piece == Player.W) {
                     painterResource(id = R.drawable.whitestone)
                 } else {
                     painterResource(id = R.drawable.blackstone)
                 }
                 Image(
                     painter = imageResource,
-                    contentDescription = if (turn == Player.WHITE) "White Stone" else "Black Stone"
+                    contentDescription = if (turn == Player.W) "White Stone" else "Black Stone"
                 )
             }
 
@@ -106,12 +114,12 @@ fun CellView(
 
 
 @Composable
-fun DrawLine(cord: Pair<Int, Int>) {
+fun DrawLine(cord: Pair<Int, Int>, size: Int) {
     when (cord) {
         Pair(0, 0) -> LeftUpCorner()
-        Pair(0, BOARD_DIM - 1) -> RightUpCorner()
-        Pair(BOARD_DIM - 1, 0) -> LeftDownCorner()
-        Pair(BOARD_DIM - 1, BOARD_DIM - 1) -> RightDownCorner()
+        Pair(0, size - 1) -> RightUpCorner()
+        Pair(size - 1, 0) -> LeftDownCorner()
+        Pair(size - 1, size - 1) -> RightDownCorner()
         else -> {
             if (cord.first == 0) {
                 UpWall()
@@ -121,11 +129,11 @@ fun DrawLine(cord: Pair<Int, Int>) {
                 LeftWall()
                 return
             }
-            if (cord.first == BOARD_DIM - 1) {
+            if (cord.first == size - 1) {
                 DownWall()
                 return
             }
-            if (cord.second == BOARD_DIM - 1) {
+            if (cord.second == size - 1) {
                 RightWall()
                 return
             } else {

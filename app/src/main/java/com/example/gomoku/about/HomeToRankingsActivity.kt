@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import com.example.gomoku.http.RankingRequest
+import com.example.gomoku.rankings.RankingApplication
 import com.example.gomoku.rankings.RankingScreen
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
+import com.example.gomoku.rankings.RankingScreenViewModel
 
 class HomeToRankingsActivity : ComponentActivity() {
 
-    val client = OkHttpClient()
-    val gson = Gson()
-
+    private val viewModel by viewModels<RankingScreenViewModel>()
+    private val app by lazy { application as RankingApplication }
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -27,17 +26,18 @@ class HomeToRankingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v("AboutActivity", "onCreate")
-        var result = "TESTE"
+
         setContent {
 
 
             RankingScreen(
-                rankings = result,
+                onFetch = {viewModel.fetchRanking(app.rankingService)},
+                rankings = viewModel.rankings
             ) { RankingsToHomeActivity.navigateTo(this) }
         }
     }
 
-     private suspend fun rankings(client: OkHttpClient, gson: Gson) = RankingRequest(client,gson).getRankings()
+    // private suspend fun rankings(client: OkHttpClient, gson: Gson) = RankingRequest(client,gson).getRankings()
 
 
 }
