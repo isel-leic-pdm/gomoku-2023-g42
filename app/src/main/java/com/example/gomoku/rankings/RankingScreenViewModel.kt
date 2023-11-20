@@ -7,19 +7,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gomoku.domain.Idle
+import com.example.gomoku.domain.LoadState
+import com.example.gomoku.domain.Loaded
+import com.example.gomoku.domain.Loading
 
 
 import kotlinx.coroutines.launch
 
 class RankingScreenViewModel : ViewModel() {
 
-    var rankings by mutableStateOf<LoadState>(Loading)
+    var rankings by mutableStateOf<LoadState>(Idle)
         private set
-
+ 
     fun fetchRanking(service: RankingService) {
         viewModelScope.launch {
-            rankings = Loading
+            rankings= Loading
             rankings = Loaded(runCatching { service.fetchRankings()})
+
         }
     }
 }

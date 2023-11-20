@@ -35,8 +35,10 @@ class RankingRequest (
                     val body = response.body
                     if(!response.isSuccessful || body == null)
                         it.resumeWithException(throw IllegalArgumentException()) //TODO()
-                    else
+                    else{
                         it.resume(gson.fromJson(body.string(),String::class.java))
+                    }
+
                 }
 
             })

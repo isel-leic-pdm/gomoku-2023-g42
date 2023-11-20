@@ -18,13 +18,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.gomoku.domain.LoadState
+import com.example.gomoku.domain.Loaded
+import com.example.gomoku.domain.Loading
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun RankingScreen(
-    rankings: LoadState = Idle,
+    rankings: LoadState,
     onFetch: () -> Unit,
 
     onHomeRequested: () -> Unit
@@ -33,7 +36,8 @@ fun RankingScreen(
     val scope = rememberCoroutineScope()
 
 
-    onFetch()
+
+
 
     GomokuTheme {
         Column {
@@ -57,9 +61,15 @@ fun RankingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
-            if (rankings is Loading) Text(text = "LOADING......................")
+
+
+           onFetch()
+
+            
             Spacer(modifier = Modifier.height(30.dp))
-            if( rankings is Loaded){
+            
+            if ( rankings is Loading) Text(text = "...LOADING...")
+            if( rankings is Loaded<*>){
 
                 Row {
                     Text("Position")
@@ -68,7 +78,9 @@ fun RankingScreen(
 
                 }
 
-                rankings.result.getOrNull()?.let { Text(text = it) }
+                rankings.result.getOrNull()?.let {
+                    Text(text = it as String)
+                }
             }
 
 

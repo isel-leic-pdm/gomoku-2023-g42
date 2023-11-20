@@ -9,8 +9,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.gomoku.authors.AuthorScreen
 import com.example.gomoku.home.HomeScreen
+import com.example.gomoku.rankings.RankingApplication
 
 class LoginToHomeActivity : ComponentActivity() {
+
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
