@@ -14,7 +14,7 @@ class RankingApplication : Application() {
 
     val gson: Gson = Gson()
 
-    val rankingService: RankingService = NoOpRankService
-    //val rankingService: RankingService = RankingRequest(httpClient, gson)
+    //val rankingService: RankingService = NoOpRankService
+    val rankingService: RankingService = RankingRequest(httpClient, gson)
 
 }
