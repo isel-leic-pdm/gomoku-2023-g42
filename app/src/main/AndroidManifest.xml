@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".rankings.RankingApplication"
+        android:name=".http.MenuApplication"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -45,6 +45,11 @@
         <activity
             android:name=".about.LoginToHomeActivity"
             android:label="Login To HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".about.LoginToSignUpActivity"
+            android:label="Login to Sign Up">
         </activity>
 
         <activity

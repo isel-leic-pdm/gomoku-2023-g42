@@ -6,15 +6,15 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.gomoku.http.RankingRequest
-import com.example.gomoku.rankings.RankingApplication
+import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.rankings.RankingScreen
 import com.example.gomoku.rankings.RankingScreenViewModel
 
 class HomeToRankingsActivity : ComponentActivity() {
 
     private val viewModel by viewModels<RankingScreenViewModel>()
-    private val app by lazy { application as RankingApplication }
+    private val app by lazy { application as MenuApplication }
+
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -36,8 +36,6 @@ class HomeToRankingsActivity : ComponentActivity() {
             ) { RankingsToHomeActivity.navigateTo(this) }
         }
     }
-
-    // private suspend fun rankings(client: OkHttpClient, gson: Gson) = RankingRequest(client,gson).getRankings()
 
 
 }

@@ -3,15 +3,20 @@ package com.example.gomoku.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,12 +26,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gomoku.R
+import com.example.gomoku.domain.IOState
+import com.example.gomoku.domain.Idle
+import com.example.gomoku.domain.Loaded
+import com.example.gomoku.domain.Loading
+import com.example.gomoku.domain.LoggedUser
+import com.example.gomoku.domain.NoUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
@@ -34,11 +46,16 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-   onHomeRequested : () -> Unit
+    user: IOState<Any> = Idle,
+    onHomeRequested: () -> Unit,
+    onLogin: (String, String) -> Unit,
+    onSignUp: () -> Unit,
+    setIdle: () -> Unit
 ) {
     val username = remember{mutableStateOf("")}
     val password = remember{mutableStateOf("")}
     val scope = rememberCoroutineScope()
+    val failedPopUp = remember { mutableStateOf(false) }
 
     GomokuTheme {
 
@@ -48,7 +65,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -65,27 +82,73 @@ fun LoginScreen(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = null
                 )
-                OutlinedTextField(
-                    value = username.value,
-                    onValueChange = {username.value = it},
-                    label = { Text(text = "Username")},
-                )
-                Spacer(modifier = Modifier.width(30.dp))
-                OutlinedTextField(
-                    value = password.value,
-                    onValueChange = {password.value = it},
-                    label = { Text(text = "Password")},
-                    visualTransformation = PasswordVisualTransformation()
-                )
-                Spacer(modifier = Modifier.width(30.dp))
-                //Text(text = "Sign in")
-                Button(onClick = {
-                    scope.launch {
-                        onHomeRequested()
+                if (user is Idle){
+
+                    OutlinedTextField(
+                        value = username.value,
+                        onValueChange = {username.value = it},
+                        label = { Text(text = "Username")},
+                    )
+                    //Spacer(modifier = Modifier.width(30.dp))
+                    OutlinedTextField(
+                        value = password.value,
+                        onValueChange = {password.value = it},
+                        label = { Text(text = "Password")},
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    )
+                    Spacer(modifier = Modifier.width(30.dp))
+
+                    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                        Button(onClick = {
+                            scope.launch { onSignUp() }
+                        })
+                        { Text("Sign Up") }
+
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        Button(onClick = {
+                            scope.launch { onLogin(username.value,password.value) }
+
+                        })
+                        { Text("Log in") }
+
                     }
 
-                }) {
-                    Text("Sign in")
+                }
+
+                if(user is Loading){
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                if(user is Loaded<*>) {
+                    val loaded = user.result.getOrNull()
+                    if(loaded is LoggedUser) onHomeRequested()
+                    else {
+                        AlertDialog(
+                            onDismissRequest = {
+                                failedPopUp.value = false
+                                setIdle()
+                            },
+                            title = { Text(text = "Failed to Log in!") },
+                            text = { Text(text = "Insert a valid combination of username and password.") },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        failedPopUp.value = false
+                                        setIdle()
+                                    }
+                                ) {
+                                    Text(text = "OK")
+                                }
+                            }
+                        )
+                    }
                 }
             }
 
@@ -98,6 +161,10 @@ fun LoginScreen(
 @Composable
 fun LoginViewPreview(){
 
+    LoginScreen(Idle, {}, ::test, {}) { }
+
+
 }
+fun test (text: String, txt:String){}
 
 

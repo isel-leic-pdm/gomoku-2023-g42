@@ -16,7 +16,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 // localhost - 10.0.2.2
-const val LOCALHOST = "https://1d88-2001-8a0-612f-f500-f8e8-7a1e-1dbc-522c.ngrok-free.app"
+
 class RankingRequest (
     private val client : OkHttpClient,
     private val gson : Gson
@@ -43,14 +43,14 @@ class RankingRequest (
                     else{
                         val jsonObject = JsonParser().parse(body.string()).asJsonObject
                         val playersList = jsonObject.asJsonObject.get("properties").asJsonArray
-                        val rankings = playersList.map { property ->
-                            val propertyObj = property.asJsonObject
+                        val rankings = playersList.map { playerInfo ->
+                            val playerObj = playerInfo.asJsonObject
                             PlayerRank(
-                                propertyObj.get("username").asString,
-                                propertyObj.get("rank").asString,
-                                propertyObj.get("playedGames").asString,
-                                propertyObj.get("wonGames").asString,
-                                propertyObj.get("lostGames").asString
+                                playerObj.get("username").asString,
+                                playerObj.get("rank").asString,
+                                playerObj.get("playedGames").asString,
+                                playerObj.get("wonGames").asString,
+                                playerObj.get("lostGames").asString
                             )
                         }
                         it.resume(rankings)

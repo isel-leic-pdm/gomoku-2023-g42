@@ -1,15 +1,11 @@
 package com.example.gomoku.about
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.authors.AuthorScreen
 import com.example.gomoku.home.HomeScreen
-import com.example.gomoku.rankings.RankingApplication
 
 class LoginToHomeActivity : ComponentActivity() {
 
