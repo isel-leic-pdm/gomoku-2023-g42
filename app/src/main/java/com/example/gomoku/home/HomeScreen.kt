@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -35,14 +36,16 @@ import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.gomoku.R
+import com.example.gomoku.domain.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
+    user : LoggedUser? = null,
     onAuthorsRequested: () -> Unit,
     onRankingsRequested: () -> Unit
-    //onGameRequested: (Int, String, String) ->Unit
+    //onLobbyRequested: (Int, String, String, LoggedUser) ->Unit
 ) {
     val scope = rememberCoroutineScope()
     var showBoardSizeDialog by remember { mutableStateOf(false) }
@@ -239,8 +242,8 @@ fun GameConfig(
     }
 }
 
-/*@Preview(showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun HomeViewPreview(){
-    HomeView()
-}*/
+    HomeScreen(null,{}){}
+}
