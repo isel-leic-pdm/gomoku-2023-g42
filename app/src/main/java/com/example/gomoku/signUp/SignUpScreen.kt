@@ -29,7 +29,7 @@ import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
-import com.example.gomoku.domain.NoUser
+import com.example.gomoku.user.NoUser
 import com.example.gomoku.login.test
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
@@ -48,9 +48,11 @@ fun SignUpScreen(
     val confirmPassword = remember { mutableStateOf("") }
     val confirmPopUp = remember { mutableStateOf(false) }
     val notMatchPass = remember { mutableStateOf(false) }
-    val usedUsername = remember { mutableStateOf(false) }
+    val apiError = remember { mutableStateOf(false) }
     val blankUser = remember { mutableStateOf(false) }
+    val invalidUsername = remember { mutableStateOf(false) }
     val blankPass = remember { mutableStateOf(false) }
+    val invalidPass = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     GomokuTheme {
@@ -117,13 +119,9 @@ fun SignUpScreen(
 
                     Button(
                         onClick = {
-                            if (username.value.isBlank()) blankUser.value = true
-                            else if (password.value.isBlank()) blankPass.value = true
-                            else if (password.value == confirmPassword.value) {
+                            if (password.value == confirmPassword.value) {
                                 onSignUp(username.value, confirmPassword.value)
                             } else notMatchPass.value = true
-
-
                         }
                     ) {
                         Text(text = "Sign Up")
@@ -137,7 +135,7 @@ fun SignUpScreen(
 
                 if (loaded is NoUser) {
                     error.value = loaded.error
-                    usedUsername.value = true
+                    apiError.value = true
                     setIdle()
                 } else {
                     confirmPopUp.value = true
@@ -145,38 +143,7 @@ fun SignUpScreen(
 
             }
 
-            if (blankUser.value) {
-                AlertDialog(
-                    onDismissRequest = { blankUser.value = false },
-                    title = { Text(text = "Username is blank!") },
-                    text = { Text(text = "Username field is blank, please insert a valid username") },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                blankUser.value = false
-                            }
-                        ) {
-                            Text(text = "OK")
-                        }
-                    }
-                )
-            }
-            if (blankPass.value) {
-                AlertDialog(
-                    onDismissRequest = { blankPass.value = false },
-                    title = { Text(text = "Password is blank!") },
-                    text = { Text(text = "Password field is blank, please insert a valid password") },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                blankPass.value = false
-                            }
-                        ) {
-                            Text(text = "OK")
-                        }
-                    }
-                )
-            }
+
             if (notMatchPass.value) {
                 AlertDialog(
                     onDismissRequest = { notMatchPass.value = false },
@@ -210,15 +177,15 @@ fun SignUpScreen(
                     }
                 )
             }
-            if (usedUsername.value) {
+            if (apiError.value) {
                 AlertDialog(
-                    onDismissRequest = { usedUsername.value = false },
-                    title = { Text(text = "User already exists!") },
+                    onDismissRequest = { apiError.value = false },
+                    title = { Text(text = "Error!") },
                     text = { Text(text = error.value) },
                     confirmButton = {
                         TextButton(
                             onClick = {
-                                usedUsername.value = false
+                                apiError.value = false
                             }
                         ) {
                             Text(text = "OK")

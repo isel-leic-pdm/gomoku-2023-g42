@@ -1,6 +1,6 @@
 package com.example.gomoku.login
 
-import com.example.gomoku.domain.User
+import com.example.gomoku.user.User
 
 interface LoginService{
 

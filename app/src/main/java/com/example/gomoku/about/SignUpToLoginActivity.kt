@@ -28,7 +28,7 @@ class SignUpToLoginActivity : ComponentActivity() {
             LoginScreen(
                 onHomeRequested = { LoginToHomeActivity.navigateTo(this) },
                 onSignUp = {LoginToSignUpActivity.navigateTo(this)},
-                onLogin = ::signIn,
+                onLogin = ::login,
                 setIdle = {viewModel.setIdle()},
                 user = viewModel.user
             )
@@ -36,8 +36,8 @@ class SignUpToLoginActivity : ComponentActivity() {
         }
     }
 
-    private fun signIn (username: String, password: String){
-        viewModel.postUser(app.loginService, username, password)
+    private fun login (username: String, password: String){
+        viewModel.postUser(app.loginService, app.userInfoRepository,username, password)
     }
 
 }

@@ -1,9 +1,9 @@
 package com.example.gomoku.http
 
-import com.example.gomoku.domain.LoggedUser
-import com.example.gomoku.domain.LoginCreds
-import com.example.gomoku.domain.NoUser
-import com.example.gomoku.domain.User
+import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.user.LoginCreds
+import com.example.gomoku.user.NoUser
+import com.example.gomoku.user.User
 import com.example.gomoku.login.LoginService
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -47,7 +47,7 @@ class LoginRequest (
                         val jsonObject = JsonParser().parse(body.string()).asJsonObject
                         val property = jsonObject.get("properties").asJsonObject
                         val token = property.get("token").asString
-                        it.resume(LoggedUser(token, username))
+                        it.resume(LoggedUser(username,token))
 
                     }
                 }

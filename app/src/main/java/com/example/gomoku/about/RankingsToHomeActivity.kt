@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.authors.AuthorScreen
+import androidx.lifecycle.lifecycleScope
 import com.example.gomoku.home.HomeScreen
+import com.example.gomoku.http.MenuApplication
+import com.example.gomoku.user.User
+import kotlinx.coroutines.launch
 
 class RankingsToHomeActivity : ComponentActivity() {
+    private val app by lazy { application as MenuApplication }
+    lateinit var user: User
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -19,9 +24,13 @@ class RankingsToHomeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            user = app.userInfoRepository.getUserInfo()
+        }
         Log.v("AboutActivity", "onCreate")
         setContent {
             HomeScreen(
+                user = user,
                 onAuthorsRequested = { HomeToAuthorActivity.navigateTo(this) },
                 onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) }
             )

@@ -34,7 +34,7 @@ class HomeToAuthorActivity : ComponentActivity() {
         try {
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(AUTHOR_EMAIL))
+                putExtra(Intent.EXTRA_EMAIL, emails)
                 putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT)
             }
             startActivity(intent)
@@ -45,7 +45,7 @@ class HomeToAuthorActivity : ComponentActivity() {
     }
 }
 
-private const val AUTHOR_EMAIL = "a48259@alunos.isel.pt"
+private val emails = arrayOf("a48259@alunos.isel.pt","a46080@alunos.isel.pt", "a48269@alunos.isel.pt")
 
 private const val EMAIL_SUBJECT = "Gomoku - Feedback"
 

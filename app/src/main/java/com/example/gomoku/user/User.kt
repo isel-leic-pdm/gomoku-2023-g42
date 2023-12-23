@@ -1,4 +1,4 @@
-package com.example.gomoku.domain
+package com.example.gomoku.user
 
 sealed class User (open val token: String )
 

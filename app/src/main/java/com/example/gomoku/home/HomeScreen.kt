@@ -36,13 +36,14 @@ import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.gomoku.R
-import com.example.gomoku.domain.LoggedUser
+import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
+import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    user : LoggedUser? = null,
+    user : User,
     onAuthorsRequested: () -> Unit,
     onRankingsRequested: () -> Unit
     //onLobbyRequested: (Int, String, String, LoggedUser) ->Unit
@@ -64,6 +65,14 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    fontFamily = FontFamily.Serif,
+                    text = (user as LoggedUser).username,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Text(
                     fontFamily = FontFamily.Serif,
                     text = "Gomoku",
@@ -245,5 +254,5 @@ fun GameConfig(
 @Preview(showSystemUi = true)
 @Composable
 fun HomeViewPreview(){
-    HomeScreen(null,{}){}
+    HomeScreen(LoggedUser("",""),{}){}
 }

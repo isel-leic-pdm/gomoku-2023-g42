@@ -23,7 +23,7 @@ class RankingRequest (
 ) : RankingService{
     private val request by lazy{
         Request.Builder()
-            .url("${LOCALHOST}/stats")
+            .url("https://${LOCALHOST}/stats")
             .addHeader("accept","application/json")
             .build()
     }

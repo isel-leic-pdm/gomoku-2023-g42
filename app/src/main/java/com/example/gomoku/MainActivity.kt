@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
     }
     private fun signIn (username: String, password: String){
-        viewModel.postUser(app.loginService, username, password)
+        viewModel.postUser(app.loginService, app.userInfoRepository, username, password)
     }
 }
 

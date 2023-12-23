@@ -9,19 +9,29 @@ import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
+import com.example.gomoku.http.MenuApplication
+import com.example.gomoku.infrastructure.UserInfoRepository
+import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel: ViewModel() {
 
+
     var user by mutableStateOf<IOState<Any>>(Idle)
         private set
 
-    fun postUser(service: LoginService, username: String, password: String) {
+    fun postUser(service: LoginService, userInfoRepository: UserInfoRepository , username: String, password: String) {
 
         viewModelScope.launch {
             user = Loading
             user = Loaded(
             runCatching { service.postLogin(username, password) })
+            val logged : User = (user as Loaded).result.getOrNull() as User
+            if (logged is LoggedUser) userInfoRepository.updateUserInfo(logged)
+
+
+
 
         }
 

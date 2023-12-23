@@ -1,9 +1,9 @@
 package com.example.gomoku.http
 
-import com.example.gomoku.domain.LoggedUser
-import com.example.gomoku.domain.LoginCreds
-import com.example.gomoku.domain.NoUser
-import com.example.gomoku.domain.User
+import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.user.LoginCreds
+import com.example.gomoku.user.NoUser
+import com.example.gomoku.user.User
 import com.example.gomoku.signUp.SignUpService
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -36,18 +36,20 @@ class SignUpRequest(
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
-                    if(!response.isSuccessful || body == null) {
-                        if(!response.isSuccessful || body == null)
-                            response.body?.let {body -> NoUser(body.string()) }
-                                ?.let { noUser -> it.resume(noUser) }
+                    if (body!= null){
+                        if(!response.isSuccessful) {
+                                val jsonObject = JsonParser().parse(body.string()).asJsonObject
+                                val error = jsonObject.get("error").asString
+                                it.resume(NoUser(error))
+                        }
+                        else{
+                            val jsonObject = JsonParser().parse(body.string()).asJsonObject
+                            val property = jsonObject.get("properties").asJsonObject
+                            val token = property.get("token").asString
+                            val user = LoggedUser(token, username)
+                            it.resume(user)
+                        }
 
-                    }
-                    else{
-                        val jsonObject = JsonParser().parse(body.string()).asJsonObject
-                        val property = jsonObject.get("properties").asJsonObject
-                        val token = property.get("token").asString
-                        val user = LoggedUser(token, username)
-                        it.resume(user)
                     }
                 }
 
