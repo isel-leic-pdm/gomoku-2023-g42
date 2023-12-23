@@ -39,7 +39,7 @@ class HomeToAuthorActivity : ComponentActivity() {
             }
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Log.e("AboutActivity", "No activity found to handle $url")
+            Log.e("AboutActivity", "No activity found $url")
         }
 
     }

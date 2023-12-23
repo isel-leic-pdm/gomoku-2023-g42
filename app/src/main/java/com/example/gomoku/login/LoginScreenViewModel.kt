@@ -9,7 +9,6 @@ import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
-import com.example.gomoku.rankings.RankingService
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel: ViewModel() {

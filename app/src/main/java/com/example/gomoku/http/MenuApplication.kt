@@ -8,7 +8,7 @@ import com.example.gomoku.signUp.SignUpService
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 
-const val LOCALHOST = "833c-2001-8a0-612f-f500-edb5-c74a-f216-f45f.ngrok-free.app"
+const val LOCALHOST = "2ZWh2iI5aB2k8AclDewyOka2q9z_Vz5veJWmFmqANWRggfYr.ngrok-free.app"
 class MenuApplication : Application() {
 
     private val httpClient: OkHttpClient =

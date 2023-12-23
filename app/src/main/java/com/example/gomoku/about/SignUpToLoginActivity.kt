@@ -6,12 +6,9 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.gomoku.MainActivity
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.login.LoginScreen
 import com.example.gomoku.login.LoginScreenViewModel
-import com.example.gomoku.signUp.SignUpScreen
-import com.example.gomoku.signUp.SignUpScreenViewModel
 
 class SignUpToLoginActivity : ComponentActivity() {
     private val viewModel by viewModels<LoginScreenViewModel>()
