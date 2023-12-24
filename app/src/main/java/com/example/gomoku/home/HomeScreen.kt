@@ -36,6 +36,9 @@ import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.gomoku.R
+import com.example.gomoku.domain.IOState
+import com.example.gomoku.domain.Idle
+import com.example.gomoku.domain.Loaded
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.user.User
@@ -43,9 +46,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    user : User,
     onAuthorsRequested: () -> Unit,
-    onRankingsRequested: () -> Unit
+    onRankingsRequested: () -> Unit,
+    userInfo: IOState<User?>,
+    getUser:() -> Unit
     //onLobbyRequested: (Int, String, String, LoggedUser) ->Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -53,6 +57,7 @@ fun HomeScreen(
     var selectedSize by remember { mutableIntStateOf(BoardSize.values()[0].size) }
     var selectedRules by remember { mutableStateOf(Rules.values()[0].string()) }
     var selectedVariant by remember { mutableStateOf(Variant.values()[0].string()) }
+    if (userInfo is Idle) getUser()
 
     GomokuTheme {
         Column(
@@ -65,14 +70,15 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                if (userInfo is Loaded){
                 Text(
                     fontFamily = FontFamily.Serif,
-                    text = (user as LoggedUser).username,
-                    fontSize = 30.sp,
+                    text =  "Welcome, " + (userInfo.result.getOrNull() as LoggedUser).username,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
-                )
+                )}
                 Text(
                     fontFamily = FontFamily.Serif,
                     text = "Gomoku",
@@ -251,8 +257,9 @@ fun GameConfig(
     }
 }
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun HomeViewPreview(){
-    HomeScreen(LoggedUser("",""),{}){}
-}
+    HomeScreen(LoggedUser("",""), {}, {}, userInfo
+            getUser = {vm.fetchUserInfo()})
+}*/

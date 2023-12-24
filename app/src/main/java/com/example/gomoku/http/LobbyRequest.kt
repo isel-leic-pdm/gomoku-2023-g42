@@ -2,7 +2,7 @@ package com.example.gomoku.http
 
 import com.example.demo.domain.BoardRun
 import com.example.demo.domain.toPlayer
-import com.example.gomoku.domain.LoginCreds
+
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
 import com.example.gomoku.lobby.LobbyService

@@ -12,6 +12,7 @@ import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.concurrent.Flow
@@ -31,7 +32,7 @@ class HomeScreenViewModel(
         /**
          * The flow of states the view model traverses.
          */
-        val userInfo: Flow<IOState<User?>>
+        val userInfo: StateFlow<IOState<User?>>
             get() = _userInfoFlow.asStateFlow()
 
         /**
