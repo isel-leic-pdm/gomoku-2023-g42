@@ -8,8 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.gomoku.domain.Loaded
-import com.example.gomoku.game.Either
-import com.example.gomoku.game.GameModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.lobby.LobbyScreen

@@ -107,6 +107,7 @@ fun HomeScreen(
                         onConfirm = {
                             // TODO criar jogo com selectedSize, selectedRules, selectedVariant
                             onLobbyRequested()
+                            scope.launch {  }
                             //vm.createLobby()
                             //TODO onGameRequested(selectedSize, selectedRules, selectedVariant)
                         }

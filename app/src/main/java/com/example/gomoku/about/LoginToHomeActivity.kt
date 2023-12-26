@@ -12,12 +12,16 @@ import com.example.gomoku.domain.Idle
 import com.example.gomoku.home.HomeScreen
 import com.example.gomoku.home.HomeScreenViewModel
 import com.example.gomoku.http.DependenciesContainer
+import com.example.gomoku.lobby.LobbyScreenViewModel
 
 class LoginToHomeActivity : ComponentActivity() {
 
     private val vm by viewModels<HomeScreenViewModel> {
         HomeScreenViewModel.factory((application as DependenciesContainer).userInfoRepository)
     }
+
+    private val vma by viewModels<LobbyScreenViewModel>()
+
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -44,5 +48,6 @@ class LoginToHomeActivity : ComponentActivity() {
             )
 
         }
+
     }
 }
