@@ -2,6 +2,7 @@ package com.example.gomoku.about
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -29,18 +30,18 @@ class HomeToLobbyActivity : ComponentActivity() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             vm.lobbyInfo.collectLatest {
-                if (it is Loaded && it.result.getOrNull() != null ) {
+                if (it is Loaded && it.result.isSuccess ) {
+                    Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                     LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
                 }
             }
         }
         setContent {
-            LobbyScreen(onCreateLobby = ::createLobby)
+            LobbyScreen(onCreateLobby = { createLobby() })
         }
     }
 

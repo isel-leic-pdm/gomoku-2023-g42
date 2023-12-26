@@ -31,7 +31,6 @@ class LoginToHomeActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-
         Log.v("AboutActivity", "onCreate")
 
         setContent {

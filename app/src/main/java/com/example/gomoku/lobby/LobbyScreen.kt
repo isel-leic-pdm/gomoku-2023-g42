@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun LobbyScreen(onCreateLobby: () -> Unit) {
-    onCreateLobby()
     Column{
         Text("Waiting for opponent!")
     }
+    onCreateLobby()
 }

@@ -88,7 +88,6 @@ fun LoginScreen(
                         onValueChange = {username.value = it},
                         label = { Text(text = "Username")},
                     )
-                    //Spacer(modifier = Modifier.width(30.dp))
                     OutlinedTextField(
                         value = password.value,
                         onValueChange = {password.value = it},

@@ -29,8 +29,6 @@ class AuthorsToHomeActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-
-
         Log.v("AboutActivity", "onCreate")
         setContent {
             val userInfo by vm.userInfo.collectAsState(initial = Idle)

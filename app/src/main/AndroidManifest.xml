@@ -62,5 +62,10 @@
             android:label="Home to LobbyActivity">
         </activity>
 
+        <activity
+            android:name=".about.LobbyToGameActivity"
+            android:label="Lobby to GameActivity">
+        </activity>
+
     </application>
 </manifest>

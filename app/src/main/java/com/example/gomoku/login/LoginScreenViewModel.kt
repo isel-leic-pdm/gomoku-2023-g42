@@ -9,14 +9,12 @@ import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
-import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel: ViewModel() {
-
 
     var user by mutableStateOf<IOState<Any>>(Idle)
         private set

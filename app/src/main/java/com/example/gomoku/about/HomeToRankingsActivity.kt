@@ -27,7 +27,6 @@ class HomeToRankingsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.v("AboutActivity", "onCreate")
 
-        
 
         setContent {
             RankingScreen(
