@@ -49,7 +49,7 @@ fun HomeScreen(
     onRankingsRequested: () -> Unit,
     userInfo: IOState<User?>,
     getUser: () -> Unit,
-    onLobbyRequested: () -> Unit
+    onLobbyRequested: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     var showBoardSizeDialog by remember { mutableStateOf(false) }
@@ -57,6 +57,7 @@ fun HomeScreen(
     var selectedRules by remember { mutableStateOf(Rules.values()[0].string()) }
     var selectedVariant by remember { mutableStateOf(Variant.values()[0].string()) }
     if (userInfo is Idle) getUser()
+
 
     GomokuTheme {
         Column(
@@ -106,6 +107,7 @@ fun HomeScreen(
                         onConfirm = {
                             // TODO criar jogo com selectedSize, selectedRules, selectedVariant
                             onLobbyRequested()
+                            //vm.createLobby()
                             //TODO onGameRequested(selectedSize, selectedRules, selectedVariant)
                         }
                     )

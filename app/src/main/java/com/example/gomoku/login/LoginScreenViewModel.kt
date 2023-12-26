@@ -29,10 +29,6 @@ class LoginScreenViewModel: ViewModel() {
             runCatching { service.postLogin(username, password) })
             val logged : User = (user as Loaded).result.getOrNull() as User
             if (logged is LoggedUser) userInfoRepository.updateUserInfo(logged)
-
-
-
-
         }
 
     }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 class HomeToLobbyActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<LobbyScreenViewModel>()
+    private val vm by viewModels<LobbyScreenViewModel>()
     private val app by lazy { application as MenuApplication }
 
     companion object {
@@ -28,26 +28,23 @@ class HomeToLobbyActivity : ComponentActivity() {
         }
     }
 
-    private val vm by viewModels<LobbyScreenViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             vm.lobbyInfo.collectLatest {
-                if (it is Loaded && it is Either.Right<*> ) {
+                if (it is Loaded && it.result.getOrNull() != null ) {
                     LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
                 }
             }
         }
         setContent {
-            LobbyScreen()
+            LobbyScreen(onCreateLobby = ::createLobby)
         }
     }
 
-    /*private fun doNavigation(userInfo: UserInfo?) {
-        if (userInfo == null)
-            UserPreferencesActivity.navigateTo(this)
-        else
-            LobbyActivity.navigateTo(this)
-    }*/
+    private fun createLobby() {
+        vm.createLobby(app.lobbyService,LobbyInfo("Pro","Freestyle",15))
+    }
 }
