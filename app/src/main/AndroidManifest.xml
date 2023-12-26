@@ -57,5 +57,10 @@
             android:label="Rankings To HomeActivity">
         </activity>
 
+        <activity
+            android:name=".about.HomeToLobbyActivity"
+            android:label="Home to LobbyActivity">
+        </activity>
+
     </application>
 </manifest>

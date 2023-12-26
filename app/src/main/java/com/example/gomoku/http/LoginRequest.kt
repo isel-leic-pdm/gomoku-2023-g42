@@ -21,33 +21,31 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 
-class LoginRequest (
-    private val client : OkHttpClient,
+class LoginRequest(
+    private val client: OkHttpClient,
     private val gson: Gson
-) : LoginService{
+) : LoginService {
 
 
-
-
-    override suspend fun postLogin(username: String, password:String): User {
+    override suspend fun postLogin(username: String, password: String): User {
 
         val request = requestMaker(username, password)
         return suspendCoroutine {
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    it.resumeWithException( throw e )
+                    it.resumeWithException(throw e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
-                    if(!response.isSuccessful || body == null)
+                    if (!response.isSuccessful || body == null)
                         it.resume(NoUser(response.code.toString()))
-                    else{
+                    else {
                         val jsonObject = JsonParser().parse(body.string()).asJsonObject
                         val property = jsonObject.get("properties").asJsonObject
                         val token = property.get("token").asString
-                        it.resume(LoggedUser(username,token))
+                        it.resume(LoggedUser(username, token))
 
                     }
                 }
@@ -57,15 +55,15 @@ class LoginRequest (
         }
     }
 
-    private fun requestMaker(username: String, password: String) : Request{
-        val json = gson.toJson(LoginCreds(username,password))
+    private fun requestMaker(username: String, password: String): Request {
+        val json = gson.toJson(LoginCreds(username, password))
 
         val body: RequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
         return Request.Builder()
             .url("https://${LOCALHOST}/users/login")
             .post(body)
-            .addHeader("Content-Type","application/json")
+            .addHeader("Content-Type", "application/json")
             .build()
 
     }

@@ -8,14 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.lifecycleScope
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.home.HomeScreen
 import com.example.gomoku.home.HomeScreenViewModel
 import com.example.gomoku.http.DependenciesContainer
-import com.example.gomoku.http.MenuApplication
-import com.example.gomoku.user.User
-import kotlinx.coroutines.launch
 
 class RankingsToHomeActivity : ComponentActivity() {
     private val vm by viewModels<HomeScreenViewModel> {
@@ -39,7 +35,8 @@ class RankingsToHomeActivity : ComponentActivity() {
                 userInfo = userInfo,
                 getUser = {vm.fetchUserInfo()},
                 onAuthorsRequested = { HomeToAuthorActivity.navigateTo(this) },
-                onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) }
+                onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) },
+                onLobbyRequested = {HomeToLobbyActivity.navigateTo(this)}
             )
 
         }

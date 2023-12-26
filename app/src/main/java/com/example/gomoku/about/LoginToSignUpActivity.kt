@@ -30,16 +30,17 @@ class LoginToSignUpActivity : ComponentActivity() {
         setContent {
             SignUpScreen(
                 user = viewModel.user,
-                onLoginSuccess = { MainActivity.navigateTo(this) },
+                onLoginSuccess = { MainActivity.navigateTo(this)},
                 onSignUp = ::signUp,
-                setIdle = {viewModel.setIdle()},
-                onLoginRequested = {SignUpToLoginActivity.navigateTo(this)}
+                setIdle = { viewModel.setIdle() },
+                onLoginRequested = { SignUpToLoginActivity.navigateTo(this) }
             )
 
 
         }
     }
-    private fun signUp (username: String, password: String){
+
+    private fun signUp(username: String, password: String) {
         viewModel.createUser(app.signUpService, username, password)
     }
 }

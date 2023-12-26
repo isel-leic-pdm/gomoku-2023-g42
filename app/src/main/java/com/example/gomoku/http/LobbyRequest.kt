@@ -29,9 +29,9 @@ class LobbyRequest(
 ) : LobbyService {
 
     override suspend fun createLobby(
-        lobby:LobbyInfo
+        lobby: LobbyInfo
     ): Either<Error, GameModel?> {
-        val request = requestMaker(LobbyInfo(lobby.rules,lobby.variant,lobby.boardSize))
+        val request = requestMaker(LobbyInfo(lobby.rules, lobby.variant, lobby.boardSize))
 
         return suspendCoroutine {
 
@@ -43,7 +43,7 @@ class LobbyRequest(
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     if (!response.isSuccessful || body == null) response.body?.let { bd ->
-                        it.resume( Either.Left(Error(bd.toString())) )
+                        it.resume(Either.Left(Error(bd.toString())))
                     }
                     else {
                         val jsonObject = JsonParser().parse(body.string()).asJsonObject
@@ -57,7 +57,8 @@ class LobbyRequest(
                             val turn =
                                 it.getAsJsonObject("board").getAsJsonPrimitive("turn").asString
 
-                            val board = BoardRun(emptyMap(), size, _rules, _variant, turn.toPlayer())
+                            val board =
+                                BoardRun(emptyMap(), size, _rules, _variant, turn.toPlayer())
                             GameModel(
                                 id = it.getAsJsonPrimitive("id").asInt,
                                 board = board,

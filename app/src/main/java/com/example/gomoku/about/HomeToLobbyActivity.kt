@@ -7,11 +7,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.gomoku.domain.Loaded
+import com.example.gomoku.http.MenuApplication
+import com.example.gomoku.lobby.LobbyInfo
+import com.example.gomoku.lobby.LobbyScreen
 import com.example.gomoku.lobby.LobbyScreenViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collectLatest
 
 class HomeToLobbyActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<LobbyScreenViewModel>()
+    private val app by lazy { application as MenuApplication }
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -27,19 +33,19 @@ class HomeToLobbyActivity : ComponentActivity() {
         lifecycleScope.launch {
             vm.lobbyInfo.collectLatest {
                 if (it is Loaded && it.result.isSuccess) {
-                    /*TODO*/
+                    LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
                 }
             }
         }
         setContent {
-            
+            LobbyScreen()
         }
     }
+
     /*private fun doNavigation(userInfo: UserInfo?) {
         if (userInfo == null)
             UserPreferencesActivity.navigateTo(this)
         else
             LobbyActivity.navigateTo(this)
     }*/
-
 }

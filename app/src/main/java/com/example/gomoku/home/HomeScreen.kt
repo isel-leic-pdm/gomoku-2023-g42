@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -49,8 +48,8 @@ fun HomeScreen(
     onAuthorsRequested: () -> Unit,
     onRankingsRequested: () -> Unit,
     userInfo: IOState<User?>,
-    getUser:() -> Unit
-    //onLobbyRequested: (Int, String, String, LoggedUser) ->Unit
+    getUser: () -> Unit,
+    onLobbyRequested: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     var showBoardSizeDialog by remember { mutableStateOf(false) }
@@ -70,15 +69,16 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (userInfo is Loaded){
-                Text(
-                    fontFamily = FontFamily.Serif,
-                    text =  "Welcome, " + (userInfo.result.getOrNull() as LoggedUser).username,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )}
+                if (userInfo is Loaded) {
+                    Text(
+                        fontFamily = FontFamily.Serif,
+                        text = "Welcome, " + (userInfo.result.getOrNull() as LoggedUser).username,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Text(
                     fontFamily = FontFamily.Serif,
                     text = "Gomoku",
@@ -105,7 +105,7 @@ fun HomeScreen(
                         onDismiss = { showBoardSizeDialog = false },
                         onConfirm = {
                             // TODO criar jogo com selectedSize, selectedRules, selectedVariant
-
+                            onLobbyRequested()
                             //TODO onGameRequested(selectedSize, selectedRules, selectedVariant)
                         }
                     )
@@ -138,8 +138,8 @@ fun GameConfig(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    var boardSize by remember { mutableStateOf(BoardSize.values()[0])}
-    var rules by remember {mutableStateOf(Rules.values()[0])}
+    var boardSize by remember { mutableStateOf(BoardSize.values()[0]) }
+    var rules by remember { mutableStateOf(Rules.values()[0]) }
     var variant by remember { mutableStateOf(Variant.values()[0]) }
 
     GomokuTheme {
@@ -195,7 +195,7 @@ fun GameConfig(
                     ) {
                         RadioButton(
                             selected = rules == Rules.PRO,
-                            onClick = {  rules = Rules.PRO },
+                            onClick = { rules = Rules.PRO },
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(text = Rules.PRO.string())
@@ -219,14 +219,14 @@ fun GameConfig(
                     ) {
                         RadioButton(
                             selected = variant == Variant.FREESTYLE,
-                            onClick = {  variant = Variant.FREESTYLE },
+                            onClick = { variant = Variant.FREESTYLE },
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(text = Variant.FREESTYLE.string())
 
                         RadioButton(
                             selected = variant == Variant.SWAP,
-                            onClick = {  variant = Variant.SWAP },
+                            onClick = { variant = Variant.SWAP },
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(text = Variant.SWAP.string())

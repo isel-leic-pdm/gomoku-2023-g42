@@ -16,7 +16,8 @@ import com.example.gomoku.game.Error
 
 
 class LobbyScreenViewModel : ViewModel() {
-    private val _lobbyInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> = MutableStateFlow(Idle)
+    private val _lobbyInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> =
+        MutableStateFlow(Idle)
     val lobbyInfo: Flow<IOState<Either<Error, GameModel?>>>
         get() = _lobbyInfoFlow.asStateFlow()
 
