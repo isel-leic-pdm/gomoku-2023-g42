@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.gomoku.domain.Loaded
+import com.example.gomoku.game.Either
+import com.example.gomoku.game.GameModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.lobby.LobbyScreen
@@ -32,7 +34,7 @@ class HomeToLobbyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             vm.lobbyInfo.collectLatest {
-                if (it is Loaded && it.result.isSuccess) {
+                if (it is Loaded && it is Either.Right<*> ) {
                     LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
                 }
             }
