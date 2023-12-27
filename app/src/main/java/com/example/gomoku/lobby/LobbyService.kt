@@ -7,5 +7,6 @@ interface LobbyService{
 
     suspend fun  createLobby(lobby:LobbyInfo,token:String?): Either<Error, GameModel?>
 
+    suspend fun gameExists(username:String):Either<Error,GameModel?>
 
 }

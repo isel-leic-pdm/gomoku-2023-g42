@@ -19,8 +19,8 @@ import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.lobby.LobbyScreen
 import com.example.gomoku.lobby.LobbyScreenViewModel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeToLobbyActivity : ComponentActivity() {
 
@@ -41,15 +41,18 @@ class HomeToLobbyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            while (true) {
                 vm.lobbyInfo.collectLatest {
+                    Log.d("HomeToLobbyActivity", "Success! LobbyInfo: $it")
                     if (it is Loaded && it.result.getOrNull() is Either.Right) {
                         Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                         val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
-                        if (result != null) LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
+                        if (result != null){
+                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity) }
+                        else{
+                            vm.waitForPlayer(app.lobbyService,vma.userInfo.value)
+                        }
                     }
                 }
-            }
         }
         setContent {
             val userInfo by vma.userInfo.collectAsState(initial = Idle)
