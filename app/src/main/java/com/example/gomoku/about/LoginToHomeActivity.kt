@@ -10,18 +10,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.home.HomeScreen
-import com.example.gomoku.home.HomeScreenViewModel
+import com.example.gomoku.home.HomeViewModel
 import com.example.gomoku.http.DependenciesContainer
-import com.example.gomoku.lobby.LobbyScreenViewModel
 
 class LoginToHomeActivity : ComponentActivity() {
 
-    private val vm by viewModels<HomeScreenViewModel> {
-        HomeScreenViewModel.factory((application as DependenciesContainer).userInfoRepository)
+    private val vm by viewModels<HomeViewModel> {
+        HomeViewModel.factory((application as DependenciesContainer).userInfoRepository)
     }
-
-    private val vma by viewModels<LobbyScreenViewModel>()
-
 
     companion object {
         fun navigateTo(origin: ComponentActivity) {
@@ -45,6 +41,7 @@ class LoginToHomeActivity : ComponentActivity() {
                 onAuthorsRequested = { HomeToAuthorActivity.navigateTo(this) },
                 onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) },
                 onLobbyRequested = { HomeToLobbyActivity.navigateTo(this) }
+                //createLobbyFunc = HomeToLobbyActivity::createLobby
             )
 
         }

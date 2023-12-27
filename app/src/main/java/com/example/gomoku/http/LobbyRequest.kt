@@ -29,27 +29,33 @@ class LobbyRequest(
 ) : LobbyService {
 
     override suspend fun createLobby(
-        lobby: LobbyInfo
+        lobby: LobbyInfo, token: String?
     ): Either<Error, GameModel?> {
-        val request = requestMaker(LobbyInfo(lobby.rules, lobby.variant, lobby.boardSize))
+        val request = requestMaker(LobbyInfo(lobby.rules, lobby.variant, lobby.boardSize), token)
 
-        return suspendCoroutine {
+        return suspendCoroutine { cont ->
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    it.resumeWithException(throw e)
+                    cont.resumeWithException(throw e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     if (!response.isSuccessful || body == null) response.body?.let { bd ->
-                        it.resume(Either.Left(Error(bd.toString())))
+                        cont.resume(Either.Left(Error(bd.toString())))
                     }
                     else {
                         val jsonObject = JsonParser().parse(body.string()).asJsonObject
-                        val properties = jsonObject.get("properties").asJsonObject
+
+                        val properties = try {
+                            jsonObject.get("properties").asJsonObject
+                        } catch (e: Exception) {
+                            null
+                        }
                         val gameModel: GameModel? = properties?.let {
-                            val size = it.getAsJsonObject("board").getAsJsonPrimitive("size").asInt
+                            val _board = it.getAsJsonObject("board")
+                            val size = it.getAsJsonPrimitive("boardSize").asInt
                             val _rules =
                                 it.getAsJsonObject("board").getAsJsonPrimitive("rules").asString
                             val _variant =
@@ -68,26 +74,27 @@ class LobbyRequest(
                                 boardSize = it.getAsJsonPrimitive("boardSize").asInt
                             )
                         }
-                        it.resume(Either.Right(gameModel))
+                        cont.resume(Either.Right(gameModel))
                     }
-
                 }
-
             })
-
         }
     }
 
-    private fun requestMaker(lobby: LobbyInfo): Request {
+    private fun requestMaker(lobby: LobbyInfo, token: String?): Request {
         val json = gson.toJson(lobby)
-
         val body: RequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
-
-        return Request.Builder()
+        val requestBuilder = Request.Builder()
             .url("https://${LOCALHOST}/games")
             .post(body)
             .addHeader("Content-Type", "application/json")
-            .build()
+
+        if (!token.isNullOrBlank()) {
+            requestBuilder.addHeader("Authorization", "Bearer $token")
+        }
+
+        return requestBuilder.build()
+
 
     }
 }

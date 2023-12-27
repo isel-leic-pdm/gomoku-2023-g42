@@ -21,12 +21,12 @@ class LobbyScreenViewModel : ViewModel() {
     val lobbyInfo: Flow<IOState<Either<Error, GameModel?>>>
         get() = _lobbyInfoFlow.asStateFlow()
 
-    fun createLobby(service: LobbyService, lobby: LobbyInfo) {
+    fun createLobby(service: LobbyService, lobby: LobbyInfo,token:String?) {
         if (_lobbyInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
-            val result = runCatching { service.createLobby(lobby) }
+            val result = runCatching { service.createLobby(lobby,token) }
             _lobbyInfoFlow.value = Loaded(result)
         }
     }

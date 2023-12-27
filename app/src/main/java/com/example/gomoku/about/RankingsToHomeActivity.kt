@@ -1,5 +1,4 @@
 package com.example.gomoku.about
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +9,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.home.HomeScreen
-import com.example.gomoku.home.HomeScreenViewModel
+import com.example.gomoku.home.HomeViewModel
 import com.example.gomoku.http.DependenciesContainer
 
 class RankingsToHomeActivity : ComponentActivity() {
-    private val vm by viewModels<HomeScreenViewModel> {
-        HomeScreenViewModel.factory((application as DependenciesContainer).userInfoRepository)
+    private val vm by viewModels<HomeViewModel> {
+        HomeViewModel.factory((application as DependenciesContainer).userInfoRepository)
     }
 
     companion object {
@@ -37,6 +36,7 @@ class RankingsToHomeActivity : ComponentActivity() {
                 onAuthorsRequested = { HomeToAuthorActivity.navigateTo(this) },
                 onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) },
                 onLobbyRequested = {HomeToLobbyActivity.navigateTo(this)}
+                //createLobbyFunc = HomeToLobbyActivity::createLobby
             )
 
         }

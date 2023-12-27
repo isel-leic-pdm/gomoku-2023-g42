@@ -9,21 +9,19 @@ import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
 import com.example.gomoku.infrastructure.UserInfoRepository
-import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.Flow
 
-class HomeScreenViewModel(
+class HomeViewModel(
         private val repository: UserInfoRepository
     ) : ViewModel() {
 
         companion object {
             fun factory(repository: UserInfoRepository) = viewModelFactory {
-                initializer { HomeScreenViewModel(repository) }
+                initializer { HomeViewModel(repository) }
             }
         }
 

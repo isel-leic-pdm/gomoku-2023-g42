@@ -35,6 +35,7 @@ import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.gomoku.R
+import com.example.gomoku.about.HomeToLobbyActivity
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
@@ -42,6 +43,7 @@ import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
+import kotlin.reflect.KFunction2
 
 @Composable
 fun HomeScreen(
@@ -49,7 +51,8 @@ fun HomeScreen(
     onRankingsRequested: () -> Unit,
     userInfo: IOState<User?>,
     getUser: () -> Unit,
-    onLobbyRequested: () -> Unit,
+    onLobbyRequested: () -> Unit
+    //createLobbyFunc: (String?) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     var showBoardSizeDialog by remember { mutableStateOf(false) }
@@ -57,7 +60,7 @@ fun HomeScreen(
     var selectedRules by remember { mutableStateOf(Rules.values()[0].string()) }
     var selectedVariant by remember { mutableStateOf(Variant.values()[0].string()) }
     if (userInfo is Idle) getUser()
-
+    val token = if (userInfo is Loaded) userInfo.result.getOrNull()?.token else null
 
     GomokuTheme {
         Column(
@@ -107,8 +110,6 @@ fun HomeScreen(
                         onConfirm = {
                             // TODO criar jogo com selectedSize, selectedRules, selectedVariant
                             onLobbyRequested()
-                            scope.launch {  }
-                            //vm.createLobby()
                             //TODO onGameRequested(selectedSize, selectedRules, selectedVariant)
                         }
                     )

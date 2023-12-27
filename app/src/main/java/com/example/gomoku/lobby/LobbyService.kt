@@ -5,7 +5,7 @@ import com.example.gomoku.game.GameModel
 
 interface LobbyService{
 
-    suspend fun  createLobby(lobby:LobbyInfo): Either<Error, GameModel?>
+    suspend fun  createLobby(lobby:LobbyInfo,token:String?): Either<Error, GameModel?>
 
 
 }
