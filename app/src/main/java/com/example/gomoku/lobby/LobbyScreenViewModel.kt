@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.example.gomoku.game.Error
+import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.delay
@@ -25,19 +26,20 @@ class LobbyScreenViewModel : ViewModel() {
     val lobbyInfo: Flow<IOState<Either<Error, GameModel?>>>
         get() = _lobbyInfoFlow.asStateFlow()
 
-    fun createLobby(service: LobbyService, lobby: LobbyInfo, token: String?) {
+    fun createLobby(service: LobbyService, userInfoRepository: UserInfoRepository) {
         if (_lobbyInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
-            val result = runCatching { service.createLobby(lobby, token) }
+            val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
             _lobbyInfoFlow.value = Loaded(result)
         }
     }
 
-    fun waitForPlayer(service: LobbyService, userInfo: IOState<User?>) {
-        val loaded = userInfo as Loaded
-        val username = (loaded.result.getOrNull() as LoggedUser).username
+    fun waitForPlayer(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
+
+
+        val username = (userInfo.first as LoggedUser).username
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
             while (true) {
@@ -49,9 +51,7 @@ class LobbyScreenViewModel : ViewModel() {
                     _lobbyInfoFlow.value = Loaded(result)
                     break
                 }
-                //_lobbyInfoFlow.value = Loading
 
-                //kotlinx.coroutines.delay(1000)
             }
         }
     }

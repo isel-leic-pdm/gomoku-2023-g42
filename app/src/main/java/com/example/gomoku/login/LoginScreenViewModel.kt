@@ -13,20 +13,23 @@ import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LoginScreenViewModel: ViewModel() {
+
 
     var user by mutableStateOf<IOState<Any>>(Idle)
         private set
 
-    fun postUser(service: LoginService, userInfoRepository: UserInfoRepository , username: String, password: String) {
+    fun loginUser(service: LoginService, userInfoRepository: UserInfoRepository, username: String, password: String) {
 
         viewModelScope.launch {
             user = Loading
-            user = Loaded(
-            runCatching { service.postLogin(username, password) })
+            user = Loaded(runCatching { service.postLogin(username, password)})
             val logged : User = (user as Loaded).result.getOrNull() as User
-            if (logged is LoggedUser) userInfoRepository.updateUserInfo(logged)
+
+            if (logged is LoggedUser) runBlocking { userInfoRepository.updateUserInfo(logged, null) }
+
         }
 
     }

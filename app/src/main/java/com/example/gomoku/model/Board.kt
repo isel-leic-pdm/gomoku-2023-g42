@@ -31,10 +31,10 @@ fun maxMoves(size: Int): Double {
 
 enum class Rules : Option{
     PRO,
-    PRO_LONG;
+    LONG_PRO;
 
     override fun string(): String {
-        return if (this == PRO) "Pro" else "Pro Long"
+        return if (this == PRO) "Pro" else "Long Pro"
     }
 }
 
@@ -42,7 +42,7 @@ enum class Variant: Option{
     FREESTYLE,
     SWAP;
     override fun string(): String {
-        return if (this == FREESTYLE) "Freestyle" else "Swap"
+        return if (this == FREESTYLE) "Freestyle" else "Swap after 1st move"
     }
 
 }
@@ -83,11 +83,6 @@ sealed class Board(val moves: Moves, val size: Int, val rules: String, val varia
                 }
                 isOver(position, moves + (position to player), turn, size)
 
-                /*
-                require(player == turn) { "Not your turn" }
-                require(position != Position.INVALID) { "Invalid position" }
-                require(moves[position] == null) { "Position already occupied" }
-                */
             }
 
             is BoardDraw, is BoardWin -> this

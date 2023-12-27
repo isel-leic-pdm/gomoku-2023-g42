@@ -9,6 +9,7 @@ import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
 import com.example.gomoku.infrastructure.UserInfoRepository
+import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,24 +26,17 @@ class HomeViewModel(
             }
         }
 
-        private val _userInfoFlow: MutableStateFlow<IOState<User?>> = MutableStateFlow(Idle)
+        private val _userInfoFlow: MutableStateFlow<IOState<Pair<User, LobbyInfo>>> = MutableStateFlow(Idle)
 
-        /**
-         * The flow of states the view model traverses.
-         */
-        val userInfo: StateFlow<IOState<User?>>
+
+        val userInfo: StateFlow<IOState<Pair<User, LobbyInfo>>>
             get() = _userInfoFlow.asStateFlow()
 
-        /**
-         * Fetches the user information. The states the view model traverses while fetching the
-         * user information published in the [userInfo] flow. These states are:
-         * - [Loading] while fetching the user information;
-         * - [Loaded] with the user information if the fetch succeeds;
-         * @throws IllegalStateException if the view model is not in the idle state.
-         */
+
         fun fetchUserInfo() {
-            if (_userInfoFlow.value !is Idle)
-                throw IllegalStateException("The view model is not in the idle state.")
+
+            /*if (_userInfoFlow.value !is Idle)
+                throw IllegalStateException("The view model is not in the idle state.") */
 
             _userInfoFlow.value = Loading
             viewModelScope.launch {
@@ -51,11 +45,7 @@ class HomeViewModel(
             }
         }
 
-        /**
-         * Resets the view model to the idle state. From the idle state, the user information
-         * can be fetched again.
-         * @throws IllegalStateException if the view model is not in the loaded state.
-         */
+
         fun resetToIdle() {
             if (_userInfoFlow.value !is Loaded)
                 throw IllegalStateException("The view model is not in the loaded state.")

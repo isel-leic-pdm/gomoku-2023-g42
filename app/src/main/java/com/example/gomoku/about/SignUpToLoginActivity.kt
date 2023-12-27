@@ -37,7 +37,7 @@ class SignUpToLoginActivity : ComponentActivity() {
     }
 
     private fun login (username: String, password: String){
-        viewModel.postUser(app.loginService, app.userInfoRepository,username, password)
+        viewModel.loginUser(app.loginService, app.userInfoRepository,username, password)
     }
 
 }

@@ -1,34 +1,29 @@
 package com.example.gomoku.lobby
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import com.example.gomoku.domain.IOState
-import com.example.gomoku.domain.Idle
-import com.example.gomoku.domain.Loaded
-import com.example.gomoku.user.User
-import kotlinx.coroutines.launch
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+
 
 @Composable
 fun LobbyScreen(
-    onCreateLobby: (String?) -> Unit,
-    getUser: () -> Unit,
-    userInfo: IOState<User?>
+    onCreateLobby: () -> Unit
 ) {
 
-    if (userInfo is Idle) getUser()
-    val token = if (userInfo is Loaded) userInfo.result.getOrNull()?.token else null
-    val scope = rememberCoroutineScope()
-    Column {
+    onCreateLobby()
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         Text("Waiting for opponent!")
+        CircularProgressIndicator()
     }
-    Button(onClick = {
-        scope.launch {
-            onCreateLobby(token)
-        }
-    }) {
-        Text(text = "oi")
-    }
+
 }

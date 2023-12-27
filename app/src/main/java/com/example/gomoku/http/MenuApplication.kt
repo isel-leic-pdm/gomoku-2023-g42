@@ -20,7 +20,7 @@ interface DependenciesContainer {
     val userInfoRepository: UserInfoRepository
 }
 
-const val LOCALHOST = "40f4-2001-8a0-7031-9601-a576-e7f5-402f-de7b.ngrok-free.app"
+const val LOCALHOST = "b7dc-2001-818-d983-a400-810d-e950-7c4e-1b58.ngrok-free.app"
 
 class MenuApplication : Application(), DependenciesContainer {
 
@@ -34,7 +34,6 @@ class MenuApplication : Application(), DependenciesContainer {
     override val userInfoRepository: UserInfoRepository
         get() = UserInfoDataStore(dataStore)
 
-    //val rankingService: RankingService = NoOpRankService
     val rankingService: RankingService = RankingRequest(httpClient, gson)
     val loginService: LoginService = LoginRequest(httpClient, gson)
     val signUpService: SignUpService = SignUpRequest(httpClient, gson)

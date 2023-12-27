@@ -17,7 +17,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,32 +34,32 @@ import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.gomoku.R
-import com.example.gomoku.about.HomeToLobbyActivity
 import com.example.gomoku.domain.IOState
-import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
+import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.user.User
 import kotlinx.coroutines.launch
-import kotlin.reflect.KFunction2
 
 @Composable
 fun HomeScreen(
     onAuthorsRequested: () -> Unit,
     onRankingsRequested: () -> Unit,
-    userInfo: IOState<User?>,
+    userInfo: IOState<Pair<User, LobbyInfo>>,
     getUser: () -> Unit,
+    onUpdateLobby: (String, String, String) -> Unit,
     onLobbyRequested: () -> Unit
-    //createLobbyFunc: (String?) -> Unit
+
 ) {
     val scope = rememberCoroutineScope()
-    var showBoardSizeDialog by remember { mutableStateOf(false) }
-    var selectedSize by remember { mutableIntStateOf(BoardSize.values()[0].size) }
-    var selectedRules by remember { mutableStateOf(Rules.values()[0].string()) }
-    var selectedVariant by remember { mutableStateOf(Variant.values()[0].string()) }
-    if (userInfo is Idle) getUser()
-    val token = if (userInfo is Loaded) userInfo.result.getOrNull()?.token else null
+    var showLobbySettings by remember { mutableStateOf(false) }
+    var selectedSize by remember { mutableStateOf(BoardSize.values()[0]) }
+    var selectedRules by remember { mutableStateOf(Rules.values()[0]) }
+    var selectedVariant by remember { mutableStateOf(Variant.values()[0]) }
+
+    getUser()
+
 
     GomokuTheme {
         Column(
@@ -73,10 +72,12 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (userInfo is Loaded) {
+
+                if ((userInfo is Loaded) && (userInfo.result.getOrNull() != null)) {
+
                     Text(
                         fontFamily = FontFamily.Serif,
-                        text = "Welcome, " + (userInfo.result.getOrNull() as LoggedUser).username,
+                        text = "Welcome, " + (userInfo.result.getOrNull()?.first as LoggedUser).username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -101,18 +102,120 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(onClick = { showBoardSizeDialog = true })
+                Button(onClick = { showLobbySettings = true })
                 { Text(text = "Play") }
 
-                if (showBoardSizeDialog) {
-                    GameConfig(
-                        onDismiss = { showBoardSizeDialog = false },
-                        onConfirm = {
-                            // TODO criar jogo com selectedSize, selectedRules, selectedVariant
-                            onLobbyRequested()
-                            //TODO onGameRequested(selectedSize, selectedRules, selectedVariant)
+                if (showLobbySettings) {
+                    Dialog(onDismissRequest = { showLobbySettings = false  }) {
+
+                        Surface(
+                            modifier = Modifier
+                                .width(300.dp)
+                                .padding(16.dp),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = "Choose the board size: "
+                                )
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = selectedSize == BoardSize.SMALL,
+                                        onClick = { selectedSize = BoardSize.SMALL },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = BoardSize.SMALL.string())
+
+                                    RadioButton(
+                                        selected = selectedSize == BoardSize.BIG,
+                                        onClick = { selectedSize = BoardSize.BIG },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = BoardSize.BIG.string())
+                                }
+
+                                Text(
+                                    text = "Choose the rules: "
+                                )
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = selectedRules == Rules.PRO,
+                                        onClick = { selectedRules = Rules.PRO },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = Rules.PRO.string())
+
+                                    RadioButton(
+                                        selected = selectedRules == Rules.LONG_PRO,
+                                        onClick = { selectedRules = Rules.LONG_PRO },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = Rules.LONG_PRO.string())
+                                }
+
+                                Text(
+                                    text = "Choose the gameplay variant: "
+                                )
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = selectedVariant == Variant.FREESTYLE,
+                                        onClick = { selectedVariant = Variant.FREESTYLE },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = Variant.FREESTYLE.string())
+
+                                    RadioButton(
+                                        selected = selectedVariant == Variant.SWAP,
+                                        onClick = { selectedVariant = Variant.SWAP },
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    Text(text = "Swap")
+                                }
+
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Button(onClick = { showLobbySettings = false }) {
+                                        Text("Cancel")
+                                    }
+
+                                    Button(onClick = {
+                                        onUpdateLobby(selectedRules.string(),selectedVariant.string(),selectedSize.string())
+                                        onLobbyRequested()
+                                    }) {
+                                        Text("Confirm")
+                                    }
+                                }
+                            }
                         }
-                    )
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -140,7 +243,8 @@ fun HomeScreen(
 @Composable
 fun GameConfig(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    onSetLobby: (String, String, String) -> Unit
 ) {
     var boardSize by remember { mutableStateOf(BoardSize.values()[0]) }
     var rules by remember { mutableStateOf(Rules.values()[0]) }
@@ -148,116 +252,7 @@ fun GameConfig(
 
     GomokuTheme {
 
-        Dialog(onDismissRequest = onDismiss) {
 
-            Surface(
-                modifier = Modifier
-                    .width(300.dp)
-                    .padding(16.dp),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "Choose the board size: "
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = boardSize == BoardSize.SMALL,
-                            onClick = { boardSize = BoardSize.SMALL },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = BoardSize.SMALL.string())
-
-                        RadioButton(
-                            selected = boardSize == BoardSize.BIG,
-                            onClick = { boardSize = BoardSize.BIG },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = BoardSize.BIG.string())
-                    }
-
-                    Text(
-                        text = "Choose the rules: "
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = rules == Rules.PRO,
-                            onClick = { rules = Rules.PRO },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = Rules.PRO.string())
-
-                        RadioButton(
-                            selected = rules == Rules.PRO_LONG,
-                            onClick = { rules = Rules.PRO_LONG },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = Rules.PRO_LONG.string())
-                    }
-
-                    Text(
-                        text = "Choose the gameplay variant: "
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = variant == Variant.FREESTYLE,
-                            onClick = { variant = Variant.FREESTYLE },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = Variant.FREESTYLE.string())
-
-                        RadioButton(
-                            selected = variant == Variant.SWAP,
-                            onClick = { variant = Variant.SWAP },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                        Text(text = Variant.SWAP.string())
-                    }
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(onClick = onDismiss) {
-                            Text("Cancel")
-                        }
-
-                        Button(onClick = {
-
-                            onConfirm()
-                        }) {
-                            Text("Confirm")
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 

@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             onHomeRequested = { LoginToHomeActivity.navigateTo(this) },
                             onSignUp = {LoginToSignUpActivity.navigateTo(this)},
-                            onLogin = ::signIn,
+                            onLogin = ::login,
                             setIdle = {viewModel.setIdle()},
                             user = viewModel.user
                         )
@@ -59,8 +59,8 @@ class MainActivity : ComponentActivity() {
         }
 
     }
-    private fun signIn (username: String, password: String){
-        viewModel.postUser(app.loginService, app.userInfoRepository, username, password)
+    private fun login (username: String, password: String){
+        viewModel.loginUser(app.loginService, app.userInfoRepository, username, password)
     }
 }
 

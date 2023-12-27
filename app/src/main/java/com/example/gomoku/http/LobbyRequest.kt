@@ -21,7 +21,10 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import com.example.gomoku.game.Error
+import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.lobby.LobbyInfo
+import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.user.User
 
 class LobbyRequest(
     private val client: OkHttpClient,
@@ -29,9 +32,9 @@ class LobbyRequest(
 ) : LobbyService {
 
     override suspend fun createLobby(
-        lobby: LobbyInfo, token: String?
+        userInfoRepository: Pair<User, LobbyInfo>
     ): Either<Error, GameModel?> {
-        val request = requestMakerCreateLobby(LobbyInfo(lobby.rules, lobby.variant, lobby.boardSize), token)
+        val request = requestMakerCreateLobby(userInfoRepository.second, (userInfoRepository.first as LoggedUser).token)
 
         return suspendCoroutine { cont ->
 
@@ -79,6 +82,7 @@ class LobbyRequest(
             })
         }
     }
+
 
     override suspend fun gameExists(username: String): Either<Error, GameModel?> {
         val request = requestMakerGameExists(username)

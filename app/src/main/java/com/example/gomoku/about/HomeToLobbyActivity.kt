@@ -6,17 +6,13 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
-import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
 import com.example.gomoku.home.HomeViewModel
 import com.example.gomoku.http.DependenciesContainer
 import com.example.gomoku.http.MenuApplication
-import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.lobby.LobbyScreen
 import com.example.gomoku.lobby.LobbyScreenViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -49,22 +45,19 @@ class HomeToLobbyActivity : ComponentActivity() {
                         if (result != null){
                             LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity) }
                         else{
-                            vm.waitForPlayer(app.lobbyService,vma.userInfo.value)
+                            vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
                         }
                     }
                 }
         }
         setContent {
-            val userInfo by vma.userInfo.collectAsState(initial = Idle)
             LobbyScreen(
                 onCreateLobby = ::createLobby,
-                getUser = { vma.fetchUserInfo() },
-                userInfo = userInfo
             )
         }
     }
 
-    fun createLobby(token: String?) {
-        vm.createLobby(app.lobbyService, LobbyInfo("Pro", "Freestyle", 15), token)
+    private fun createLobby() {
+        vm.createLobby(app.lobbyService, app.userInfoRepository)
     }
 }
