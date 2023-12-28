@@ -16,6 +16,7 @@ import com.example.gomoku.http.MenuApplication
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LobbyToGameActivity : ComponentActivity() {
 
@@ -23,14 +24,21 @@ class LobbyToGameActivity : ComponentActivity() {
     private val vm by viewModels<GameScreenViewModel>()
 
     companion object {
-        fun navigateTo(origin: ComponentActivity/*,gameModel: GameModel*/) {
-            val intent = Intent(origin, LobbyToGameActivity::class.java)
-            origin.startActivity(intent)
+        fun navigateTo(origin: ComponentActivity,id: Int) {
+            /*val intent = Intent(origin, LobbyToGameActivity::class.java)
+            origin.startActivity(intent)*/
+            origin.startActivity(createIntent(origin,id))
+        }
+
+        private fun createIntent(ca:ComponentActivity,gameId:Int):Intent{
+            val intent = Intent(ca,LobbyToGameActivity::class.java)
+            intent.putExtra("id",gameId)
+            return intent
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        val id = intent.getIntExtra("id",-1)
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             vm.gameInfo.collectLatest {
@@ -43,8 +51,19 @@ class LobbyToGameActivity : ComponentActivity() {
 
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            GameScreen(gameInfo)
+            //Parâmetros a passar:
+            //Username -
+            //Função de jogar
+            //token -
+            GameScreen(gameInfo,::play)
         }
+    }
+
+    private fun play(row:Int,col:Int,id:Int) {
+       val userInfo = runBlocking {
+            app.userInfoRepository.getUserInfo()
+        }
+        vm.play(app.gameService, userInfo ,row,col,id,vm.gameInfo)
     }
 
 }

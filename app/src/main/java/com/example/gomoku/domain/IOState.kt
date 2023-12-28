@@ -1,7 +1,4 @@
 package com.example.gomoku.domain
-
-
-
 sealed class IOState < out T>
 
 object Idle: IOState<Nothing>()

@@ -33,7 +33,8 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun GameView(
-    gameState: IOState<Either<Error, GameModel?>>
+    gameState: IOState<Either<Error, GameModel?>>,
+
 ) {
     if (gameState is Loaded && gameState.result.getOrNull() != null) {
         val gameModel = (gameState.result.getOrNull() as Either.Right).value
@@ -50,14 +51,15 @@ fun GameView(
                             turn = boardState.value.turn,
                             board = boardState.value,
                         ) {
-                            val updatedBoard =
+                            /*val updatedBoard =
                                 boardState.value.turn.let {
                                     boardState.value.play(
                                         cell,
                                         it
                                     )
                                 }
-                            boardState.value = updatedBoard as BoardRun
+                            boardState.value = updatedBoard as BoardRun*/
+                            onPlay()
                         }
                     }
                 }

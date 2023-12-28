@@ -1,6 +1,5 @@
 package com.example.gomoku.domain
 
-
 data class PlayerRank(
 
     val username: String,

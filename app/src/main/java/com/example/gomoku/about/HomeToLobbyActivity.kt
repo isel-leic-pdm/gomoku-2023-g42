@@ -41,7 +41,7 @@ class HomeToLobbyActivity : ComponentActivity() {
                         Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                         val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
                         if (result != null){
-                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity/*,result*/)
+                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity,result.id)
                         }
                         else {
                             vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())

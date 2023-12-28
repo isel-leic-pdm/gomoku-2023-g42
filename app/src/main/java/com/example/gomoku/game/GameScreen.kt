@@ -25,10 +25,14 @@ import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Loaded
+import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
+fun GameScreen(
+    game: IOState<Either<Error, GameModel?>>,
+    onPlay: (Int,Int) -> Unit
+) {
 
     if(game is Loaded && (game.result.getOrNull() as Either.Right).value != null) {
         val table = (game.result.getOrNull() as Either.Right).value?.board

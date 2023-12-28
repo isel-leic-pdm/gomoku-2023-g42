@@ -1,8 +1,9 @@
-package com.example.gomoku.lobby
-import com.example.gomoku.game.Either
-import com.example.gomoku.game.Error
-import com.example.gomoku.game.GameModel
+package com.example.gomoku.game
+import com.example.gomoku.lobby.LobbyInfo
+import com.example.gomoku.user.User
 
 interface GameService{
-    suspend fun getGame(username:String):Either<Error,GameModel?>
+    suspend fun getGame(userInfoRepository: Pair<User, LobbyInfo>):Either<Error,GameModel?>
+
+    suspend fun play(userInfoRepository: Pair<User, LobbyInfo>, row:Int, col:Int, id:Int):Either<Error,GameModel?>
 }

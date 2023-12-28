@@ -14,6 +14,7 @@ import com.example.gomoku.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class GameScreenViewModel : ViewModel() {
@@ -28,14 +29,37 @@ class GameScreenViewModel : ViewModel() {
         _gameInfoFlow.value = Loaded(runCatching { Either.Right(gameModel) })
     }
 
-    fun getGameInfo(service: LobbyService, userInfoRepository: UserInfoRepository) {
+    fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
         //if (_gameInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
             val result =
-                runCatching { service.gameExists((userInfoRepository.getUserInfo())) }
+                runCatching { service.getGame((userInfoRepository.getUserInfo())) }
             _gameInfoFlow.value = Loaded(result)
+        }
+    }
+
+    fun play(
+        service: GameService,
+        userInfoRepository: Pair<User, LobbyInfo>,
+        row: Int,
+        col: Int,
+        id: Int,
+        gameInfo: Flow<IOState<Either<Error, GameModel?>>>,
+
+        ) {
+        val temp = _gameInfoFlow.value
+        _gameInfoFlow.value = Loading
+        viewModelScope.launch {
+            gameInfo.collectLatest {
+                if (it is Loaded && it.result.getOrNull() is Either.Right) {
+                    (it.result.getOrNull() as Either.Right).value?.board
+                    val result =
+                        runCatching { service.play(userInfoRepository, row, col, id) }
+                    _gameInfoFlow.value = Loaded(result)
+                }
+            }
         }
     }
 
