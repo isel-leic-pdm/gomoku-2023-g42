@@ -24,17 +24,16 @@ import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
-import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<Either<Error, GameModel?>>,getGame:() -> Unit) {
+fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
 
-    getGame()
-    if (game is Loaded) {
-        val game1 = game.result.getOrNull() as GameModel?
-        val table = game1?.board
+    //val game1 =  (game as Loaded).result.getOrNull() as GameModel?
+    //val table = game1?.board
+    if(game is Loaded && (game.result.getOrNull() as Either.Right).value != null) {
+        val table = (game.result.getOrNull() as Either.Right).value?.board
         GomokuTheme {
             Button(
                 onClick = { /*TODO*/ }
@@ -91,7 +90,6 @@ fun GameScreen(game: IOState<Either<Error, GameModel?>>,getGame:() -> Unit) {
             }
         }
     }
-
 }
 
 @Composable

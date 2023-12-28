@@ -34,7 +34,7 @@ class GameScreenViewModel : ViewModel() {
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
             val result =
-                runCatching { service.gameExists((userInfoRepository.getUserInfo().first as LoggedUser).username) }
+                runCatching { service.gameExists((userInfoRepository.getUserInfo())) }
             _gameInfoFlow.value = Loaded(result)
         }
     }
@@ -45,7 +45,7 @@ class GameScreenViewModel : ViewModel() {
         viewModelScope.launch {
             while (true) {
                 val result = runCatching {
-                    service.gameExists(username)
+                    service.gameExists(userInfo)
                 }
                 if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
                     if ((result.getOrNull() as Either.Right<GameModel?>).value?.board?.moves !=

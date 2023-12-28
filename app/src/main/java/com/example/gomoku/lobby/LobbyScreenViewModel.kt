@@ -43,7 +43,7 @@ class LobbyScreenViewModel : ViewModel() {
             while (true) {
                 delay(3000)
                 val result = runCatching {
-                    service.gameExists(username)
+                    service.gameExists(userInfo)
                 }
                 if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
                     _lobbyInfoFlow.value = Loaded(result)

@@ -84,8 +84,8 @@ class LobbyRequest(
     }
 
 
-    override suspend fun gameExists(username: String): Either<Error, GameModel?> {
-        val request = requestMakerGameExists(username)
+    override suspend fun gameExists(userInfoRepository: Pair<User, LobbyInfo>): Either<Error, GameModel?> {
+        val request = requestMakerGameExists((userInfoRepository.first as LoggedUser).username)
 
         return suspendCoroutine { cont ->
 

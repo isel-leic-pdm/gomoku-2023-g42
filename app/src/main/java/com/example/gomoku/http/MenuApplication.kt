@@ -2,7 +2,6 @@ package com.example.gomoku.http
 
 
 import android.app.Application
-
 import com.example.gomoku.login.LoginService
 import com.example.gomoku.rankings.RankingService
 import com.example.gomoku.signUp.SignUpService
@@ -13,6 +12,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.gomoku.infrastructure.UserInfoDataStore
 import com.example.gomoku.infrastructure.UserInfoRepository
+import com.example.gomoku.lobby.GameService
 import com.example.gomoku.lobby.LobbyService
 
 
@@ -20,7 +20,7 @@ interface DependenciesContainer {
     val userInfoRepository: UserInfoRepository
 }
 
-const val LOCALHOST = "b547-2001-8a0-7031-9601-68b0-297-4fc6-fedf.ngrok-free.app"
+const val LOCALHOST = "a2ae-2001-8a0-7031-9601-68b0-297-4fc6-fedf.ngrok-free.app"
 
 class MenuApplication : Application(), DependenciesContainer {
 
@@ -38,4 +38,5 @@ class MenuApplication : Application(), DependenciesContainer {
     val loginService: LoginService = LoginRequest(httpClient, gson)
     val signUpService: SignUpService = SignUpRequest(httpClient, gson)
     val lobbyService: LobbyService = LobbyRequest(httpClient,gson)
+    val gameService: LobbyService = GameRequest(httpClient,gson)
 }

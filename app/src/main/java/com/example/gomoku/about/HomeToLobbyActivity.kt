@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.demo.domain.BoardRun
+import com.example.demo.domain.BoardWin
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
@@ -39,7 +41,7 @@ class HomeToLobbyActivity : ComponentActivity() {
                         Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                         val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
                         if (result != null){
-                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
+                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity/*,result*/)
                         }
                         else {
                             vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
