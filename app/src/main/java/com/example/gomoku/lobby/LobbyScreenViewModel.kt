@@ -37,8 +37,6 @@ class LobbyScreenViewModel : ViewModel() {
     }
 
     fun waitForPlayer(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
-
-
         val username = (userInfo.first as LoggedUser).username
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
@@ -48,12 +46,11 @@ class LobbyScreenViewModel : ViewModel() {
                     service.gameExists(username)
                 }
                 if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
+
                     _lobbyInfoFlow.value = Loaded(result)
                     break
                 }
-
             }
         }
     }
-
 }

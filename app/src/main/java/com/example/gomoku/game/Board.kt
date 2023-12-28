@@ -1,5 +1,4 @@
-package com.example.gomoku.ui.theme
-
+package com.example.gomoku.game
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
@@ -11,27 +10,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.demo.domain.Board
 import com.example.demo.domain.BoardRun
-import com.example.demo.domain.BoardSize
 import com.example.demo.domain.Player
-import com.example.demo.domain.Rules
-import com.example.demo.domain.Variant
 import com.example.gomoku.model.Position
-import com.example.demo.domain.createBoard
 import com.example.gomoku.R
+import com.example.gomoku.domain.Loaded
 
 val cellSize = 20.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
@@ -39,18 +31,14 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 //TODO rever esta function
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun BoardView(boardState: MutableState<BoardRun>) {
-   val boardSize =  boardState.value.size
+fun GameView(gameState: Loaded<*>) {
+    val boardState = mutableStateOf(gameState.value.board as BoardRun)
+    val boardSize = boardState.value.size
     Position.Factory(boardSize).createPositions()
     Column {
-        // alterar para dependencia de boardState por ex: boardState/ BOARD_DIM
-        //val t = mutableStateOf(null)
-
-
         repeat(boardSize) { r ->
             Row {
                 repeat(boardSize) { c ->
-
                     val cell = Position(r, c, boardSize)
                     CellView(cell = cell, turn = boardState.value.turn, board = boardState.value) {
                         val updatedBoard =
@@ -66,15 +54,6 @@ fun BoardView(boardState: MutableState<BoardRun>) {
             }
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun BoardViewPreview(){
-    val board = remember {
-        mutableStateOf(createBoard(Player.B, BoardSize.BIG.size, Rules.PRO.string(), Variant.FREESTYLE.string()))
-    }
-    BoardView(board)
 }
 
 @Composable

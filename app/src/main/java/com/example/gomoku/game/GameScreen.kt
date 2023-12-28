@@ -32,7 +32,6 @@ import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.demo.domain.createBoard
 import com.example.gomoku.R
-import com.example.gomoku.ui.theme.BoardView
 import com.example.gomoku.ui.theme.GomokuTheme
 
 
@@ -59,7 +58,7 @@ fun GameScreen(board: MutableState<Board>) {
                 when(table){
                     is BoardRun -> {
                         @Suppress("UNCHECKED_CAST")
-                        BoardView(board as MutableState<BoardRun>)
+                        (GameView(board as MutableState<BoardRun>))
                         Row (
                             verticalAlignment = Alignment.CenterVertically
                         ){
