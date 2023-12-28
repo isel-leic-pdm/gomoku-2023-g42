@@ -29,7 +29,9 @@ import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
 fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
-    val table = ((game as Loaded).result.getOrNull() as GameModel?)?.board
+
+    val game1 =  (game as Loaded).result.getOrNull() as GameModel?
+    val table = game1?.board
     GomokuTheme {
         Button(
             onClick = { /*TODO*/ }
@@ -39,7 +41,6 @@ fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
                 contentDescription = null
             )
         }
-
         Column(
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -37,7 +37,5 @@ class MenuApplication : Application(), DependenciesContainer {
     val rankingService: RankingService = RankingRequest(httpClient, gson)
     val loginService: LoginService = LoginRequest(httpClient, gson)
     val signUpService: SignUpService = SignUpRequest(httpClient, gson)
-    val lobbyService :LobbyService = LobbyRequest(httpClient,gson)
-
-
+    val lobbyService: LobbyService = LobbyRequest(httpClient,gson)
 }

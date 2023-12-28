@@ -5,9 +5,7 @@ import com.example.gomoku.game.GameModel
 import com.example.gomoku.user.User
 
 interface LobbyService{
-
     suspend fun  createLobby(userInfoRepository: Pair<User, LobbyInfo>): Either<Error, GameModel?>
 
     suspend fun gameExists(username:String):Either<Error,GameModel?>
-
 }

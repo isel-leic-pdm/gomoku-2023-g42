@@ -39,7 +39,6 @@ class HomeToLobbyActivity : ComponentActivity() {
                         Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                         val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
                         if (result != null){
-                            vmg.setGameInfo(result)
                             LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
                         }
                         else {
