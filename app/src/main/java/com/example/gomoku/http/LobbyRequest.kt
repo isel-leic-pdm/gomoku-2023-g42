@@ -150,8 +150,6 @@ class LobbyRequest(
     }
 
     private fun requestMakerGameExists(username:String): Request {
-        //val json = gson.toJson(username)
-        //val body: RequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
         val requestBuilder = Request.Builder()
             .url("https://${LOCALHOST}/games/user/$username")
             .get()
