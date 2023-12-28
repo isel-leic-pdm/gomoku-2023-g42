@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
@@ -40,15 +39,9 @@ class HomeToLobbyActivity : ComponentActivity() {
                         Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                         val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
                         if (result != null){
-                            vmg.gameInfo.collect { vmg2 ->
-                                if (vmg2 !is Idle && vmg2 is Loaded) {
-                                    val res = (vmg2.result.getOrNull() as Either.Right<GameModel?>).value
-                                    if (res != null) {
-                                        vmg.setGameInfo(res)
-                                    }
-                                }
-                            }
-                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity) }
+                            vmg.setGameInfo(result)
+                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity)
+                        }
                         else {
                             vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
                         }

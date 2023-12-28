@@ -20,7 +20,7 @@ interface DependenciesContainer {
     val userInfoRepository: UserInfoRepository
 }
 
-const val LOCALHOST = "b547-2001-8a0-7031-9601-68b0-297-4fc6-fedf.ngrok-free.app"
+const val LOCALHOST = "3e68-2001-8a0-6c99-c800-4cc6-5de5-c30e-a18f.ngrok-free.app"
 
 class MenuApplication : Application(), DependenciesContainer {
 

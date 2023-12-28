@@ -35,8 +35,6 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 fun GameView(
     gameState: IOState<Either<Error, GameModel?>>
 ) {
-
-
     if (gameState is Loaded && gameState.result.getOrNull() != null) {
         val boardState =
             mutableStateOf((gameState.result.getOrNull() as GameModel?)?.board as BoardRun)
