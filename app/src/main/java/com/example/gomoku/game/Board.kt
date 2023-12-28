@@ -23,6 +23,7 @@ import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.gomoku.model.Position
 import com.example.gomoku.R
+import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Loaded
 
 val cellSize = 20.dp
@@ -31,24 +32,35 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 //TODO rever esta function
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameView(gameState: Loaded<*>) {
-    val boardState = mutableStateOf(gameState.value.board as BoardRun)
-    val boardSize = boardState.value.size
-    Position.Factory(boardSize).createPositions()
-    Column {
-        repeat(boardSize) { r ->
-            Row {
-                repeat(boardSize) { c ->
-                    val cell = Position(r, c, boardSize)
-                    CellView(cell = cell, turn = boardState.value.turn, board = boardState.value) {
-                        val updatedBoard =
-                            boardState.value.turn.let {
-                                boardState.value.play(
-                                    cell,
-                                    it
-                                )
-                            }
-                        boardState.value = updatedBoard as BoardRun
+fun GameView(
+    gameState: IOState<Either<Error, GameModel?>>
+) {
+
+
+    if (gameState is Loaded && gameState.result.getOrNull() != null) {
+        val boardState =
+            mutableStateOf((gameState.result.getOrNull() as GameModel?)?.board as BoardRun)
+        val boardSize = boardState.value.size
+        Position.Factory(boardSize).createPositions()
+        Column {
+            repeat(boardSize) { r ->
+                Row {
+                    repeat(boardSize) { c ->
+                        val cell = Position(r, c, boardSize)
+                        CellView(
+                            cell = cell,
+                            turn = boardState.value.turn,
+                            board = boardState.value
+                        ) {
+                            val updatedBoard =
+                                boardState.value.turn.let {
+                                    boardState.value.play(
+                                        cell,
+                                        it
+                                    )
+                                }
+                            boardState.value = updatedBoard as BoardRun
+                        }
                     }
                 }
             }
@@ -69,7 +81,7 @@ fun CellView(
         DrawLine(Pair(cell.row.index, cell.col.index), board.size)
         Box(
             modifier = Modifier
-                .size(cellSize )
+                .size(cellSize)
                 .clickable(piece == null, onClick = { onClick() })
                 .background(Color.Transparent)
         ) {

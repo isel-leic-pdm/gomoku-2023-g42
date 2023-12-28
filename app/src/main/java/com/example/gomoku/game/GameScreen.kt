@@ -32,12 +32,14 @@ import com.example.demo.domain.Rules
 import com.example.demo.domain.Variant
 import com.example.demo.domain.createBoard
 import com.example.gomoku.R
+import com.example.gomoku.domain.IOState
+import com.example.gomoku.domain.Loaded
 import com.example.gomoku.ui.theme.GomokuTheme
 
 
     @Composable
-fun GameScreen(board: MutableState<Board>) {
-        val table = board.value
+fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
+        val table = ((game as Loaded).result.getOrNull() as GameModel?)?.board
         GomokuTheme {
             Button(
                 onClick = { /*TODO*/ }
@@ -57,8 +59,7 @@ fun GameScreen(board: MutableState<Board>) {
                 Spacer(modifier = Modifier.height(100.dp))
                 when(table){
                     is BoardRun -> {
-                        @Suppress("UNCHECKED_CAST")
-                        (GameView(board as MutableState<BoardRun>))
+                        (GameView(game))
                         Row (
                             verticalAlignment = Alignment.CenterVertically
                         ){
@@ -110,11 +111,11 @@ fun GameScreen(board: MutableState<Board>) {
 
 
 
-@Preview(showSystemUi = true)
+/*@Preview(showSystemUi = true)
 @Composable
 fun GameScreenPreview(){
     val board = remember {
         mutableStateOf<Board>(createBoard(Player.B, BoardSize.BIG.size, Rules.PRO.string(), Variant.FREESTYLE.string()))
     }
     GameScreen(board)
-}
+}*/

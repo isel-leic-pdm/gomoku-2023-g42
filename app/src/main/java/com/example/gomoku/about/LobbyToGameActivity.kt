@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.gomoku.domain.Loaded
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.example.gomoku.domain.Idle
+import com.example.gomoku.game.GameScreen
 import com.example.gomoku.game.GameScreenViewModel
-import com.example.gomoku.game.GameView
 
 class LobbyToGameActivity : ComponentActivity() {
 
@@ -22,8 +24,9 @@ class LobbyToGameActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GameView(
-                vm.gameInfo as Loaded<*>
+            val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
+            GameScreen(
+                gameInfo
             )
         }
     }
