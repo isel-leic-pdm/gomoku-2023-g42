@@ -12,7 +12,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.gomoku.infrastructure.UserInfoDataStore
 import com.example.gomoku.infrastructure.UserInfoRepository
-import com.example.gomoku.lobby.GameService
 import com.example.gomoku.lobby.LobbyService
 
 
@@ -20,7 +19,7 @@ interface DependenciesContainer {
     val userInfoRepository: UserInfoRepository
 }
 
-const val LOCALHOST = "a2ae-2001-8a0-7031-9601-68b0-297-4fc6-fedf.ngrok-free.app"
+const val LOCALHOST = "7dec-2001-8a0-6c99-c800-4cc6-5de5-c30e-a18f.ngrok-free.app"
 
 class MenuApplication : Application(), DependenciesContainer {
 

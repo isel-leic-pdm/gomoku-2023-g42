@@ -49,10 +49,6 @@ fun SignUpScreen(
     val confirmPopUp = remember { mutableStateOf(false) }
     val notMatchPass = remember { mutableStateOf(false) }
     val apiError = remember { mutableStateOf(false) }
-    val blankUser = remember { mutableStateOf(false) }
-    val invalidUsername = remember { mutableStateOf(false) }
-    val blankPass = remember { mutableStateOf(false) }
-    val invalidPass = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     GomokuTheme {

@@ -36,8 +36,8 @@ fun GameView(
     gameState: IOState<Either<Error, GameModel?>>
 ) {
     if (gameState is Loaded && gameState.result.getOrNull() != null) {
-        val boardState =
-            mutableStateOf((gameState.result.getOrNull() as GameModel?)?.board as BoardRun)
+        val gameModel = (gameState.result.getOrNull() as Either.Right).value
+        val boardState = mutableStateOf(gameModel?.board as BoardRun)
         val boardSize = boardState.value.size
         Position.Factory(boardSize).createPositions()
         Column {
@@ -48,7 +48,7 @@ fun GameView(
                         CellView(
                             cell = cell,
                             turn = boardState.value.turn,
-                            board = boardState.value
+                            board = boardState.value,
                         ) {
                             val updatedBoard =
                                 boardState.value.turn.let {
@@ -94,11 +94,8 @@ fun CellView(
                     contentDescription = if (turn == Player.W) "White Stone" else "Black Stone"
                 )
             }
-
         }
-
     }
-
 }
 
 

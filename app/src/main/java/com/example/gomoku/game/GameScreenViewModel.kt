@@ -29,7 +29,7 @@ class GameScreenViewModel : ViewModel() {
     }
 
     fun getGameInfo(service: LobbyService, userInfoRepository: UserInfoRepository) {
-        if (_gameInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
+        //if (_gameInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _gameInfoFlow.value = Loading
         viewModelScope.launch {

@@ -30,8 +30,6 @@ import com.example.gomoku.ui.theme.GomokuTheme
 @Composable
 fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
 
-    //val game1 =  (game as Loaded).result.getOrNull() as GameModel?
-    //val table = game1?.board
     if(game is Loaded && (game.result.getOrNull() as Either.Right).value != null) {
         val table = (game.result.getOrNull() as Either.Right).value?.board
         GomokuTheme {
