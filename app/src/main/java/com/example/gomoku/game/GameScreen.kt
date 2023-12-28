@@ -24,69 +24,74 @@ import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
+import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<Either<Error, GameModel?>>) {
+fun GameScreen(game: IOState<Either<Error, GameModel?>>,getGame:() -> Unit) {
 
-    val game1 =  (game as Loaded).result.getOrNull() as GameModel?
-    val table = game1?.board
-    GomokuTheme {
-        Button(
-            onClick = { /*TODO*/ }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = null
-            )
-        }
-        Column(
-            Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Spacer(modifier = Modifier.height(100.dp))
-            when (table) {
-                is BoardRun -> {
-                    (GameView(game))
+    getGame()
+    if (game is Loaded) {
+        val game1 = game.result.getOrNull() as GameModel?
+        val table = game1?.board
+        GomokuTheme {
+            Button(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Spacer(modifier = Modifier.height(100.dp))
+                when (table) {
+                    is BoardRun -> {
+                        (GameView(game))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = "Turn: ")
+                            ShowTurn(turn = table.turn)
+                        }
+                    }
+
+                    is BoardDraw -> TODO()
+                    else -> TODO()
+                }
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Turn: ")
-                        ShowTurn(turn = table.turn)
+                        Image(
+                            painter = painterResource(id = R.drawable.whitestone),
+                            contentDescription = null,
+                            Modifier.size(50.dp)
+                        )
+                        Text(text = ": White")
+                        Spacer(modifier = Modifier.width(50.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.blackstone),
+                            contentDescription = null,
+                            Modifier.size(50.dp)
+                        )
+                        Text(text = ": Black")
                     }
-                }
-
-                is BoardDraw -> TODO()
-                else -> TODO()
-            }
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.whitestone),
-                        contentDescription = null,
-                        Modifier.size(50.dp)
-                    )
-                    Text(text = ": White")
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.blackstone),
-                        contentDescription = null,
-                        Modifier.size(50.dp)
-                    )
-                    Text(text = ": Black")
                 }
             }
         }
     }
+
 }
 
 @Composable

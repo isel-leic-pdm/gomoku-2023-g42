@@ -25,7 +25,7 @@ class GameScreenViewModel : ViewModel() {
 
     fun setGameInfo(gameModel: GameModel) {
         _gameInfoFlow.value = Loading
-        _gameInfoFlow.value = Loaded(runCatching{Either.Right(gameModel)})
+        _gameInfoFlow.value = Loaded(runCatching { Either.Right(gameModel) })
     }
 
     fun getGameInfo(service: LobbyService, userInfoRepository: UserInfoRepository) {
@@ -33,7 +33,8 @@ class GameScreenViewModel : ViewModel() {
 
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            val result = runCatching { service.gameExists((userInfoRepository.getUserInfo().first as LoggedUser).username) }
+            val result =
+                runCatching { service.gameExists((userInfoRepository.getUserInfo().first as LoggedUser).username) }
             _gameInfoFlow.value = Loaded(result)
         }
     }
@@ -48,7 +49,8 @@ class GameScreenViewModel : ViewModel() {
                 }
                 if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
                     if ((result.getOrNull() as Either.Right<GameModel?>).value?.board?.moves !=
-                        (_gameInfoFlow.value as Loaded<Either.Right<GameModel?>>).result.getOrNull()?.value?.board?.moves)
+                        (_gameInfoFlow.value as Loaded<Either.Right<GameModel?>>).result.getOrNull()?.value?.board?.moves
+                    )
                         _gameInfoFlow.value = Loaded(result)
                     break
                 }

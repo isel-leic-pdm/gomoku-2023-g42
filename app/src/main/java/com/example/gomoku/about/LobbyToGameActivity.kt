@@ -40,15 +40,19 @@ class LobbyToGameActivity : ComponentActivity() {
                     if (result != null){
                         //TODO(Play)
                     }
-                    else {
-                        vm.waitTurn(app.lobbyService, app.userInfoRepository.getUserInfo())
-                    }
+
+                }
+                else {
+                    vm.waitTurn(app.lobbyService, app.userInfoRepository.getUserInfo())
                 }
             }
         }
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            GameScreen(gameInfo)
+            GameScreen(
+                gameInfo,
+                ::getGame
+            )
         }
     }
 
