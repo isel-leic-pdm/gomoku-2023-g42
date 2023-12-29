@@ -37,6 +37,7 @@ class SignUpRequest(
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     if (body!= null){
+                        //TODO(Change to Gson)
                         if(!response.isSuccessful) {
                                 val jsonObject = JsonParser().parse(body.string()).asJsonObject
                                 val error = jsonObject.get("error").asString

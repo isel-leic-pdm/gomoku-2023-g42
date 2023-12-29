@@ -32,13 +32,11 @@ class SignUpToLoginActivity : ComponentActivity() {
                 setIdle = {viewModel.setIdle()},
                 user = viewModel.user
             )
-
         }
     }
 
     private fun login (username: String, password: String){
         viewModel.loginUser(app.loginService, app.userInfoRepository,username, password)
     }
-
 }
 

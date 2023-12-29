@@ -37,7 +37,6 @@ fun AuthorScreen(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = null
             )
-
         }
 
         Column(
@@ -52,11 +51,11 @@ fun AuthorScreen(
                 scope.launch {
                     onInfoRequested()
                 }
-
             }) { Text(text = "Send a message to support the creators") }
         }
     }
 }
+
 @Preview(showSystemUi = true)
 @Composable
 fun AuthorScreenPrev(){

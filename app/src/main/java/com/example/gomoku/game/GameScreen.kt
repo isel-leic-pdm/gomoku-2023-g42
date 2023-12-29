@@ -29,6 +29,7 @@ import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
+import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.model.PlayInputModel
 import com.example.gomoku.ui.theme.GomokuTheme
@@ -40,7 +41,7 @@ fun GameScreen(
 ) {
 
     var table by remember { mutableStateOf<Board?>(null) }
-    if (game is Loaded) table = game.result.getOrNull()?.board
+    if (game !is Idle && game is Loaded) table = game.result.getOrNull()?.board
 
     GomokuTheme {
         Button(
@@ -67,9 +68,8 @@ fun GameScreen(
                         ShowTurn(turn = (table as BoardRun).turn)
                     }
                 }
-
-                is BoardDraw -> TODO()
-                else -> TODO()
+                is BoardDraw -> Text(text = "Gone wrong") //TODO()
+                else -> Text(text = "Gone wrong but differently") //TODO()
             }
 
             Spacer(modifier = Modifier.height(50.dp))

@@ -11,7 +11,6 @@ import com.example.gomoku.authors.AuthorScreen
 
 class HomeToAuthorActivity : ComponentActivity() {
     private val url = Uri.parse("https://outlook.office.com/mail/")
-
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, HomeToAuthorActivity::class.java)
@@ -41,7 +40,6 @@ class HomeToAuthorActivity : ComponentActivity() {
         } catch (e: ActivityNotFoundException) {
             Log.e("AboutActivity", "No activity found $url")
         }
-
     }
 }
 

@@ -24,14 +24,11 @@ class LoginToHomeActivity : ComponentActivity() {
     }
     private val app by lazy { application as MenuApplication }
 
-
-
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, LoginToHomeActivity::class.java)
             origin.startActivity(intent)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,5 +54,4 @@ class LoginToHomeActivity : ComponentActivity() {
         val lobby = LobbyInfo(rules, variant, size)
         if (user is LoggedUser) runBlocking{app.userInfoRepository.updateUserInfo(user, lobby)}
     }
-
 }

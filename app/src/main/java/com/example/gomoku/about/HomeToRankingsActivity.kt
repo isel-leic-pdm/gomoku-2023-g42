@@ -15,7 +15,6 @@ class HomeToRankingsActivity : ComponentActivity() {
     private val viewModel by viewModels<RankingScreenViewModel>()
     private val app by lazy { application as MenuApplication }
 
-
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, HomeToRankingsActivity::class.java)
@@ -35,8 +34,6 @@ class HomeToRankingsActivity : ComponentActivity() {
             ) { RankingsToHomeActivity.navigateTo(this) }
         }
     }
-
-
 }
 
 

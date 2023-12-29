@@ -44,10 +44,10 @@ class RankingsToHomeActivity : ComponentActivity() {
         }
 
     }
+
     private  fun updateUser(rules: String, variant: String, size: String){
         val user = runBlocking { app.userInfoRepository.getUserInfo().first}
         val lobby = LobbyInfo(rules, variant, size)
         if ( user is LoggedUser) runBlocking{app.userInfoRepository.updateUserInfo(user, lobby )}
-
     }
 }

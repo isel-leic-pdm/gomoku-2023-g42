@@ -16,7 +16,6 @@ class LoginToSignUpActivity : ComponentActivity() {
     private val viewModel by viewModels<SignUpScreenViewModel>()
     private val app by lazy { application as MenuApplication }
 
-
     companion object {
         fun navigateTo(origin: ComponentActivity) {
             val intent = Intent(origin, LoginToSignUpActivity::class.java)
@@ -35,8 +34,6 @@ class LoginToSignUpActivity : ComponentActivity() {
                 setIdle = { viewModel.setIdle() },
                 onLoginRequested = { SignUpToLoginActivity.navigateTo(this) }
             )
-
-
         }
     }
 
