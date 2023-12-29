@@ -50,11 +50,11 @@ class LobbyToGameActivity : ComponentActivity() {
 
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it, id) })
+            GameScreen(gameInfo, onPlay = { play(it,id) })
         }
     }
 
-    private fun play(playInputModel: PlayInputModel, id: Int) {
+    private fun play(playInputModel: PlayInputModel, id : Int) {
         val userInfo = runBlocking {
             app.userInfoRepository.getUserInfo()
         }

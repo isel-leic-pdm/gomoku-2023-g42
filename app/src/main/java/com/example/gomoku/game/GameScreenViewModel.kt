@@ -52,19 +52,18 @@ class GameScreenViewModel : ViewModel() {
         //val temp = _gameInfoFlow.value
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            gameInfo.collectLatest {
                 /*if (it is Loaded && it.result.getOrNull() is Either.Right) {
                     (it.result.getOrNull() as Either.Right).value?.board
                     val result =
                         runCatching { service.play(userInfoRepository, row, col, id) }
                     _gameInfoFlow.value = Loaded(result)
                 }*/
-                if (it is Loaded && it.result.getOrNull() is GameModel) {
+                //if (it is Loaded && it.result.getOrNull() is GameModel) {
                     val result =
                         runCatching { service.play(userInfoRepository,row,col,id) }
                         _gameInfoFlow.value = Loaded(result)
-                }
-            }
+                //}
+
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.gomoku.model
 
-import com.example.demo.domain.Board
+import com.example.demo.domain.BoardRun
+import com.example.demo.domain.toPlayer
 import com.example.gomoku.game.GameModel
+import com.google.gson.internal.LinkedTreeMap
 
 data class SirenMapToModel(
     val properties: Map<String, Any>
@@ -9,13 +11,22 @@ data class SirenMapToModel(
 
     fun toGame(): GameModel {
         val properties = this.properties
-        val id = properties["id"] as Int
+        val id = (properties["id"] as Double).toInt()
         val state = properties["state"] as String
-        val playerB = properties["playerB"] as Int
-        val playerW = properties["playerW"] as Int
-        val boardSize = properties["boardSize"] as Int
-        val boardString = properties["board"] as String
-        val board = Board.fromString(boardString)
+        val playerB = (properties["playerB"] as Double).toInt()
+        val playerW = (properties["playerW"] as Double).toInt()
+        val boardSize = (properties["boardSize"] as Double).toInt()
+        val boardMap = properties["board"] as LinkedTreeMap<*, *>
+        val rules = boardMap["rules"] as String
+        val variant = boardMap["variant"] as String
+        val turn = (boardMap["turn"] as String).toPlayer()
+        val moves = boardMap["moves"] as LinkedTreeMap<*, *>
+        val resultMoves = moves.entries.associate { entry ->
+            val position = (entry.key).toString().toPosition(boardSize)
+            val player = (entry.value).toString().toPlayer()
+            position to player
+        }
+        val board = BoardRun(resultMoves, boardSize, rules, variant, turn)
         return GameModel(
             id,
             board,

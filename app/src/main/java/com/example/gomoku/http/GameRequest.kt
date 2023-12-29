@@ -69,7 +69,7 @@ class GameRequest(
                 """{
                     "row": $row,
                     "col": $col
-            )""".trimMargin().toRequestBody("application/json".toMediaTypeOrNull())
+            }""".trimMargin().toRequestBody("application/json".toMediaTypeOrNull())
             ).build()
 
         return suspendCoroutine { cont ->
