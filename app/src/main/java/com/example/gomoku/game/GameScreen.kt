@@ -23,10 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.Board
-import com.example.demo.domain.BoardDraw
 import com.example.demo.domain.BoardRun
-import com.example.demo.domain.BoardWin
 import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
@@ -35,13 +32,9 @@ import com.example.gomoku.model.PlayInputModel
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(
-    game: IOState<GameModel>,
-    onPlay: (PlayInputModel) -> Unit = {}
-) {
-    var drawBoard by remember { mutableStateOf(false) }
-    var table by remember { mutableStateOf<Board?>(null) }
-    if (game is Loaded) table = game.result.getOrNull()?.board
+fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) {
+    var table by remember { mutableStateOf<GameModel?>(null) }
+    if (game is Loaded) table = game.result.getOrNull()
 
     GomokuTheme {
         Button(
@@ -58,7 +51,7 @@ fun GameScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(100.dp))
-            when (table) {
+            /*when (table) {
                 is BoardRun -> {
                     drawBoard = true
                     (GameView(game) { input -> onPlay(input) })
@@ -72,8 +65,17 @@ fun GameScreen(
                 is BoardDraw -> Text(text = "Game ended it a draw") //TODO()
                 is BoardWin -> Text(text = "Someone won") //TODO()
                 else -> Text(text = "Loading game") //TODO()
-            }
-            if (drawBoard) {
+            }*/
+            if (table != null) {
+                (GameView(table) { input -> onPlay(input) })
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Turn: ")
+                    if(table?.board is BoardRun) ShowTurn(turn = (table?.board as BoardRun).turn)
+                }
+
                 Spacer(modifier = Modifier.height(50.dp))
 
                 Row(
@@ -115,13 +117,3 @@ private fun ShowTurn(turn: Player) {
         Modifier.size(30.dp)
     )
 }
-
-
-/*@Preview(showSystemUi = true)
-@Composable
-fun GameScreenPreview(){
-    val board = remember {
-        mutableStateOf<Board>(createBoard(Player.B, BoardSize.BIG.size, Rules.PRO.string(), Variant.FREESTYLE.string()))
-    }
-    GameScreen(board)
-}*/

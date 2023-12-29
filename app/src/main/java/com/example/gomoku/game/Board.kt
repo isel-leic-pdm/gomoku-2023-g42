@@ -22,8 +22,6 @@ import com.example.demo.domain.BoardRun
 import com.example.demo.domain.Player
 import com.example.gomoku.model.Position
 import com.example.gomoku.R
-import com.example.gomoku.domain.IOState
-import com.example.gomoku.domain.Loaded
 import com.example.gomoku.model.PlayInputModel
 
 val cellSize = 20.dp
@@ -32,31 +30,23 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 //TODO rever esta function
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameView(
-    gameState: IOState<GameModel>,
-    onPlay: (PlayInputModel) -> Unit = {},
-
-    ) {
-    if (gameState is Loaded && gameState.result.getOrNull() != null) {
-
-        val game = gameState.result.getOrNull()
-        if (game != null) {
-            val boardSize = game.boardSize
-            Position.Factory(boardSize).createPositions()
-            Column {
-                repeat(boardSize) { r ->
-                    Row {
-                        repeat(boardSize) { c ->
-                            val cell = Position(r, c, boardSize)
-                            if (game.board is BoardRun){
-                                CellView(
-                                    cell = cell,
-                                    turn = game.board.turn,
-                                    board = game.board,
-                                ) {
-                                    val input = PlayInputModel(r, c)
-                                    onPlay(input)
-                                }
+fun GameView(gameState: GameModel?, onPlay: (PlayInputModel) -> Unit = {}) {
+    if (gameState != null) {
+        val boardSize = gameState.boardSize
+        Position.Factory(boardSize).createPositions()
+        Column {
+            repeat(boardSize) { r ->
+                Row {
+                    repeat(boardSize) { c ->
+                        val cell = Position(r, c, boardSize)
+                        if (gameState.board is BoardRun) {
+                            CellView(
+                                cell = cell,
+                                turn = gameState.board.turn,
+                                board = gameState.board,
+                            ) {
+                                val input = PlayInputModel(r, c)
+                                onPlay(input)
                             }
                         }
                     }
@@ -98,7 +88,6 @@ fun CellView(
     }
 }
 
-
 @Composable
 fun DrawLine(cord: Pair<Int, Int>, size: Int) {
     when (cord) {
@@ -132,7 +121,6 @@ fun DrawLine(cord: Pair<Int, Int>, size: Int) {
 
 @Composable
 fun Up() {
-    //segmento vertical superior
     Canvas(Modifier) {
         drawLine(
             start = Offset(0f, 0f),
@@ -146,7 +134,6 @@ fun Up() {
 
 @Composable
 fun Down() {
-    //desenha o segmento vertical inferior
     Canvas(Modifier) {
         drawLine(
             start = Offset(0f, 0f),
@@ -160,7 +147,6 @@ fun Down() {
 
 @Composable
 fun Left() {
-    //desenha segmento horizontal à esquerda
     Canvas(Modifier) {
         drawLine(
             start = Offset(0f, 0f),
@@ -174,7 +160,6 @@ fun Left() {
 
 @Composable
 fun Right() {
-    //desenha segmento horizontal à direita
     Canvas(Modifier) {
         drawLine(
             start = Offset(0f, 0f),

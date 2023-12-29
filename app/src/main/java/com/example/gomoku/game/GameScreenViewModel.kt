@@ -37,32 +37,15 @@ class GameScreenViewModel : ViewModel() {
         row: Int,
         col: Int,
         id: Int,
-        gameInfo: Flow<IOState<GameModel>>
         ) {
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
             val result =
-                runCatching { service.play(userInfoRepository,row,col,id) }
+                runCatching {
+                    service.play(userInfoRepository,row,col,id)
+                }
                 _gameInfoFlow.value = Loaded(result)
         }
     }
 
-    /*fun waitTurn(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
-        val username = (userInfo.first as LoggedUser).username
-        _gameInfoFlow.value = Loading
-        viewModelScope.launch {
-            while (true) {
-                val result = runCatching {
-                    service.gameExists(userInfo)
-                }
-                if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
-                    if ((result.getOrNull() as Either.Right<GameModel?>).value?.board?.moves !=
-                        (_gameInfoFlow.value as Loaded<Either.Right<GameModel?>>).result.getOrNull()?.value?.board?.moves
-                    )
-                        _gameInfoFlow.value = Loaded(result)
-                    break
-                }
-            }
-        }
-    }*/
 }
