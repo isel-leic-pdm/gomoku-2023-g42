@@ -26,25 +26,34 @@
             </intent-filter>
         </activity>
 
-        <!-- Add the HomeToRankingsActivity here -->
+        <activity
+            android:name=".about.AuthorsToHomeActivity"
+            android:label="Authors to HomeActivity">
+        </activity>
+
+        <activity
+            android:name=".about.HomeToAuthorActivity"
+            android:label="Home to Author Activity">
+        </activity>
+
+        <activity
+            android:name=".about.HomeToLobbyActivity"
+            android:label="Home to LobbyActivity">
+        </activity>
+
         <activity
             android:name=".about.HomeToRankingsActivity"
             android:label="Rankings Activity">
         </activity>
 
         <activity
-            android:name=".about.HomeToAuthorActivity"
-            android:label="Home To Author Activity">
-        </activity>
-
-        <activity
-            android:name=".about.AuthorsToHomeActivity"
-            android:label="Authors To HomeActivity">
+            android:name=".about.LobbyToGameActivity"
+            android:label="Lobby to GameActivity">
         </activity>
 
         <activity
             android:name=".about.LoginToHomeActivity"
-            android:label="Login To HomeActivity">
+            android:label="Login to HomeActivity">
         </activity>
 
         <activity
@@ -54,17 +63,12 @@
 
         <activity
             android:name=".about.RankingsToHomeActivity"
-            android:label="Rankings To HomeActivity">
+            android:label="Rankings to HomeActivity">
         </activity>
 
         <activity
-            android:name=".about.HomeToLobbyActivity"
-            android:label="Home to LobbyActivity">
-        </activity>
-
-        <activity
-            android:name=".about.LobbyToGameActivity"
-            android:label="Lobby to GameActivity">
+            android:name=".about.SignUpToLoginActivity"
+            android:label="Sign Up to Login">
         </activity>
 
     </application>

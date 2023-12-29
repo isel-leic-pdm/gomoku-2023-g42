@@ -31,19 +31,19 @@ class HomeToLobbyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-                vm.lobbyInfo.collectLatest { it ->
-                    Log.d("HomeToLobbyActivity", "Success! LobbyInfo: $it")
-                    if (it is Loaded && it.result.getOrNull() is Either.Right) {
-                        Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
-                        val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
-                        if (result != null){
-                            LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity,result.id)
-                        }
-                        else {
-                            vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
-                        }
+            vm.lobbyInfo.collectLatest { it ->
+                Log.d("HomeToLobbyActivity", "Success! LobbyInfo: $it")
+                if (it is Loaded && it.result.getOrNull() is Either.Right) {
+                    Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
+                    val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
+                    if (result != null){
+                        LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity,result.id)
+                    }
+                    else {
+                        vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
                     }
                 }
+            }
         }
         setContent {
             LobbyScreen(

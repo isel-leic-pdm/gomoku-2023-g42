@@ -21,13 +21,7 @@ class GameScreenViewModel : ViewModel() {
     val gameInfo: Flow<IOState<GameModel>>
         get() = _gameInfoFlow.asStateFlow()
 
-    /*fun setGameInfo(gameModel: GameModel) {
-        _gameInfoFlow.value = Loading
-        _gameInfoFlow.value = Loaded(runCatching { Either.Right(gameModel) })
-    }*/
-
     fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
-        //if (_gameInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
@@ -45,20 +39,11 @@ class GameScreenViewModel : ViewModel() {
         id: Int,
         gameInfo: Flow<IOState<GameModel>>
         ) {
-        //val temp = _gameInfoFlow.value
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-                /*if (it is Loaded && it.result.getOrNull() is Either.Right) {
-                    (it.result.getOrNull() as Either.Right).value?.board
-                    val result =
-                        runCatching { service.play(userInfoRepository, row, col, id) }
-                    _gameInfoFlow.value = Loaded(result)
-                }*/
-                //if (it is Loaded && it.result.getOrNull() is GameModel) {
-                    val result =
-                        runCatching { service.play(userInfoRepository,row,col,id) }
-                        _gameInfoFlow.value = Loaded(result)
-                //}
+            val result =
+                runCatching { service.play(userInfoRepository,row,col,id) }
+                _gameInfoFlow.value = Loaded(result)
         }
     }
 

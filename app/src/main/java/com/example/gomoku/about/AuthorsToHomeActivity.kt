@@ -45,7 +45,6 @@ class AuthorsToHomeActivity : ComponentActivity() {
                 onUpdateLobby = ::updateUser,
             ) { HomeToLobbyActivity.navigateTo(this) }
         }
-
     }
     private  fun updateUser(rules: String, variant: String, size: String){
         val user = runBlocking { app.userInfoRepository.getUserInfo().first}

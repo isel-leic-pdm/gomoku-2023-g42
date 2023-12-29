@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.demo.domain.Board
 import com.example.demo.domain.BoardDraw
 import com.example.demo.domain.BoardRun
+import com.example.demo.domain.BoardWin
 import com.example.demo.domain.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
@@ -38,7 +39,7 @@ fun GameScreen(
     game: IOState<GameModel>,
     onPlay: (PlayInputModel) -> Unit = {}
 ) {
-
+    var drawBoard by remember { mutableStateOf(false) }
     var table by remember { mutableStateOf<Board?>(null) }
     if (game is Loaded) table = game.result.getOrNull()?.board
 
@@ -59,6 +60,7 @@ fun GameScreen(
             Spacer(modifier = Modifier.height(100.dp))
             when (table) {
                 is BoardRun -> {
+                    drawBoard = true
                     (GameView(game) { input -> onPlay(input) })
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -67,31 +69,33 @@ fun GameScreen(
                         ShowTurn(turn = (table as BoardRun).turn)
                     }
                 }
-                is BoardDraw -> Text(text = "Gone wrong") //TODO()
-                else -> Text(text = "Gone wrong but differently") //TODO()
+                is BoardDraw -> Text(text = "Game ended it a draw") //TODO()
+                is BoardWin -> Text(text = "Someone won") //TODO()
+                else -> Text(text = "Loading game") //TODO()
             }
+            if (drawBoard) {
+                Spacer(modifier = Modifier.height(50.dp))
 
-            Spacer(modifier = Modifier.height(50.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.whitestone),
-                        contentDescription = null,
-                        Modifier.size(50.dp)
-                    )
-                    Text(text = ": White")
-                    Spacer(modifier = Modifier.width(50.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.blackstone),
-                        contentDescription = null,
-                        Modifier.size(50.dp)
-                    )
-                    Text(text = ": Black")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.whitestone),
+                            contentDescription = null,
+                            Modifier.size(50.dp)
+                        )
+                        Text(text = ": White")
+                        Spacer(modifier = Modifier.width(50.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.blackstone),
+                            contentDescription = null,
+                            Modifier.size(50.dp)
+                        )
+                        Text(text = ": Black")
+                    }
                 }
             }
         }
