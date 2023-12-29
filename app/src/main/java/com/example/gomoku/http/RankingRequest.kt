@@ -14,9 +14,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-
-// localhost - 10.0.2.2
-
 class RankingRequest (
     private val client : OkHttpClient,
     private val gson : Gson
@@ -27,7 +24,6 @@ class RankingRequest (
             .addHeader("accept","application/json")
             .build()
     }
-
 
     override suspend fun fetchRankings(): List<PlayerRank> {
         return suspendCoroutine {
@@ -55,9 +51,7 @@ class RankingRequest (
                         }
                         it.resume(rankings)
                     }
-
                 }
-
             })
         }
     }

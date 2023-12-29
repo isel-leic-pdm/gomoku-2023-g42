@@ -110,7 +110,6 @@ private fun ShowTurn(turn: Player) {
         contentDescription = if (turn == Player.W) "White Stone" else "Black Stone",
         Modifier.size(30.dp)
     )
-
 }
 
 

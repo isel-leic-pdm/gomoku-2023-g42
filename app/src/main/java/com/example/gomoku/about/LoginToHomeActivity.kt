@@ -47,8 +47,8 @@ class LoginToHomeActivity : ComponentActivity() {
                 onUpdateLobby = ::updateLobby,
             ) { HomeToLobbyActivity.navigateTo(this) }
         }
-
     }
+
     private  fun updateLobby(rules: String, variant: String, size: String){
         val user = runBlocking { app.userInfoRepository.getUserInfo().first}
         val lobby = LobbyInfo(rules, variant, size)

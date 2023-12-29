@@ -16,40 +16,35 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-        private val repository: UserInfoRepository
-    ) : ViewModel() {
+class HomeViewModel(private val repository: UserInfoRepository): ViewModel() {
 
-        companion object {
-            fun factory(repository: UserInfoRepository) = viewModelFactory {
-                initializer { HomeViewModel(repository) }
-            }
-        }
-
-        private val _userInfoFlow: MutableStateFlow<IOState<Pair<User, LobbyInfo>>> = MutableStateFlow(Idle)
-
-
-        val userInfo: StateFlow<IOState<Pair<User, LobbyInfo>>>
-            get() = _userInfoFlow.asStateFlow()
-
-
-        fun fetchUserInfo() {
-
-            /*if (_userInfoFlow.value !is Idle)
-                throw IllegalStateException("The view model is not in the idle state.") */
-
-            _userInfoFlow.value = Loading
-            viewModelScope.launch {
-                val result = runCatching { repository.getUserInfo() }
-                _userInfoFlow.value = Loaded(result)
-            }
-        }
-
-
-        fun resetToIdle() {
-            if (_userInfoFlow.value !is Loaded)
-                throw IllegalStateException("The view model is not in the loaded state.")
-            _userInfoFlow.value = Idle
+    companion object {
+        fun factory(repository: UserInfoRepository) = viewModelFactory {
+            initializer { HomeViewModel(repository) }
         }
     }
+
+    private val _userInfoFlow: MutableStateFlow<IOState<Pair<User, LobbyInfo>>> = MutableStateFlow(Idle)
+
+    val userInfo: StateFlow<IOState<Pair<User, LobbyInfo>>>
+        get() = _userInfoFlow.asStateFlow()
+
+    fun fetchUserInfo() {
+
+        /*if (_userInfoFlow.value !is Idle)
+            throw IllegalStateException("The view model is not in the idle state.") */
+
+        _userInfoFlow.value = Loading
+        viewModelScope.launch {
+            val result = runCatching { repository.getUserInfo() }
+            _userInfoFlow.value = Loaded(result)
+        }
+    }
+
+    fun resetToIdle() {
+        if (_userInfoFlow.value !is Loaded)
+            throw IllegalStateException("The view model is not in the loaded state.")
+        _userInfoFlow.value = Idle
+    }
+}
 

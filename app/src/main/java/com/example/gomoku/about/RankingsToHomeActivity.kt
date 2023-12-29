@@ -42,7 +42,6 @@ class RankingsToHomeActivity : ComponentActivity() {
                 onUpdateLobby = ::updateUser,
             ) { HomeToLobbyActivity.navigateTo(this) }
         }
-
     }
 
     private  fun updateUser(rules: String, variant: String, size: String){

@@ -18,10 +18,7 @@ import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthorScreen(
-    onInfoRequested: () -> Unit,
-    onHomeRequested: ()-> Unit
-) {
+fun AuthorScreen(onInfoRequested: () -> Unit, onHomeRequested: ()-> Unit) {
 
     val scope = rememberCoroutineScope()
     GomokuTheme {

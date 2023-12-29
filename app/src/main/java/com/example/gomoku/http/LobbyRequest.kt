@@ -21,15 +21,11 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import com.example.gomoku.game.Error
-import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 
-class LobbyRequest(
-    private val client: OkHttpClient,
-    private val gson: Gson
-) : LobbyService {
+class LobbyRequest(private val client: OkHttpClient, private val gson: Gson): LobbyService {
 
     override suspend fun createLobby(
         userInfoRepository: Pair<User, LobbyInfo>
@@ -145,7 +141,6 @@ class LobbyRequest(
         if (!token.isNullOrBlank()) {
             requestBuilder.addHeader("Authorization", "Bearer $token")
         }
-
         return requestBuilder.build()
     }
 
@@ -154,9 +149,7 @@ class LobbyRequest(
             .url("https://${LOCALHOST}/games/user/$username")
             .get()
             .addHeader("Content-Type", "application/json")
-
         return requestBuilder.build()
     }
-
 }
 

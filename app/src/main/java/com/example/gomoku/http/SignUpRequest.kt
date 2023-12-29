@@ -53,11 +53,10 @@ class SignUpRequest(
 
                     }
                 }
-
             })
-
         }
     }
+
     private fun requestMaker(username: String, password: String) : Request{
         val json = gson.toJson(LoginCreds(username,password))
 
@@ -68,7 +67,6 @@ class SignUpRequest(
             .post(body)
             .addHeader("Content-Type","application/json")
             .build()
-
     }
 }
 

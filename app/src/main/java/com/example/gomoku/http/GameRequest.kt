@@ -19,10 +19,7 @@ import com.example.gomoku.user.User
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class GameRequest(
-    private val client: OkHttpClient,
-    private val gson: Gson
-) : GameService {
+class GameRequest(private val client: OkHttpClient, private val gson: Gson): GameService {
 
     override suspend fun getGame(userInfoRepository: Pair<User, LobbyInfo>): GameModel {
 
@@ -31,7 +28,6 @@ class GameRequest(
             .url("https://${LOCALHOST}/games/user/$username")
             .addHeader("accept", "application/Json")
             .get().build()
-
 
         return suspendCoroutine { cont ->
 

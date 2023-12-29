@@ -60,5 +60,4 @@ class LobbyToGameActivity : ComponentActivity() {
         }
         vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id, vm.gameInfo)
     }
-
 }

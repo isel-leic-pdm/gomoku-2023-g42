@@ -8,13 +8,10 @@ import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
 import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.lobby.LobbyInfo
-import com.example.gomoku.lobby.LobbyService
-import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class GameScreenViewModel : ViewModel() {
@@ -46,8 +43,7 @@ class GameScreenViewModel : ViewModel() {
         row: Int,
         col: Int,
         id: Int,
-        gameInfo: Flow<IOState<GameModel>>,
-
+        gameInfo: Flow<IOState<GameModel>>
         ) {
         //val temp = _gameInfoFlow.value
         _gameInfoFlow.value = Loading
@@ -63,7 +59,6 @@ class GameScreenViewModel : ViewModel() {
                         runCatching { service.play(userInfoRepository,row,col,id) }
                         _gameInfoFlow.value = Loaded(result)
                 //}
-
         }
     }
 

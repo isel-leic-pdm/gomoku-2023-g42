@@ -50,7 +50,6 @@ fun HomeScreen(
     getUser: () -> Unit,
     onUpdateLobby: (String, String, String) -> Unit,
     onLobbyRequested: () -> Unit
-
 ) {
     val scope = rememberCoroutineScope()
     var showLobbySettings by remember { mutableStateOf(false) }
@@ -59,7 +58,6 @@ fun HomeScreen(
     var selectedVariant by remember { mutableStateOf(Variant.values()[0]) }
 
     getUser()
-
 
     GomokuTheme {
         Column(
@@ -74,7 +72,6 @@ fun HomeScreen(
             ) {
 
                 if ((userInfo is Loaded) && (userInfo.result.getOrNull() != null)) {
-
                     Text(
                         fontFamily = FontFamily.Serif,
                         text = "Welcome, " + (userInfo.result.getOrNull()?.first as LoggedUser).username,
@@ -194,7 +191,6 @@ fun HomeScreen(
                                     Text(text = "Swap")
                                 }
 
-
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -222,7 +218,6 @@ fun HomeScreen(
                 Button(onClick = {
                     scope.launch {
                         onRankingsRequested()
-
                     }
                 })
                 { Text(text = "Rankings") }
@@ -251,7 +246,6 @@ fun GameConfig(
     var variant by remember { mutableStateOf(Variant.values()[0]) }
 
     GomokuTheme {
-
 
     }
 }

@@ -7,12 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.BoardWin
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
-import com.example.gomoku.game.GameScreenViewModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.lobby.LobbyScreen
 import com.example.gomoku.lobby.LobbyScreenViewModel
@@ -22,7 +19,6 @@ import kotlinx.coroutines.launch
 class HomeToLobbyActivity : ComponentActivity() {
 
     private val vm by viewModels<LobbyScreenViewModel>()
-    private val vmg by viewModels<GameScreenViewModel>()
     private val app by lazy { application as MenuApplication }
 
     companion object {
