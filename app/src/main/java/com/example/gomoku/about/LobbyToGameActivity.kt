@@ -13,6 +13,7 @@ import com.example.gomoku.domain.Loading
 import com.example.gomoku.game.GameScreen
 import com.example.gomoku.game.GameScreenViewModel
 import com.example.gomoku.http.MenuApplication
+import com.example.gomoku.model.PlayInputModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,46 +25,40 @@ class LobbyToGameActivity : ComponentActivity() {
     private val vm by viewModels<GameScreenViewModel>()
 
     companion object {
-        fun navigateTo(origin: ComponentActivity,id: Int) {
-            /*val intent = Intent(origin, LobbyToGameActivity::class.java)
-            origin.startActivity(intent)*/
-            origin.startActivity(createIntent(origin,id))
+        fun navigateTo(origin: ComponentActivity, id: Int) {
+            origin.startActivity(createIntent(origin, id))
         }
 
-        private fun createIntent(ca:ComponentActivity,gameId:Int):Intent{
-            val intent = Intent(ca,LobbyToGameActivity::class.java)
-            intent.putExtra("id",gameId)
+        private fun createIntent(ca: ComponentActivity, gameId: Int): Intent {
+            val intent = Intent(ca, LobbyToGameActivity::class.java)
+            intent.putExtra("id", gameId)
             return intent
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val id = intent.getIntExtra("id",-1)
+        val id = intent.getIntExtra("id", -1)
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             vm.gameInfo.collectLatest {
-                while (true){
+                while (true) {
                     delay(5000)
-                    if(it !is Loading) vm.getGameInfo(app.gameService,app.userInfoRepository)
+                    if (it !is Loading) vm.getGameInfo(app.gameService, app.userInfoRepository)
                 }
             }
         }
 
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            //Parâmetros a passar:
-            //Username -
-            //Função de jogar
-            //token -
-            GameScreen(gameInfo,::play)
+            GameScreen(gameInfo, onPlay = { play(it, id) })
         }
     }
 
-    private fun play(row:Int,col:Int,id:Int) {
-       val userInfo = runBlocking {
+    private fun play(playInputModel: PlayInputModel, id: Int) {
+        val userInfo = runBlocking {
             app.userInfoRepository.getUserInfo()
         }
-        vm.play(app.gameService, userInfo ,row,col,id,vm.gameInfo)
+        vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id, vm.gameInfo)
     }
 
 }

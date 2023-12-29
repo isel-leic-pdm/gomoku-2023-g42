@@ -11,11 +11,9 @@ import kotlin.math.pow
 
 import kotlin.math.abs
 
-interface Option{
-    fun string() : String
+interface Option {
+    fun string(): String
 }
-
-
 
 
 typealias Moves = Map<Position, Player>
@@ -29,7 +27,7 @@ fun maxMoves(size: Int): Double {
     return (boardSize.size + 1).toDouble().pow(2)
 }
 
-enum class Rules : Option{
+enum class Rules : Option {
     PRO,
     LONG_PRO;
 
@@ -38,16 +36,17 @@ enum class Rules : Option{
     }
 }
 
-enum class Variant: Option{
+enum class Variant : Option {
     FREESTYLE,
     SWAP;
+
     override fun string(): String {
         return if (this == FREESTYLE) "Freestyle" else "Swap after 1st move"
     }
 
 }
 
-enum class BoardSize( val size: Int): Option {
+enum class BoardSize(val size: Int) : Option {
     SMALL(15),
     BIG(19);
 
@@ -57,6 +56,33 @@ enum class BoardSize( val size: Int): Option {
 val INITIAL_MAP: Moves get() = mapOf()
 
 sealed class Board(val moves: Moves, val size: Int, val rules: String, val variant: String) {
+
+    companion object {
+        fun fromString(boardString: String): Board {
+            val turn = boardString[0].toString().toPlayer()
+            val size = boardString.substring(1, 3).toInt()
+
+            Position.Factory(size).createPositions()
+
+            val regex = Regex("(Pro|Long Pro)")
+            val regex2 = Regex("Freestyle|Swap after 1st move")
+            val rules = regex.find(boardString)!!.value
+            val variant = regex2.find(boardString)!!.value
+            if (boardString == "$turn$size$rules$variant\n{}") return BoardRun(emptyMap(), size, rules, variant, turn)
+            val idx = boardString.indexOf('\n')
+            val board = boardString.substring(idx + 2, boardString.length - 1)
+            val boardMap = mutableMapOf<Position, Player>()
+            val pairs = board.split(", ")
+            for (i in pairs) {
+                val str = i.last()
+                val player = str.toString().toPlayer()
+                val maxLength = if(i.substring(0, 2).toIntOrNull() == null) 2 else 3
+                val position = i.substring(0, maxLength).toPosition(size)
+                boardMap[position] = player
+            }
+            return BoardRun(boardMap, size, rules, variant, turn)
+        }
+    }
 
     /**
      * Função "equals" em que servirá para verificar se o objeto é o mesmo e efetuar a verificação de que se trata do mesmo objeto ou não.
@@ -90,7 +116,12 @@ sealed class Board(val moves: Moves, val size: Int, val rules: String, val varia
     }
 
     private fun isOver(position: Position, newMoves: Moves, turn: Player, boardSize: Int): Board {
-        if (newMoves.size.toDouble() == maxMoves(boardSize)) return BoardDraw(newMoves, size, rules, variant)
+        if (newMoves.size.toDouble() == maxMoves(boardSize)) return BoardDraw(
+            newMoves,
+            size,
+            rules,
+            variant
+        )
         //val board = this as BoardRun
         Direction.values().forEach { dir ->
             //Ver as peças numa certa direção
@@ -134,31 +165,9 @@ class BoardWin(moves: Moves, size: Int, rules: String, variant: String, val winn
  * @property moves representa os movimentos efetuados nesse tabuleiro.
  * @return Board representa o board quando este acabou em empate.
  */
-class BoardDraw(moves: Moves, size: Int, rules: String, variant: String) : Board(moves, size, rules, variant)
+class BoardDraw(moves: Moves, size: Int, rules: String, variant: String) :
+    Board(moves, size, rules, variant)
 
-fun fromString(boardString: String): Board {
-    val turn = boardString[0].toString().toPlayer()
-    val size = boardString.substring(1, 3).toInt()
-
-    Position.Factory(size).createPositions()
-
-    val regex = Regex("(Pro|Long Pro)")
-    val regex2 = Regex("Freestyle|Swap after 1st move")
-    val rules = regex.find(boardString)!!.value
-    val variant = regex2.find(boardString)!!.value
-    if (boardString == "$turn$size$rules$variant\n{}") return BoardRun(emptyMap(), size, rules, variant, turn)
-    val idx = boardString.indexOf('\n')
-    val board = boardString.substring(idx + 2, boardString.length - 1)
-    val boardMap = mutableMapOf<Position, Player>()
-    val pairs = board.split(", ")
-    for (i in pairs) {
-        val str = i.last()
-        val player = str.toString().toPlayer()
-        val position = i.substring(0, 2).toPosition(size)
-        boardMap[position] = player
-    }
-    return BoardRun(boardMap, size, rules, variant, turn)
-}
 
 /**
  * Função "createBoard" responsável por criar o novo Board com os dados iniciais.
@@ -180,3 +189,4 @@ fun isPositionsAway(piece1: Position, piece2: Position, distance: Int): Boolean 
 
     return rowDifference >= distance || colDifference >= distance
 }
+

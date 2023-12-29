@@ -18,16 +18,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class GameScreenViewModel : ViewModel() {
-    private val _gameInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> =
+    private val _gameInfoFlow: MutableStateFlow<IOState<GameModel>> =
         MutableStateFlow(Idle)
 
-    val gameInfo: Flow<IOState<Either<Error, GameModel?>>>
+    val gameInfo: Flow<IOState<GameModel>>
         get() = _gameInfoFlow.asStateFlow()
 
-    fun setGameInfo(gameModel: GameModel) {
+    /*fun setGameInfo(gameModel: GameModel) {
         _gameInfoFlow.value = Loading
         _gameInfoFlow.value = Loaded(runCatching { Either.Right(gameModel) })
-    }
+    }*/
 
     fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
         //if (_gameInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
@@ -46,24 +46,29 @@ class GameScreenViewModel : ViewModel() {
         row: Int,
         col: Int,
         id: Int,
-        gameInfo: Flow<IOState<Either<Error, GameModel?>>>,
+        gameInfo: Flow<IOState<GameModel>>,
 
         ) {
-        val temp = _gameInfoFlow.value
+        //val temp = _gameInfoFlow.value
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
             gameInfo.collectLatest {
-                if (it is Loaded && it.result.getOrNull() is Either.Right) {
+                /*if (it is Loaded && it.result.getOrNull() is Either.Right) {
                     (it.result.getOrNull() as Either.Right).value?.board
                     val result =
                         runCatching { service.play(userInfoRepository, row, col, id) }
                     _gameInfoFlow.value = Loaded(result)
+                }*/
+                if (it is Loaded && it.result.getOrNull() is GameModel) {
+                    val result =
+                        runCatching { service.play(userInfoRepository,row,col,id) }
+                        _gameInfoFlow.value = Loaded(result)
                 }
             }
         }
     }
 
-    fun waitTurn(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
+    /*fun waitTurn(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
         val username = (userInfo.first as LoggedUser).username
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
@@ -80,5 +85,5 @@ class GameScreenViewModel : ViewModel() {
                 }
             }
         }
-    }
+    }*/
 }

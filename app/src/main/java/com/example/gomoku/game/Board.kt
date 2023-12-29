@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -25,6 +24,7 @@ import com.example.gomoku.model.Position
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Loaded
+import com.example.gomoku.model.PlayInputModel
 
 val cellSize = 20.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
@@ -33,33 +33,32 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun GameView(
-    gameState: IOState<Either<Error, GameModel?>>,
+    gameState: IOState<GameModel>,
+    onPlay: (PlayInputModel) -> Unit = {},
 
-) {
+    ) {
     if (gameState is Loaded && gameState.result.getOrNull() != null) {
-        val gameModel = (gameState.result.getOrNull() as Either.Right).value
-        val boardState = mutableStateOf(gameModel?.board as BoardRun)
-        val boardSize = boardState.value.size
-        Position.Factory(boardSize).createPositions()
-        Column {
-            repeat(boardSize) { r ->
-                Row {
-                    repeat(boardSize) { c ->
-                        val cell = Position(r, c, boardSize)
-                        CellView(
-                            cell = cell,
-                            turn = boardState.value.turn,
-                            board = boardState.value,
-                        ) {
-                            /*val updatedBoard =
-                                boardState.value.turn.let {
-                                    boardState.value.play(
-                                        cell,
-                                        it
-                                    )
+
+        val game = gameState.result.getOrNull()
+        if (game != null) {
+            val boardSize = game.boardSize
+            Position.Factory(boardSize).createPositions()
+            Column {
+                repeat(boardSize) { r ->
+                    Row {
+                        repeat(boardSize) { c ->
+                            val cell = Position(r, c, boardSize)
+                            if (game.board is BoardRun){
+                                CellView(
+                                    cell = cell,
+                                    turn = game.board.turn,
+                                    board = game.board,
+                                ) {
+                                    val input = PlayInputModel(r, c)
+                                    onPlay(input)
                                 }
-                            boardState.value = updatedBoard as BoardRun*/
-                            onPlay()
+                            }
+
                         }
                     }
                 }
