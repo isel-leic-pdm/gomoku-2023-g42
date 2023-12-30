@@ -19,9 +19,9 @@ import kotlin.runCatching
 
 
 class LobbyScreenViewModel : ViewModel() {
-    private val _lobbyInfoFlow: MutableStateFlow<IOState<GameModel>> =
+    private val _lobbyInfoFlow: MutableStateFlow<IOState<GameModel?>> =
         MutableStateFlow(Idle)
-    val lobbyInfo: Flow<IOState<GameModel>>
+    val lobbyInfo: Flow<IOState<GameModel?>>
         get() = _lobbyInfoFlow.asStateFlow()
 
     fun createLobby(service: LobbyService, userInfoRepository: UserInfoRepository) {

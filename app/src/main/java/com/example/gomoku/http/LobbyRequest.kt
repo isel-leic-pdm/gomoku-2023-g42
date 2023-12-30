@@ -15,7 +15,6 @@ import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import com.example.gomoku.game.Error
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoggedUser
@@ -25,7 +24,7 @@ class LobbyRequest(private val client: OkHttpClient, private val gson: Gson) : L
 
     override suspend fun createLobby(
         userInfoRepository: Pair<User, LobbyInfo>
-    ): GameModel {
+    ): GameModel? {
         val request = requestMakerCreateLobby(
             userInfoRepository.second,
             (userInfoRepository.first as LoggedUser).token
@@ -45,7 +44,8 @@ class LobbyRequest(private val client: OkHttpClient, private val gson: Gson) : L
                         cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     }
                     else {
-                        cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
+                        val res = if (bodyString != null) gson.fromJson(bodyString, SirenMapToModel::class.java).toGame() else null
+                        cont.resume(res)
                     }
                 }
             })
