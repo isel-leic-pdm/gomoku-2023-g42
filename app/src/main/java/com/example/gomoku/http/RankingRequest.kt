@@ -2,7 +2,6 @@ package com.example.gomoku.http
 
 import com.example.gomoku.domain.PlayerRank
 import com.example.gomoku.model.SirenArrayToModel
-import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.rankings.RankingService
 import com.google.gson.Gson
 import okhttp3.Call
@@ -30,14 +29,14 @@ class RankingRequest(
         return suspendCoroutine { cont->
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    cont.resumeWithException(throw e)//TODO()
+                    cont.resumeWithException(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     val bodyString = body?.string()
                     if (!response.isSuccessful || body == null)
-                        cont.resumeWithException(throw IllegalArgumentException("${response.code}")) //TODO()
+                        cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     else {
                         val gson = gson.fromJson(bodyString,SirenArrayToModel::class.java)
                         cont.resume(gson.toRankList())
