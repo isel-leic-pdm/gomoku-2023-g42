@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -57,6 +58,8 @@ fun RankingScreen(
 
     val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
+    if(text.isBlank()) searchText = ""
     GomokuTheme {
         Column {
             Button(
@@ -82,11 +85,23 @@ fun RankingScreen(
                 if(rankings is Idle) onFetch()
                 if(rankings is Loading) CircularProgressIndicator()
                 if(rankings is Loaded<*>){
-                    OutlinedTextField(
-                        value = searchText,
-                        onValueChange = { searchText= it },
-                        label = { Text(text = stringResource(id = R.string.username_label)) }
-                    )
+                    Row (verticalAlignment = Alignment.CenterVertically){
+                        OutlinedTextField(
+                            value = text,
+                            onValueChange = { text = it },
+                            label = { Text(text = stringResource(id = R.string.username_label)) }
+                        )
+                        Button(onClick = { searchText = text}) {
+                            Icon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = null
+                            )
+
+                        }
+
+
+                    }
+
                     RankBox(listOf(
                         stringResource(id = R.string.rank_label),
                         stringResource(id = R.string.username_label),
