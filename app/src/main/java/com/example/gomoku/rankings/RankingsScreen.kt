@@ -114,11 +114,12 @@ fun RankingScreen(
                         ) {
                             items(list){ r ->
                                 r as PlayerRank
+
                                 val playerInfo = listOf(
                                     r.rank,
                                     r.username,
-                                    r.points,
                                     r.playedGames,
+                                    r.points,
                                     r.wonGames,
                                     r.lostGames
                                 )
