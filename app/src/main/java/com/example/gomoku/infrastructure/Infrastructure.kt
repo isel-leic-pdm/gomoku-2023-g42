@@ -15,7 +15,6 @@ interface UserInfoRepository {
     suspend fun getUserInfo(): Pair<User, LobbyInfo>
 
     suspend fun updateUserInfo(userInfo: LoggedUser, lobbyInfo: LobbyInfo? )
-
 }
 
 private const val USER_KEY = "USERNAME"
@@ -36,7 +35,7 @@ class UserInfoDataStore(private val store: DataStore<Preferences>) : UserInfoRep
 
     private val usernameKey = stringPreferencesKey(USER_KEY)
     private val tokenKey = stringPreferencesKey(TOKEN_KEY)
-    private val playerIdKey = stringPreferencesKey(PLAYER_ID_KEY)
+    //private val playerIdKey = stringPreferencesKey(PLAYER_ID_KEY)
     private val rulesKey = stringPreferencesKey(RULES_KEY)
     private val variantKey = stringPreferencesKey(VARIANT_KEY)
     private val sizeKey = stringPreferencesKey(SIZE_KEY)
@@ -45,11 +44,11 @@ class UserInfoDataStore(private val store: DataStore<Preferences>) : UserInfoRep
         val preferences = store.data.first()
         val username = preferences[usernameKey]
         val token = preferences[tokenKey]
-        val playerId = preferences[playerIdKey]
-        val user = if (username != null && token != null && playerId != null) LoggedUser(
+        //val playerId = preferences[playerIdKey]
+        val user = if (username != null && token != null /*&& playerId != null*/) LoggedUser(
             username = username,
             token = token,
-            playerId = playerId.toInt()
+            //playerId = playerId.toInt()
         ) else NoUser("NON-LOGGED")
         val rules = preferences[rulesKey]
         val variant = preferences[variantKey]
@@ -63,7 +62,7 @@ class UserInfoDataStore(private val store: DataStore<Preferences>) : UserInfoRep
         store.edit { preferences ->
             preferences[usernameKey] = userInfo.username
             preferences[tokenKey] = userInfo.token
-            preferences[playerIdKey] = userInfo.playerId.toString()
+            //preferences[playerIdKey] = userInfo.playerId.toString()
             preferences[rulesKey] = settings.rules
             preferences[variantKey] = settings.variant
             preferences[sizeKey] = settings.boardSize

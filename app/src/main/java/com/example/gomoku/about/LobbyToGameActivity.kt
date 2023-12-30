@@ -14,7 +14,6 @@ import com.example.gomoku.game.GameScreen
 import com.example.gomoku.game.GameScreenViewModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.model.PlayInputModel
-import com.example.gomoku.user.LoggedUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -53,7 +52,8 @@ class LobbyToGameActivity : ComponentActivity() {
 
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it,id) })
+            val error by vm.error.collectAsState(initial = Idle)
+            GameScreen(gameInfo, onPlay = { play(it,id) }, error, onDismiss = {vm.resetError()})
         }
     }
 

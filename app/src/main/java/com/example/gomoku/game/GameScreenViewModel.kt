@@ -13,21 +13,29 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlin.Result.Companion.success
 
 class GameScreenViewModel : ViewModel() {
-    private val _gameInfoFlow: MutableStateFlow<IOState<GameModel>> =
-        MutableStateFlow(Idle)
+    private val _gameInfoFlow: MutableStateFlow<IOState<GameModel>> = MutableStateFlow(Idle)
+    private val _errorFlow: MutableStateFlow<IOState<String>> = MutableStateFlow(Idle)
 
     val gameInfo: Flow<IOState<GameModel>>
         get() = _gameInfoFlow.asStateFlow()
+    val error: Flow<IOState<String>>
+        get() = _errorFlow.asStateFlow()
 
     fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
-
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            val result =
-                runCatching { service.getGame((userInfoRepository.getUserInfo())) }
-            _gameInfoFlow.value = Loaded(result)
+            try {
+                val result =
+                    runCatching { service.getGame((userInfoRepository.getUserInfo())) }
+                _gameInfoFlow.value = Loaded(result)
+            } catch (e: Exception) {
+                _gameInfoFlow.value = Idle
+                val msg = e.message ?: "Unknown error"
+                _errorFlow.value = Loaded(success(msg))
+            }
         }
     }
 
@@ -48,4 +56,7 @@ class GameScreenViewModel : ViewModel() {
         }
     }
 
+    fun resetError() {
+        _errorFlow.value = Idle
+    }
 }

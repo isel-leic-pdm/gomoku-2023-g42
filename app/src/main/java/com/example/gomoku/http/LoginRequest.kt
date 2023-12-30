@@ -20,7 +20,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-
 class LoginRequest(private val client: OkHttpClient, private val gson: Gson): LoginService {
 
     override suspend fun postLogin(username: String, password: String): User {

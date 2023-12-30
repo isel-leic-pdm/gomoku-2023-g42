@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +35,12 @@ import com.example.gomoku.model.PlayInputModel
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) {
+fun GameScreen(
+    game: IOState<GameModel>,
+    onPlay: (PlayInputModel) -> Unit = {},
+    error: IOState<String>,
+    onDismiss: () -> Unit = {}
+) {
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull()
 
@@ -52,7 +59,23 @@ fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) 
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(100.dp))
-            CircularProgressIndicator()
+            if (table == null) CircularProgressIndicator()
+            if (error is Loaded) AlertDialog(
+                onDismissRequest = {
+                    onDismiss()
+                },
+                title = { Text(text = "Wrong move") },
+                text = { Text(text = error.result.getOrNull()!!) }, //TODO(Retirar o !!)
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onDismiss()
+                        }
+                    ) {
+                        Text(text = "OK")
+                    }
+                }
+            )
             /*when (table) {
                 is BoardRun -> {
                     drawBoard = true

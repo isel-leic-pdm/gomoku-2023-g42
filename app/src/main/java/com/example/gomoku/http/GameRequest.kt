@@ -69,7 +69,6 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
             ).build()
 
         return suspendCoroutine { cont ->
-
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     cont.resumeWithException(e)
@@ -79,7 +78,7 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                     val body = response.body
                     val bodyString = body?.string()
                     if (!response.isSuccessful || body == null)
-                        cont.resumeWithException(TODO())
+                        cont.resumeWithException(Exception(response.message))
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
                     }

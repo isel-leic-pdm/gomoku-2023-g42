@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,8 +40,6 @@ import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     user: IOState<Any> = Idle,
@@ -51,10 +48,9 @@ fun LoginScreen(
     onSignUp: () -> Unit,
     setIdle: () -> Unit
 ) {
-    val username = remember{mutableStateOf("")}
-    val password = remember{mutableStateOf("")}
+    val username = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-    val failedPopUp = remember { mutableStateOf(false) }
 
     GomokuTheme {
 
@@ -81,17 +77,17 @@ fun LoginScreen(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = null
                 )
-                if (user is Idle){
+                if (user is Idle) {
 
                     OutlinedTextField(
                         value = username.value,
-                        onValueChange = {username.value = it},
-                        label = { Text(text = "Username")},
+                        onValueChange = { username.value = it },
+                        label = { Text(text = "Username") },
                     )
                     OutlinedTextField(
                         value = password.value,
-                        onValueChange = {password.value = it},
-                        label = { Text(text = "Password")},
+                        onValueChange = { password.value = it },
+                        label = { Text(text = "Password") },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
@@ -106,7 +102,7 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.width(10.dp))
 
                         Button(onClick = {
-                            scope.launch { onLogin(username.value,password.value) }
+                            scope.launch { onLogin(username.value, password.value) }
 
                         })
                         { Text("Log in") }
@@ -115,7 +111,7 @@ fun LoginScreen(
 
                 }
 
-                if(user is Loading){
+                if (user is Loading) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.Center,
@@ -124,13 +120,12 @@ fun LoginScreen(
                         CircularProgressIndicator()
                     }
                 }
-                if(user is Loaded<*>) {
+                if (user is Loaded<*>) {
                     val loaded = user.result.getOrNull()
-                    if(loaded is LoggedUser) onHomeRequested()
+                    if (loaded is LoggedUser) onHomeRequested()
                     else {
                         AlertDialog(
                             onDismissRequest = {
-                                failedPopUp.value = false
                                 setIdle()
                             },
                             title = { Text(text = "Failed to Log in!") },
@@ -138,7 +133,6 @@ fun LoginScreen(
                             confirmButton = {
                                 TextButton(
                                     onClick = {
-                                        failedPopUp.value = false
                                         setIdle()
                                     }
                                 ) {
@@ -149,20 +143,16 @@ fun LoginScreen(
                     }
                 }
             }
-
         }
     }
-
 }
 
 @Preview(showSystemUi = true)
 @Composable
-fun LoginViewPreview(){
-
+fun LoginViewPreview() {
     LoginScreen(Idle, {}, ::test, {}) { }
-
-
 }
-fun test (text: String, txt:String){}
+
+fun test(text: String, txt: String) {}
 
 
