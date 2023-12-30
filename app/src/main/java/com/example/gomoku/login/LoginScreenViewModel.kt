@@ -30,7 +30,6 @@ class LoginScreenViewModel: ViewModel() {
             if (logged is LoggedUser) runBlocking { userInfoRepository.updateUserInfo(logged, null) }
 
         }
-
     }
 
     fun setIdle(){

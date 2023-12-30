@@ -99,6 +99,7 @@ fun GameScreen(
 
             if (table == null) {
                 CircularProgressIndicator()
+                Text(text = "Loading game")
             }
             else {
                 if (table?.state != "Playing" && !gameEndedPopUp) {

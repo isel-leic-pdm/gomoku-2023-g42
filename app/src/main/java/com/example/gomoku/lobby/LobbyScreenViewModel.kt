@@ -13,25 +13,33 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.User
+import com.google.gson.JsonParser
 import kotlinx.coroutines.delay
 import kotlin.runCatching
 
 class LobbyScreenViewModel : ViewModel() {
     private val _lobbyInfoFlow: MutableStateFlow<IOState<GameModel?>> =
         MutableStateFlow(Idle)
+    private val _errorFlow: MutableStateFlow<IOState<String>> = MutableStateFlow(Idle)
+
     val lobbyInfo: Flow<IOState<GameModel?>>
         get() = _lobbyInfoFlow.asStateFlow()
+    val error: Flow<IOState<String>>
+        get() = _errorFlow.asStateFlow()
 
     fun createLobby(service: LobbyService, userInfoRepository: UserInfoRepository) {
         if (_lobbyInfoFlow.value !is Idle) throw IllegalStateException("The view model is not in the idle state!")
 
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
-            try {
-                val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
-                _lobbyInfoFlow.value = Loaded(result)
-            } catch (e: Exception) {
-                //TODO(Produzir erro tal como no game)
+            val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
+            if (result.isSuccess) _lobbyInfoFlow.value = Loaded(result)
+            else {
+                _lobbyInfoFlow.value = Idle
+                val jsonError = result.exceptionOrNull()?.message ?: "Unknown error"
+                val msgParsed = JsonParser.parseString(jsonError).asJsonObject
+                val msg = msgParsed.getAsJsonPrimitive("error").asString
+                _errorFlow.value = Loaded(Result.success(msg))
             }
         }
     }
@@ -50,5 +58,9 @@ class LobbyScreenViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun resetError() {
+        _errorFlow.value = Idle
     }
 }
