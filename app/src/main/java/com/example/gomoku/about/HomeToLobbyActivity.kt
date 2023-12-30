@@ -33,9 +33,9 @@ class HomeToLobbyActivity : ComponentActivity() {
         lifecycleScope.launch {
             vm.lobbyInfo.collectLatest {
                 Log.d("HomeToLobbyActivity", "Success! LobbyInfo: $it")
-                if (it is Loaded && it.result.getOrNull() is Either.Right) {
+                if (it is Loaded) {
                     Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
-                    val result = (it.result.getOrNull() as Either.Right<GameModel?>).value
+                    val result = it.result.getOrNull()
                     if (result != null){
                         LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity,result.id)
                     }
