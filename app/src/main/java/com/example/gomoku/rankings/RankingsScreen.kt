@@ -120,7 +120,6 @@ fun RankingScreen(
                         ) {
                             items(list){ r ->
                                 r as PlayerRank
-
                                 val playerInfo = listOf(
                                     r.rank,
                                     r.username,
