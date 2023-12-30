@@ -1,7 +1,7 @@
 package com.example.gomoku.model
 
 
-class Row private constructor(val number: Int, val boardSize: Int) {
+class Row private constructor(val number: Int) {
     val index get() = number - 1
 
     companion object {
@@ -14,7 +14,7 @@ class Row private constructor(val number: Int, val boardSize: Int) {
 
     class Factory(private val boardSize: Int) {
         fun createRows(): List<Row> {
-            values = List(boardSize) { Row(it + 1, boardSize) } + Row(-1, boardSize)
+            values = List(boardSize) { Row(it + 1) } + Row(-1)
             return values
         }
     }

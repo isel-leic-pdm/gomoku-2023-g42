@@ -1,6 +1,5 @@
 package com.example.gomoku.model
 
-import com.example.gomoku.domain.PlayerRank
 import com.example.gomoku.game.GameModel
 import com.example.gomoku.user.LoggedUser
 import com.google.gson.internal.LinkedTreeMap

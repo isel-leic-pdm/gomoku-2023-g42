@@ -6,10 +6,11 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.lifecycleScope
+import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
-import com.example.gomoku.game.Either
-import com.example.gomoku.game.GameModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.lobby.LobbyScreen
 import com.example.gomoku.lobby.LobbyScreenViewModel
@@ -45,8 +46,11 @@ class HomeToLobbyActivity : ComponentActivity() {
             }
         }
         setContent {
+            val error by vm.error.collectAsState(initial = Idle)
             LobbyScreen(
                 onCreateLobby = { vm.createLobby(app.lobbyService, app.userInfoRepository) },
+                error,
+                onDismiss = { vm.resetError() }
             )
         }
     }

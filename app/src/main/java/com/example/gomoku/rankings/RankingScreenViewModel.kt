@@ -22,9 +22,8 @@ class RankingScreenViewModel : ViewModel() {
 
     fun fetchRanking(service: RankingService) {
         viewModelScope.launch {
-            rankings= Loading
+            rankings = Loading
             rankings = Loaded(runCatching { service.fetchRankings()})
-
         }
     }
 }

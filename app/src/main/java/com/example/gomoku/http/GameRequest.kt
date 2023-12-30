@@ -15,10 +15,8 @@ import com.example.gomoku.game.GameService
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoggedUser
-import com.example.gomoku.user.NoUser
 import com.example.gomoku.user.User
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class GameRequest(private val client: OkHttpClient, private val gson: Gson): GameService {

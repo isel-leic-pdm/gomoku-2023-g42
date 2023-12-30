@@ -2,11 +2,10 @@ package com.example.gomoku.http
 
 import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoginCreds
-import com.example.gomoku.user.NoUser
 import com.example.gomoku.user.User
 import com.example.gomoku.signUp.SignUpService
+import com.example.gomoku.user.NoUser
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -40,11 +39,10 @@ class SignUpRequest(
                     val bodyString = body?.string()
                     val error = if (!response.isSuccessful) bodyString?.subSequence(10,bodyString.length - 2).toString() else ""
                     if (body != null) {
-                        if (!response.isSuccessful) cont.resume(NoUser(error ?: "Unknown error"))
+                        if (!response.isSuccessful) cont.resume(NoUser(error))
                          else {
                             cont.resume(gson.fromJson(bodyString,SirenMapToModel::class.java).toLoggedUser(username))
                         }
-
                     }
                 }
             })

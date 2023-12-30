@@ -34,12 +34,15 @@ class RankingsToHomeActivity : ComponentActivity() {
         Log.v("AboutActivity", "onCreate")
         setContent {
             val userInfo by vm.userInfo.collectAsState(initial = Idle)
+            val error by vm.error.collectAsState(initial = Idle)
             HomeScreen(
                 userInfo = userInfo,
                 getUser = { vm.fetchUserInfo() },
                 onAuthorsRequested = { HomeToAuthorActivity.navigateTo(this) },
                 onRankingsRequested = { HomeToRankingsActivity.navigateTo(this) },
                 onUpdateLobby = ::updateUser,
+                error = error,
+                onDismiss = { vm.resetError() }
             ) { HomeToLobbyActivity.navigateTo(this) }
         }
     }

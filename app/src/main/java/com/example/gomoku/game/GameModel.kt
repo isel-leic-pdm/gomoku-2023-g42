@@ -10,7 +10,3 @@ data class GameModel(
     val playerW: Int,
     val boardSize: Int
 )
-
-data class Error(
-    val error: String
-)
