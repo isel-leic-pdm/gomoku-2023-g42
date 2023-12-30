@@ -184,12 +184,12 @@ fun HomeScreen(
                                     )
                                     Text(text = Variant.FREESTYLE.string())
 
-                                    RadioButton(
+                                    /*RadioButton(
                                         selected = selectedVariant == Variant.SWAP,
                                         onClick = { selectedVariant = Variant.SWAP },
                                         modifier = Modifier.padding(end = 8.dp)
                                     )
-                                    Text(text = stringResource(id = R.string.swap_label))
+                                    Text(text = stringResource(id = R.string.swap_label))*/
                                 }
 
                                 Row(

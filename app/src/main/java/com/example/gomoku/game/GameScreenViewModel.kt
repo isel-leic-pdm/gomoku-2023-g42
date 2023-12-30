@@ -1,5 +1,7 @@
 package com.example.gomoku.game
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gomoku.domain.IOState
@@ -19,6 +21,7 @@ import kotlin.Result.Companion.success
 class GameScreenViewModel : ViewModel() {
     private val _gameInfoFlow: MutableStateFlow<IOState<GameModel>> = MutableStateFlow(Idle)
     private val _errorFlow: MutableStateFlow<IOState<String>> = MutableStateFlow(Idle)
+    private val gameId: MutableState<Int> = mutableIntStateOf(0)
 
     val gameInfo: Flow<IOState<GameModel>>
         get() = _gameInfoFlow.asStateFlow()
@@ -26,10 +29,15 @@ class GameScreenViewModel : ViewModel() {
         get() = _errorFlow.asStateFlow()
 
     fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
+        if (_gameInfoFlow.value is Loaded)
+            gameId.value = (_gameInfoFlow.value as Loaded<GameModel>).result.getOrNull()?.id ?: 0
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
             val result =
-                runCatching { service.getGame((userInfoRepository.getUserInfo())) }
+                runCatching {
+                    if(gameId.value == 0) service.getGame((userInfoRepository.getUserInfo()))
+                    else service.getGameById(gameId.value)
+                }
             if (result.isSuccess) _gameInfoFlow.value = Loaded(result)
             else {
                 _gameInfoFlow.value = Idle
@@ -38,7 +46,6 @@ class GameScreenViewModel : ViewModel() {
                 val msg = msgParsed.getAsJsonPrimitive("error").asString
                 _errorFlow.value = Loaded(success(msg))
             }
-
         }
     }
 
@@ -62,6 +69,15 @@ class GameScreenViewModel : ViewModel() {
                     val msgParsed = JsonParser.parseString(jsonError).asJsonObject
                     val msg = msgParsed.getAsJsonPrimitive("error").asString
                     _errorFlow.value = Loaded(success(msg))
+            }
+        }
+    }
+
+    fun forfeit(service: GameService, userInfoRepository: Pair<User, LobbyInfo>, gameId: Int) {
+        _gameInfoFlow.value = Loading
+        viewModelScope.launch {
+            runCatching {
+                service.forfeit(userInfoRepository, gameId)
             }
         }
     }

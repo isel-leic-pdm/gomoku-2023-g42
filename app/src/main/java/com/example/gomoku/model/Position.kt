@@ -40,5 +40,3 @@ fun String.toPosition(boardSize: Int): Position {
         Position(row.toRow(), col.toColumn(), boardSize)
     }
 }
-
-operator fun Position.plus(dir: Direction): Position = Position(row.index + dir.difRow, col.index + dir.difCol, row.boardSize)

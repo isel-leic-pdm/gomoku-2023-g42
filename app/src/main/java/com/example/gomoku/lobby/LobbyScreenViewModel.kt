@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.example.gomoku.infrastructure.UserInfoRepository
-import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import kotlinx.coroutines.delay
 import kotlin.runCatching
-
 
 class LobbyScreenViewModel : ViewModel() {
     private val _lobbyInfoFlow: MutableStateFlow<IOState<GameModel?>> =
@@ -35,12 +33,10 @@ class LobbyScreenViewModel : ViewModel() {
             } catch (e: Exception) {
                 //TODO(Produzir erro tal como no game)
             }
-
         }
     }
 
     fun waitForPlayer(service: LobbyService, userInfo: Pair<User, LobbyInfo>) {
-        val username = (userInfo.first as LoggedUser).username
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
             while (true) {

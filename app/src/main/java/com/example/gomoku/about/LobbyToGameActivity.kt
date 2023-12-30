@@ -52,9 +52,14 @@ class LobbyToGameActivity : ComponentActivity() {
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
             val error by vm.error.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it, id) }, error, onDismiss = { vm.resetError() }, onBackHome = {
-                AuthorsToHomeActivity.navigateTo(this)
-            })
+            GameScreen(
+                gameInfo,
+                onPlay = { play(it, id) },
+                error,
+                onDismiss = { vm.resetError() },
+                { onHomeRequested() },
+                { forfeit() }
+            )
         }
     }
 
@@ -63,5 +68,17 @@ class LobbyToGameActivity : ComponentActivity() {
             app.userInfoRepository.getUserInfo()
         }
         vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id)
+    }
+
+    private fun forfeit() {
+        val userInfo = runBlocking {
+            app.userInfoRepository.getUserInfo()
+        }
+        val id = intent.getIntExtra("id", 0)
+        vm.forfeit(app.gameService, userInfo, id)
+    }
+
+    private fun onHomeRequested() {
+        AuthorsToHomeActivity.navigateTo(this)
     }
 }

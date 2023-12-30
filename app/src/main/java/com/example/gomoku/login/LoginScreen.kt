@@ -108,9 +108,7 @@ fun LoginScreen(
 
                         })
                         { Text(stringResource(id = R.string.login_label)) }
-
                     }
-
                 }
 
                 if (user is Loading) {

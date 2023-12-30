@@ -36,10 +36,9 @@ class HomeToLobbyActivity : ComponentActivity() {
                 if (it is Loaded) {
                     Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")
                     val result = it.result.getOrNull()
-                    if (result != null){
-                        LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity,result.id)
-                    }
-                    else {
+                    if (result != null) {
+                        LobbyToGameActivity.navigateTo(this@HomeToLobbyActivity, result.id)
+                    } else {
                         vm.waitForPlayer(app.lobbyService, app.userInfoRepository.getUserInfo())
                     }
                 }
@@ -47,12 +46,8 @@ class HomeToLobbyActivity : ComponentActivity() {
         }
         setContent {
             LobbyScreen(
-                onCreateLobby = ::createLobby,
+                onCreateLobby = { vm.createLobby(app.lobbyService, app.userInfoRepository) },
             )
         }
-    }
-
-    private fun createLobby() {
-        vm.createLobby(app.lobbyService, app.userInfoRepository)
     }
 }

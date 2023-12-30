@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -41,14 +40,19 @@ fun GameScreen(
     onPlay: (PlayInputModel) -> Unit = {},
     error: IOState<String>,
     onDismiss: () -> Unit = {},
-    onBackHome:() -> Unit
+    onHomeRequested: () -> Unit = {},
+    forfeit: () -> Unit = {},
 ) {
+    var gameEndedPopUp by remember { mutableStateOf(false) }
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull() ?: table
 
     GomokuTheme {
         Button(
-            onClick = { onBackHome() }
+            onClick = {
+                forfeit()
+                onHomeRequested()
+            }
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
@@ -77,25 +81,35 @@ fun GameScreen(
                     }
                 )
             }
-            /*when (table) {
-                is BoardRun -> {
-                    drawBoard = true
-                    (GameView(game) { input -> onPlay(input) })
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "Turn: ")
-                        ShowTurn(turn = (table as BoardRun).turn)
-                    }
-                }
-                is BoardDraw -> Text(text = "Game ended it a draw") //TODO()
-                is BoardWin -> Text(text = "Someone won") //TODO()
-                else -> Text(text = "Loading game") //TODO()
-            }*/
+
             if (table == null) {
                 CircularProgressIndicator()
             }
             else {
+                if (table?.state != "Playing" && !gameEndedPopUp) {
+                    val endMessage = when (table?.state) {
+                        "Ended B", "W Forfeited" -> "Black Won"
+                        "Ended D" -> "Draw"
+                        else -> "White Won"
+                    }
+                    AlertDialog(
+                        onDismissRequest = {
+                            gameEndedPopUp = true
+                        },
+                        title = { Text(text = "Game ended") },
+                        text = { Text(text = endMessage) },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    gameEndedPopUp = true
+                                }
+                            ) {
+                                Text(stringResource(id = R.string.ok_button))
+                            }
+                        }
+                    )
+                }
+
                 GameView(table) { input -> onPlay(input) }
 
                 Row(
@@ -113,19 +127,19 @@ fun GameScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
+                        /*Image(
                             painter = painterResource(id = R.drawable.whitestone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = "${ (game as Loaded).result.getOrNull()?.playerW }")
+                        Text(text = ": ${table?.playerW}")
                         Spacer(modifier = Modifier.width(50.dp))
                         Image(
                             painter = painterResource(id = R.drawable.blackstone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = "${ (game as Loaded).result.getOrNull()?.playerW }")
+                        Text(text = ": ${table?.playerB}")*/
                     }
                 }
             }

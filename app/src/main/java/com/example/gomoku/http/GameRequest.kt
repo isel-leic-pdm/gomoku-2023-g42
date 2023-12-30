@@ -17,6 +17,7 @@ import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class GameRequest(private val client: OkHttpClient, private val gson: Gson): GameService {
@@ -30,7 +31,32 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
             .get().build()
 
         return suspendCoroutine { cont ->
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    cont.resumeWithException(e)
+                }
 
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body
+                    val bodyString = body?.string()
+                    if (!response.isSuccessful || body == null) response.body?.let { bd ->
+                        cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
+                    }
+                    else {
+                        cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
+                    }
+                }
+            })
+        }
+    }
+
+    override suspend fun getGameById(id: Int): GameModel {
+        val request = Request.Builder()
+            .url("https://${LOCALHOST}/games/$id")
+            .addHeader("accept", "application/Json")
+            .get().build()
+
+        return suspendCoroutine { cont ->
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     cont.resumeWithException(e)
@@ -79,6 +105,33 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                         cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
+                    }
+                }
+            })
+        }
+    }
+
+    override suspend fun forfeit(userInfoRepository: Pair<User, LobbyInfo>, id: Int) {
+        val token = userInfoRepository.first.token
+        val request = Request.Builder()
+            .url("https://${LOCALHOST}/games/forfeit/$id")
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Authorization", "Bearer $token")
+            .post("".toRequestBody("application/json".toMediaTypeOrNull()))
+            .build()
+
+        return suspendCoroutine { cont ->
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    cont.resumeWithException(e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body
+                    val bodyString = body?.string()
+                    if (!response.isSuccessful || body == null) cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
+                    else {
+                        cont.resume(Unit)
                     }
                 }
             })

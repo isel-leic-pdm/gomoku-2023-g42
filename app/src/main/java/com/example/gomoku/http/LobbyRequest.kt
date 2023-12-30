@@ -31,7 +31,6 @@ class LobbyRequest(private val client: OkHttpClient, private val gson: Gson) : L
         )
 
         return suspendCoroutine { cont ->
-
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     cont.resumeWithException(e)
@@ -44,7 +43,8 @@ class LobbyRequest(private val client: OkHttpClient, private val gson: Gson) : L
                         cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     }
                     else {
-                        val res = if (bodyString != null) gson.fromJson(bodyString, SirenMapToModel::class.java).toGame() else null
+                        val gson = if (bodyString != null) gson.fromJson(bodyString, SirenMapToModel::class.java) else null
+                        val res = if (gson?.properties == null) null else gson.toGame()
                         cont.resume(res)
                     }
                 }
@@ -57,7 +57,6 @@ class LobbyRequest(private val client: OkHttpClient, private val gson: Gson) : L
         val request = requestMakerGameExists((userInfoRepository.first as LoggedUser).username)
 
         return suspendCoroutine { cont ->
-
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     cont.resumeWithException(e)

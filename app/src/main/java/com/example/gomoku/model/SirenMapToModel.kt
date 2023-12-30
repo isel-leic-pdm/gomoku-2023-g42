@@ -5,9 +5,7 @@ import com.example.gomoku.game.GameModel
 import com.example.gomoku.user.LoggedUser
 import com.google.gson.internal.LinkedTreeMap
 
-data class SirenMapToModel(
-    val properties: Map<String, Any>
-) {
+data class SirenMapToModel(val properties: Map<String, Any>) {
 
     fun toGame(): GameModel {
         val properties = this.properties
@@ -42,6 +40,4 @@ data class SirenMapToModel(
         val token = properties["token"] as String
         return LoggedUser(username, token)
     }
-
-
 }
