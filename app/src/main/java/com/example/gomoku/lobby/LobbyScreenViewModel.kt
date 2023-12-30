@@ -6,13 +6,11 @@ import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
 import com.example.gomoku.domain.Loading
-import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import com.example.gomoku.game.Error
 import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.User
@@ -21,9 +19,9 @@ import kotlin.runCatching
 
 
 class LobbyScreenViewModel : ViewModel() {
-    private val _lobbyInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> =
+    private val _lobbyInfoFlow: MutableStateFlow<IOState<GameModel>> =
         MutableStateFlow(Idle)
-    val lobbyInfo: Flow<IOState<Either<Error, GameModel?>>>
+    val lobbyInfo: Flow<IOState<GameModel>>
         get() = _lobbyInfoFlow.asStateFlow()
 
     fun createLobby(service: LobbyService, userInfoRepository: UserInfoRepository) {
@@ -50,7 +48,7 @@ class LobbyScreenViewModel : ViewModel() {
                 val result = runCatching {
                     service.gameExists(userInfo)
                 }
-                if (result.getOrNull() != null && result.getOrNull() is Either.Right) {
+                if (result.getOrNull() != null) {
                     _lobbyInfoFlow.value = Loaded(result)
                     break
                 }
