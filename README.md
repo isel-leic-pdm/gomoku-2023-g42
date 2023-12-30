@@ -7,4 +7,4 @@
 # Documentation
 ----
 Application working:\
-[Video](https://drive.google.com/file/d/17w40a8qK04lFMBqw0HXjKzFyRGmxTFgV/view?usp=sharing)
+[Video](https://drive.google.com/file/d/1_NXPWoFwa0AgfAgFV6tTbyZ6FrZMtytu/view?usp=drive_link)

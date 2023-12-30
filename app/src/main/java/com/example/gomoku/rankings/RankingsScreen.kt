@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -55,7 +54,6 @@ fun RankingScreen(
     onHomeRequested: () -> Unit
 )
 {
-
     val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
@@ -73,7 +71,6 @@ fun RankingScreen(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = null
                 )
-
             }
             Spacer(modifier = Modifier.height(10.dp))
             Column (
@@ -96,17 +93,14 @@ fun RankingScreen(
                                 imageVector = Icons.Filled.Search,
                                 contentDescription = null
                             )
-
                         }
-
-
                     }
 
                     RankBox(listOf(
                         stringResource(id = R.string.rank_label),
                         stringResource(id = R.string.username_label),
-                        stringResource(id = R.string.point_label),
                         stringResource(id = R.string.games_label),
+                        stringResource(id = R.string.point_label),
                         stringResource(id = R.string.wins_label),
                         stringResource(id = R.string.losses_label)
                         ),
@@ -174,14 +168,9 @@ fun RankBox(element: List<String>, spacer: Dp = 40.dp){
                     modifier = Modifier.weight(w)
                 )
                 c++
-
             }
-
         }
-
     }
-
-
 }
 
 @Preview(showSystemUi = true)
