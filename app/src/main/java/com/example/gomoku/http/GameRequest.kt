@@ -15,6 +15,7 @@ import com.example.gomoku.game.GameService
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.user.NoUser
 import com.example.gomoku.user.User
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -132,6 +133,33 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                     if (!response.isSuccessful || body == null) cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     else {
                         cont.resume(Unit)
+                    }
+                }
+            })
+        }
+    }
+
+    override suspend fun getUserById(id: String) : String {
+        val request = Request.Builder()
+            .url("https://${LOCALHOST}/users/$id")
+            .addHeader("accept", "application/Json")
+            .build()
+
+        return suspendCoroutine { cont ->
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    cont.resumeWithException(e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body
+                    val bodyString = body?.string()
+                    if (body != null) {
+                        if (!response.isSuccessful) cont.resume(bodyString ?: "Unknown error")
+                        else {
+                            cont.resume(gson.fromJson(bodyString,SirenMapToModel::class.java).toUser())
+                        }
+
                     }
                 }
             })

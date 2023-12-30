@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -35,8 +34,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -92,7 +89,8 @@ fun RankingScreen(
                     )
                     RankBox(listOf(
                         stringResource(id = R.string.rank_label),
-                        stringResource(id = R.string.user_label),
+                        stringResource(id = R.string.username_label),
+                        stringResource(id = R.string.point_label),
                         stringResource(id = R.string.games_label),
                         stringResource(id = R.string.wins_label),
                         stringResource(id = R.string.losses_label)
@@ -107,15 +105,18 @@ fun RankingScreen(
                         ) {
                             items(list){ r ->
                                 r as PlayerRank
+
+                                val playerInfo = listOf(
+                                    r.rank,
+                                    r.username,
+                                    r.playedGames,
+                                    r.points,
+                                    r.wonGames,
+                                    r.lostGames
+                                )
+
                                 if ( searchText.isBlank() || r.username.contains(searchText, ignoreCase = true)){
-                                    val playerRank = listOf(
-                                        r.rank,
-                                        r.username,
-                                        r.playedGames,
-                                        r.wonGames,
-                                        r.lostGames
-                                    )
-                                        RankBox(playerRank)
+                                    RankBox(playerInfo)
                                 }
                             }
                         }
@@ -127,12 +128,13 @@ fun RankingScreen(
 }
 
 @Composable
-fun RankBox(element: List<String>, spacer: Dp = 30.dp){
+fun RankBox(element: List<String>, spacer: Dp = 40.dp){
+    var c = 1
+    var w: Float
 
     Box (
         Modifier
-            .width(300.dp)
-            .fillMaxWidth()
+            .width(500.dp)
             .padding(8.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.LightGray)
@@ -140,14 +142,24 @@ fun RankBox(element: List<String>, spacer: Dp = 30.dp){
             contentAlignment = Alignment.Center
 
     ){
-        Row {
+        Row (
+            horizontalArrangement = Arrangement.SpaceAround
+        ){
+
             element.forEach {
+                w = when (c) {
+                    2 -> 2f
+                    6 -> 0.3f
+                    4 -> 1.3f
+                    else -> 1f
+                }
                 Text(
                     text = it,
                     fontWeight = FontWeight.ExtraBold,
-
+                    modifier = Modifier.weight(w)
                 )
-                Spacer(modifier = Modifier.width(spacer))
+                c++
+
             }
 
         }

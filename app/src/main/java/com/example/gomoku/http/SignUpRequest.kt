@@ -38,8 +38,9 @@ class SignUpRequest(
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     val bodyString = body?.string()
+                    val error = if (!response.isSuccessful) bodyString?.subSequence(10,bodyString.length - 2).toString() else ""
                     if (body != null) {
-                        if (!response.isSuccessful) cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
+                        if (!response.isSuccessful) cont.resume(NoUser(error ?: "Unknown error"))
                          else {
                             cont.resume(gson.fromJson(bodyString,SirenMapToModel::class.java).toLoggedUser(username))
                         }

@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,10 +45,22 @@ fun GameScreen(
     onDismiss: () -> Unit = {},
     onHomeRequested: () -> Unit = {},
     forfeit: () -> Unit = {},
+    getUsername: (String) -> String
 ) {
     var gameEndedPopUp by remember { mutableStateOf(false) }
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull() ?: table
+    var playerW by remember { mutableStateOf("") }
+    var playerB by remember { mutableStateOf("") }
+
+
+    Image(
+        painter = painterResource(id = R.drawable.lightwood),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier
+            .fillMaxSize()
+    )
 
     GomokuTheme {
         Button(
@@ -127,19 +142,21 @@ fun GameScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        /*Image(
+                        Image(
                             painter = painterResource(id = R.drawable.whitestone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = ": ${table?.playerW}")
+                        if(playerW.isBlank()){playerW = getUsername(table?.playerW.toString())}
+                        Text(text = ": $playerW")
                         Spacer(modifier = Modifier.width(50.dp))
                         Image(
                             painter = painterResource(id = R.drawable.blackstone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = ": ${table?.playerB}")*/
+                        if(playerB.isBlank()){playerB = getUsername(table?.playerB.toString())}
+                        Text(text = ": $playerB")
                     }
                 }
             }

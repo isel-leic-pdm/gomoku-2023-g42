@@ -16,4 +16,5 @@ interface GameService {
     ): GameModel
 
     suspend fun forfeit(userInfoRepository: Pair<User, LobbyInfo>, id: Int)
+    suspend fun getUserById(id: String) : String
 }

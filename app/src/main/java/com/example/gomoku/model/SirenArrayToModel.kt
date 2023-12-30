@@ -8,14 +8,17 @@ data class SirenArrayToModel(
 
     fun toRankList(): List<PlayerRank> {
         val properties = this.properties
+        var counter = 0
         return properties.map { player ->
             PlayerRank(
+                (++counter).toString(),
                 username = player["username"] ?: "",
-                rank = player["rank"] ?: "",
+                points = player["rank"] ?: "",
                 playedGames = player["playedGames"] ?: "",
                 wonGames = player["wonGames"] ?: "",
                 lostGames = player["lostGames"] ?: ""
             )
+
         }
     }
 }

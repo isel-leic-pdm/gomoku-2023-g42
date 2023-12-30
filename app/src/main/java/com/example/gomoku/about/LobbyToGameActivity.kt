@@ -58,7 +58,9 @@ class LobbyToGameActivity : ComponentActivity() {
                 error,
                 onDismiss = { vm.resetError() },
                 { onHomeRequested() },
-                { forfeit() }
+                { forfeit() },
+                getUsername = ::getUser
+
             )
         }
     }
@@ -68,6 +70,10 @@ class LobbyToGameActivity : ComponentActivity() {
             app.userInfoRepository.getUserInfo()
         }
         vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id)
+    }
+
+    private fun getUser(id: String) : String{
+        return runBlocking{app.gameService.getUserById(id)}
     }
 
     private fun forfeit() {

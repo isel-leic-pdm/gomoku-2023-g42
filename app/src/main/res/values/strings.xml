@@ -27,7 +27,7 @@
     <string name="failed_log_label">Failed to Log in!</string>
     <string name="failed_log_message">Insert a valid combination of username and password.</string>
     <string name="rank_label" translatable="false">Rank</string>
-    <string name="user_label" translatable="false">User</string>
+    <string name="user_label" translatable="false">Username</string>
     <string name="games_label">Games</string>
     <string name="wins_label">W</string>
     <string name="losses_label">L</string>
@@ -38,4 +38,5 @@
     <string name="user_created_label">User Created!</string>
     <string name="user_created_message">User has been created successfully!</string>
     <string name="play_button">Play</string>
+    <string name="point_label" translatable="false">Pts</string>
 </resources>

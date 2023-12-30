@@ -40,4 +40,10 @@ data class SirenMapToModel(val properties: Map<String, Any>) {
         val token = properties["token"] as String
         return LoggedUser(username, token)
     }
+
+    fun toUser(): String {
+        val properties = this.properties
+        return  properties["username"] as String
+
+    }
 }
