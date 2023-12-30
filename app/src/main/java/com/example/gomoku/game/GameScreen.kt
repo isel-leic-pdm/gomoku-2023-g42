@@ -26,8 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.Player
+import com.example.gomoku.model.BoardRun
+import com.example.gomoku.model.Player
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Loaded

@@ -1,4 +1,4 @@
-package com.example.demo.domain
+package com.example.gomoku.model
 
 enum class Player(val string: String) {
     W("W"),

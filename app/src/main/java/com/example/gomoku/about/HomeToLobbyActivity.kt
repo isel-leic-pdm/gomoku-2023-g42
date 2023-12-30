@@ -31,7 +31,7 @@ class HomeToLobbyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            vm.lobbyInfo.collectLatest { it ->
+            vm.lobbyInfo.collectLatest {
                 Log.d("HomeToLobbyActivity", "Success! LobbyInfo: $it")
                 if (it is Loaded && it.result.getOrNull() is Either.Right) {
                     Log.d("HomeToLobbyActivity", "Success! LobbyInfo: ${it.result.getOrNull()}")

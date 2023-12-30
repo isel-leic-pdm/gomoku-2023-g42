@@ -22,7 +22,7 @@ private const val TOKEN_KEY = "TOKEN"
 private const val RULES_KEY = "RULES"
 private const val VARIANT_KEY = "VARIANT"
 private const val SIZE_KEY = "SIZE"
-private const val PLAYER_ID_KEY = "PLAYER_ID"
+//private const val PLAYER_ID_KEY = "PLAYER_ID"
 
 
 /**

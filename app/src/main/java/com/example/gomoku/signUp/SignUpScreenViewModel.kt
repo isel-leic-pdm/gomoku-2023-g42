@@ -16,15 +16,13 @@ class SignUpScreenViewModel : ViewModel() {
     var user by mutableStateOf<IOState<Any>>(Idle)
         private set
 
-
     fun createUser(service: SignUpService, username: String, password: String) {
         viewModelScope.launch {
             user = Loading
             user = Loaded(runCatching { service.createUser(username, password)})
-
-
         }
     }
+
     fun setIdle() {
         user = Idle
     }

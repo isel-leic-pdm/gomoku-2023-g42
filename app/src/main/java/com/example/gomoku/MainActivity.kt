@@ -18,10 +18,6 @@ import com.example.gomoku.login.LoginScreenViewModel
 import com.example.gomoku.ui.theme.GomokuTheme
 import com.example.gomoku.ui.theme.*
 
-/*const val BOARD_LINE_SIZE = 2
-const val BOARD_CELL_SIZE = 64
-const val AXIS_SIZE = 20*/
-
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<LoginScreenViewModel>()
@@ -33,7 +29,6 @@ class MainActivity : ComponentActivity() {
             origin.startActivity(intent)
         }
     }
-
 
     @SuppressLint("UnrememberedMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +54,7 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
     private fun login (username: String, password: String){
         viewModel.loginUser(app.loginService, app.userInfoRepository, username, password)
     }

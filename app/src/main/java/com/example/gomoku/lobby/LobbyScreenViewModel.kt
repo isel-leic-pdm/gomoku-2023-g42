@@ -35,7 +35,7 @@ class LobbyScreenViewModel : ViewModel() {
                 val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
                 _lobbyInfoFlow.value = Loaded(result)
             } catch (e: Exception) {
-
+                //TODO(Produzir erro tal como no game)
             }
 
         }

@@ -1,8 +1,5 @@
 package com.example.gomoku.model
 
-import com.example.demo.domain.Moves
-import com.example.demo.domain.Player
-
 class Position private constructor(val row: Row, val col: Column) {
 
     override fun toString(): String = if (this == INVALID) "Invalid Cell" else "${this.row.number}${this.col.symbol}"

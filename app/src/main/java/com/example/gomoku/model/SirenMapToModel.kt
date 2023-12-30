@@ -1,7 +1,5 @@
 package com.example.gomoku.model
 
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.toPlayer
 import com.example.gomoku.game.GameModel
 import com.google.gson.internal.LinkedTreeMap
 

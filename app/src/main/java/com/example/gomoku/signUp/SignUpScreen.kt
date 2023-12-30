@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 fun SignUpScreen(
     user: IOState<Any> = Idle,
     onSignUp: (String, String) -> Unit,
-    onLoginSuccess : () -> Unit,
+    onLoginSuccess: () -> Unit,
     setIdle: () -> Unit,
     onLoginRequested: () -> Unit
 ) {
@@ -112,7 +112,6 @@ fun SignUpScreen(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
-
                     Button(
                         onClick = {
                             if (password.value == confirmPassword.value) {
@@ -122,13 +121,10 @@ fun SignUpScreen(
                     ) {
                         Text(text = "Sign Up")
                     }
-
-
                 }
             }
             if (user is Loaded) {
                 val loaded = user.result.getOrNull()
-
                 if (loaded is NoUser) {
                     error.value = loaded.error
                     apiError.value = true
@@ -136,7 +132,6 @@ fun SignUpScreen(
                 } else {
                     confirmPopUp.value = true
                 }
-
             }
 
 
@@ -156,6 +151,7 @@ fun SignUpScreen(
                     }
                 )
             }
+
             if (confirmPopUp.value) {
                 AlertDialog(
                     onDismissRequest = { confirmPopUp.value = false },
@@ -173,6 +169,7 @@ fun SignUpScreen(
                     }
                 )
             }
+
             if (apiError.value) {
                 AlertDialog(
                     onDismissRequest = { apiError.value = false },
@@ -188,16 +185,13 @@ fun SignUpScreen(
                         }
                     }
                 )
-
             }
         }
     }
 }
+
 @Preview(showSystemUi = true)
 @Composable
 fun SignUpViewPreview(){
-
     SignUpScreen(Idle,::test, {} ,{}) {}
-
-
 }

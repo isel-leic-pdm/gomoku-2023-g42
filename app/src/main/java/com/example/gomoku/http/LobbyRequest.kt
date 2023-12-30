@@ -1,7 +1,7 @@
 package com.example.gomoku.http
 
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.toPlayer
+import com.example.gomoku.model.BoardRun
+import com.example.gomoku.model.toPlayer
 
 import com.example.gomoku.game.Either
 import com.example.gomoku.game.GameModel

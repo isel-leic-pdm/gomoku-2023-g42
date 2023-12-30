@@ -79,8 +79,6 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                     val bodyString = body?.string()
                     if (!response.isSuccessful || body == null)
                         cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
-                        //TODO(When this happens, although an exception should be thrown,
-                        // try catch continues the try part)
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
                     }

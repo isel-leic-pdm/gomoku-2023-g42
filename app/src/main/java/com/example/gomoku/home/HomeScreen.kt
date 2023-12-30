@@ -30,9 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.demo.domain.BoardSize
-import com.example.demo.domain.Rules
-import com.example.demo.domain.Variant
+import com.example.gomoku.model.BoardSize
+import com.example.gomoku.model.Rules
+import com.example.gomoku.model.Variant
 import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Loaded
@@ -233,26 +233,3 @@ fun HomeScreen(
         }
     }
 }
-
-
-@Composable
-fun GameConfig(
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-    onSetLobby: (String, String, String) -> Unit
-) {
-    var boardSize by remember { mutableStateOf(BoardSize.values()[0]) }
-    var rules by remember { mutableStateOf(Rules.values()[0]) }
-    var variant by remember { mutableStateOf(Variant.values()[0]) }
-
-    GomokuTheme {
-
-    }
-}
-
-/*@Preview(showSystemUi = true)
-@Composable
-fun HomeViewPreview(){
-    HomeScreen(LoggedUser("",""), {}, {}, userInfo
-            getUser = {vm.fetchUserInfo()})
-}*/

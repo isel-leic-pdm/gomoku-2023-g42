@@ -30,21 +30,11 @@ class HomeViewModel(private val repository: UserInfoRepository): ViewModel() {
         get() = _userInfoFlow.asStateFlow()
 
     fun fetchUserInfo() {
-
-        /*if (_userInfoFlow.value !is Idle)
-            throw IllegalStateException("The view model is not in the idle state.") */
-
         _userInfoFlow.value = Loading
         viewModelScope.launch {
             val result = runCatching { repository.getUserInfo() }
             _userInfoFlow.value = Loaded(result)
         }
-    }
-
-    fun resetToIdle() {
-        if (_userInfoFlow.value !is Loaded)
-            throw IllegalStateException("The view model is not in the loaded state.")
-        _userInfoFlow.value = Idle
     }
 }
 

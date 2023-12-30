@@ -17,9 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.demo.domain.Board
-import com.example.demo.domain.BoardRun
-import com.example.demo.domain.Player
+import com.example.gomoku.model.Board
+import com.example.gomoku.model.BoardRun
+import com.example.gomoku.model.Player
 import com.example.gomoku.model.Position
 import com.example.gomoku.R
 import com.example.gomoku.model.PlayInputModel

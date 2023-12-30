@@ -9,6 +9,7 @@ import com.example.gomoku.domain.Loading
 import com.example.gomoku.infrastructure.UserInfoRepository
 import com.example.gomoku.lobby.LobbyInfo
 import com.example.gomoku.user.User
+import com.google.gson.JsonParser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.Flow
@@ -27,15 +28,17 @@ class GameScreenViewModel : ViewModel() {
     fun getGameInfo(service: GameService, userInfoRepository: UserInfoRepository) {
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            try {
-                val result =
-                    runCatching { service.getGame((userInfoRepository.getUserInfo())) }
-                _gameInfoFlow.value = Loaded(result)
-            } catch (e: Exception) {
+            val result =
+                runCatching { service.getGame((userInfoRepository.getUserInfo())) }
+            if (result.isSuccess) _gameInfoFlow.value = Loaded(result)
+            else {
                 _gameInfoFlow.value = Idle
-                val msg = e.message ?: "Unknown error"
+                val jsonError = result.exceptionOrNull()?.message ?: "Unknown error"
+                val msgParsed = JsonParser.parseString(jsonError).asJsonObject
+                val msg = msgParsed.getAsJsonPrimitive("error").asString
                 _errorFlow.value = Loaded(success(msg))
             }
+
         }
     }
 
@@ -44,21 +47,21 @@ class GameScreenViewModel : ViewModel() {
         userInfoRepository: Pair<User, LobbyInfo>,
         row: Int,
         col: Int,
-        id: Int,
+        id: Int
         ) {
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            try {
                 val result =
                     runCatching {
                         service.play(userInfoRepository,row,col,id)
                     }
-                //TODO(The code reaches this part even when an exception should be thrown in the other TODO in GameRequest)
-                _gameInfoFlow.value = Loaded(result)
-            } catch (e: Exception) {
-                _gameInfoFlow.value = Idle
-                val msg = e.message ?: "Unknown error"
-                _errorFlow.value = Loaded(success(msg))
+                if (result.isSuccess) _gameInfoFlow.value = Loaded(result)
+                else {
+                    _gameInfoFlow.value = Idle
+                    val jsonError = result.exceptionOrNull()?.message ?: "Unknown error"
+                    val msgParsed = JsonParser.parseString(jsonError).asJsonObject
+                    val msg = msgParsed.getAsJsonPrimitive("error").asString
+                    _errorFlow.value = Loaded(success(msg))
             }
         }
     }

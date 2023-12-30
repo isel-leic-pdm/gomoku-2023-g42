@@ -1,6 +1,6 @@
 package com.example.gomoku.game
 
-import com.example.demo.domain.Board
+import com.example.gomoku.model.Board
 
 data class GameModel(
     val id: Int,
