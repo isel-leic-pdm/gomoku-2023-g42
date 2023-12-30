@@ -1,6 +1,6 @@
 package com.example.gomoku.http
 
-import com.example.gomoku.user.LoggedUser
+import com.example.gomoku.model.SirenMapToModel
 import com.example.gomoku.user.LoginCreds
 import com.example.gomoku.user.NoUser
 import com.example.gomoku.user.User
@@ -22,33 +22,26 @@ import kotlin.coroutines.suspendCoroutine
 
 class SignUpRequest(
     private val client: OkHttpClient,
-    private val gson: Gson) : SignUpService {
+    private val gson: Gson
+) : SignUpService {
 
     override suspend fun createUser(username: String, password: String): User {
-        val request = requestMaker(username,password)
+        val request = requestMaker(username, password)
 
-        return suspendCoroutine {
+        return suspendCoroutine {cont ->
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    it.resumeWithException( throw e )
+                    cont.resumeWithException(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
-                    if (body!= null){
-                        //TODO(Change to Gson)
-                        if(!response.isSuccessful) {
-                                val jsonObject = JsonParser().parse(body.string()).asJsonObject
-                                val error = jsonObject.get("error").asString
-                                it.resume(NoUser(error))
-                        }
-                        else{
-                            val jsonObject = JsonParser().parse(body.string()).asJsonObject
-                            val property = jsonObject.get("properties").asJsonObject
-                            val token = property.get("token").asString
-                            val user = LoggedUser(token, username)
-                            it.resume(user)
+                    val bodyString = body?.string()
+                    if (body != null) {
+                        if (!response.isSuccessful) cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
+                         else {
+                            cont.resume(gson.fromJson(bodyString,SirenMapToModel::class.java).toLoggedUser(username))
                         }
 
                     }
@@ -57,15 +50,15 @@ class SignUpRequest(
         }
     }
 
-    private fun requestMaker(username: String, password: String) : Request{
-        val json = gson.toJson(LoginCreds(username,password))
+    private fun requestMaker(username: String, password: String): Request {
+        val json = gson.toJson(LoginCreds(username, password))
 
         val body: RequestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
         return Request.Builder()
             .url("https://${LOCALHOST}/users")
             .post(body)
-            .addHeader("Content-Type","application/json")
+            .addHeader("Content-Type", "application/json")
             .build()
     }
 }

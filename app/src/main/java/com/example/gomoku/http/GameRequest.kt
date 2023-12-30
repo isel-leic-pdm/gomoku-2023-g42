@@ -39,9 +39,7 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
                     val bodyString = body?.string()
-                    if (!response.isSuccessful || body == null) response.body?.let { bd ->
-                        cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
-                    }
+                    if (!response.isSuccessful || body == null) cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
                     }

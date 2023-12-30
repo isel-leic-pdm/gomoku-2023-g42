@@ -41,7 +41,6 @@ class LobbyToGameActivity : ComponentActivity() {
         val id = intent.getIntExtra("id", -1)
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            //val playerId = (app.userInfoRepository.getUserInfo().first as LoggedUser).playerId
             vm.gameInfo.collectLatest {
                 while (true) {
                     delay(3000)
@@ -53,11 +52,11 @@ class LobbyToGameActivity : ComponentActivity() {
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
             val error by vm.error.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it,id) }, error, onDismiss = {vm.resetError()})
+            GameScreen(gameInfo, onPlay = { play(it, id) }, error, onDismiss = { vm.resetError() })
         }
     }
 
-    private fun play(playInputModel: PlayInputModel, id : Int) {
+    private fun play(playInputModel: PlayInputModel, id: Int) {
         val userInfo = runBlocking {
             app.userInfoRepository.getUserInfo()
         }

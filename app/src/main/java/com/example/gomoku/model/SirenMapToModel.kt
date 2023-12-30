@@ -1,6 +1,8 @@
 package com.example.gomoku.model
 
+import com.example.gomoku.domain.PlayerRank
 import com.example.gomoku.game.GameModel
+import com.example.gomoku.user.LoggedUser
 import com.google.gson.internal.LinkedTreeMap
 
 data class SirenMapToModel(
@@ -34,4 +36,12 @@ data class SirenMapToModel(
             boardSize
         )
     }
+
+    fun toLoggedUser(username: String): LoggedUser {
+        val properties = this.properties
+        val token = properties["token"] as String
+        return LoggedUser(username, token)
+    }
+
+
 }
