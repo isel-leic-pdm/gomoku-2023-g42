@@ -1,12 +1,11 @@
 package com.example.gomoku.http
 
-import com.example.gomoku.user.LoggedUser
 import com.example.gomoku.user.LoginCreds
 import com.example.gomoku.user.NoUser
 import com.example.gomoku.user.User
 import com.example.gomoku.login.LoginService
+import com.example.gomoku.model.SirenMapToModel
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -25,23 +24,20 @@ class LoginRequest(private val client: OkHttpClient, private val gson: Gson): Lo
     override suspend fun postLogin(username: String, password: String): User {
 
         val request = requestMaker(username, password)
-        return suspendCoroutine {
+        return suspendCoroutine { cont ->
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    it.resumeWithException(throw e)
+                    cont.resumeWithException(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     val body = response.body
+                    val bodyString = body?.string()
                     if (!response.isSuccessful || body == null)
-                        it.resume(NoUser(response.code.toString()))
+                        cont.resume(NoUser(response.code.toString()))
                     else {
-                        val jsonObject = JsonParser().parse(body.string()).asJsonObject
-                        val property = jsonObject.get("properties").asJsonObject
-                        val token = property.get("token").asString
-                        it.resume(LoggedUser(username, token))
-
+                        cont.resume( gson.fromJson(bodyString,SirenMapToModel::class.java).toLoggedUser(username) )
                     }
                 }
             })
