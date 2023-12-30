@@ -15,20 +15,28 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,6 +59,7 @@ fun RankingScreen(
 {
 
     val scope = rememberCoroutineScope()
+    var searchText by remember { mutableStateOf("") }
     GomokuTheme {
         Column {
             Button(
@@ -76,6 +85,11 @@ fun RankingScreen(
                 if(rankings is Idle) onFetch()
                 if(rankings is Loading) CircularProgressIndicator()
                 if(rankings is Loaded<*>){
+                    OutlinedTextField(
+                        value = searchText,
+                        onValueChange = { searchText= it },
+                        label = { Text(text = stringResource(id = R.string.username_label)) }
+                    )
                     RankBox(listOf(
                         stringResource(id = R.string.rank_label),
                         stringResource(id = R.string.user_label),
@@ -84,7 +98,7 @@ fun RankingScreen(
                         stringResource(id = R.string.losses_label)
                         ),
                         20.dp )
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     rankings.result.getOrNull()?.let { list ->
                         list as List<*>
                         LazyColumn(
@@ -93,14 +107,16 @@ fun RankingScreen(
                         ) {
                             items(list){ r ->
                                 r as PlayerRank
-                                val playerRank = listOf(
-                                    r.rank,
-                                    r.username,
-                                    r.playedGames,
-                                    r.wonGames,
-                                    r.lostGames
-                                )
-                                RankBox(playerRank)
+                                if ( searchText.isBlank() || r.username.contains(searchText, ignoreCase = true)){
+                                    val playerRank = listOf(
+                                        r.rank,
+                                        r.username,
+                                        r.playedGames,
+                                        r.wonGames,
+                                        r.lostGames
+                                    )
+                                        RankBox(playerRank)
+                                }
                             }
                         }
                     }
