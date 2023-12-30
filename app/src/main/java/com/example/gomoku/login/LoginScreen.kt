@@ -81,6 +81,7 @@ fun LoginScreen(
                 if (user is Idle) {
 
                     OutlinedTextField(
+
                         value = username.value,
                         onValueChange = { username.value = it },
                         label = { Text(text = stringResource(id = R.string.username_label)) },
