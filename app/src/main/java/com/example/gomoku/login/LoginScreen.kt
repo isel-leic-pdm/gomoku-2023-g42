@@ -83,7 +83,7 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = username.value,
                         onValueChange = { username.value = it },
-                        label = { stringResource(id = R.string.username_label) },
+                        label = { Text(text = stringResource(id = R.string.username_label)) },
                     )
                     OutlinedTextField(
                         value = password.value,

@@ -43,9 +43,9 @@ fun AuthorScreen(onInfoRequested: () -> Unit, onHomeRequested: ()-> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, ${R.string.number_label} -> 48259")
-            Text(fontFamily = FontFamily.Serif, text = "José Borges, ${R.string.number_label} -> 48269")
-            Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, ${R.string.number_label} -> 46080")
+            Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, ${stringResource(id =R.string.number_label )} -> 48259")
+            Text(fontFamily = FontFamily.Serif, text = "José Borges, ${stringResource(id =R.string.number_label )} -> 48269")
+            Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, ${stringResource(id =R.string.number_label )} -> 46080")
             Button(onClick = {
                 scope.launch {
                     onInfoRequested()

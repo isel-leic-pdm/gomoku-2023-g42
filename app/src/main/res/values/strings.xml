@@ -11,10 +11,10 @@
     <string name="w_stone">White Stone</string>
     <string name="b_stone">Black Stone</string>
     <string name="welcome">"Welcome, "</string>
-    <string name="choose_size">"Choose a board size: "</string>
-    <string name="choose_rules">"Choose the game rules: "</string>
-    <string name="choose_variant">"Choose the gameplay variant: "</string>
-    <string name="swap">Swap</string>
+    <string name="choose_size_label">"Choose a board size: "</string>
+    <string name="choose_rules_label">"Choose the game rules: "</string>
+    <string name="choose_variant_label">"Choose the gameplay variant: "</string>
+    <string name="swap_label">Swap</string>
     <string name="cancel_button">Cancel</string>
     <string name="join_button">Join</string>
     <string name="rankings_button" translatable="false">"Rankings "</string>
@@ -24,7 +24,7 @@
     <string name="password_label">Password</string>
     <string name="sign_up_label">Sign Up</string>
     <string name="login_label">Log in</string>
-    <string name="failed_log_label">Failed to Log in!Failed to Log in!</string>
+    <string name="failed_log_label">Failed to Log in!</string>
     <string name="failed_log_message">Insert a valid combination of username and password.</string>
     <string name="rank_label" translatable="false">Rank</string>
     <string name="user_label" translatable="false">User</string>
@@ -37,4 +37,5 @@
     <string name="password_not_matching_message">Insert matching passwords.</string>
     <string name="user_created_label">User Created!</string>
     <string name="user_created_message">User has been created successfully!</string>
+    <string name="play_button">Play</string>
 </resources>

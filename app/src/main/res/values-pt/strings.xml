@@ -10,14 +10,14 @@
     <string name="b_stone">Peça preta</string>
     <string name="w_stone">Peça branca</string>
     <string name="welcome">"Bem-vindo, "</string>
-    <string name="choose_size">"Escolha a dimensão do tabuleiro: "</string>
-    <string name="choose_rules">"Escolha as  regras de jogo: "</string>
-    <string name="choose_variant">"Escolha a variante do jogo: "</string>
-    <string name="swap">Troca</string>
+    <string name="choose_size_label">"Escolha a dimensão do tabuleiro: "</string>
+    <string name="choose_rules_label">"Escolha as  regras de jogo: "</string>
+    <string name="choose_variant_label">"Escolha a variante do jogo: "</string>
+    <string name="swap_label">Troca</string>
     <string name="cancel_button">Cancelar</string>
     <string name="join_button">Entrar</string>
     <string name="authors_button">Autores</string>
-    <string name="waiting_opp">A espera de oponente!</string>
+    <string name="waiting_opp">À espera de oponente!</string>
     <string name="password_label">Palavra-passe</string>
     <string name="sign_up_label">Inscrever-se</string>
     <string name="login_label">Conectar-se</string>
@@ -32,4 +32,5 @@
     <string name="password_not_matching_message">Insira palavras-passe coincidentes.</string>
     <string name="user_created_label">Usuário criado!</string>
     <string name="user_created_message">Usuário criado com sucesso!</string>
+    <string name="play_button">Jogar</string>
 </resources>

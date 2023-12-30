@@ -101,7 +101,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(onClick = { showLobbySettings = true })
-                { Text(text = "Play") }
+                { Text(text = stringResource(id = R.string.play_button)) }
 
                 if (showLobbySettings) {
                     Dialog(onDismissRequest = { showLobbySettings = false  }) {
@@ -119,7 +119,7 @@ fun HomeScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.choose_size)
+                                    text = stringResource(id = R.string.choose_size_label)
                                 )
 
                                 Row(
@@ -144,7 +144,7 @@ fun HomeScreen(
                                 }
 
                                 Text(
-                                    text = stringResource(id = R.string.choose_rules)
+                                    text = stringResource(id = R.string.choose_rules_label)
                                 )
 
                                 Row(
@@ -169,7 +169,7 @@ fun HomeScreen(
                                 }
 
                                 Text(
-                                    text = stringResource(id = R.string.choose_variant)
+                                    text = stringResource(id = R.string.choose_variant_label)
                                 )
                                 Row(
                                     modifier = Modifier
@@ -189,7 +189,7 @@ fun HomeScreen(
                                         onClick = { selectedVariant = Variant.SWAP },
                                         modifier = Modifier.padding(end = 8.dp)
                                     )
-                                    Text(text = stringResource(id = R.string.swap))
+                                    Text(text = stringResource(id = R.string.swap_label))
                                 }
 
                                 Row(

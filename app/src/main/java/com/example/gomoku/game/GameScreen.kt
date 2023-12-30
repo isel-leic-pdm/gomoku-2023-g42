@@ -117,14 +117,14 @@ fun GameScreen(
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = stringResource(id = R.string.white_label))
+                        Text(text = "${ (game as Loaded).result.getOrNull()?.playerW }")
                         Spacer(modifier = Modifier.width(50.dp))
                         Image(
                             painter = painterResource(id = R.drawable.blackstone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = stringResource(id = R.string.black_label))
+                        Text(text = "${ (game as Loaded).result.getOrNull()?.playerW }")
                     }
                 }
             }
