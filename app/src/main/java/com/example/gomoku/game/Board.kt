@@ -29,7 +29,7 @@ val lineSize = (cellSize.value * 1.5).toFloat()
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameView(game: GameModel?, onPlay: (PlayInputModel) -> Unit = {}, playerId: Int) {
+fun GameView(game: GameModel?, onPlay: (PlayInputModel) -> Unit = {}) {
     if (game != null) {
         val boardSize = game.boardSize
         Position.Factory(boardSize).createPositions()
@@ -38,15 +38,11 @@ fun GameView(game: GameModel?, onPlay: (PlayInputModel) -> Unit = {}, playerId: 
                 Row {
                     repeat(boardSize) { c ->
                         val cell = Position(r, c, boardSize)
-                        val clickable = game.board is BoardRun &&
-                                ((playerId == game.playerB && game.board.turn.string == "B") ||
-                                (playerId == game.playerW && game.board.turn.string == "W"))
                         if (game.board is BoardRun) {
                             CellView(
                                 cell = cell,
                                 turn = game.board.turn,
                                 board = game.board,
-                                clickable
                             ) {
                                 val input = PlayInputModel(r, c)
                                 onPlay(input)
@@ -64,7 +60,6 @@ fun CellView(
     cell: Position,
     turn: Player?,
     board: Board,
-    clickable: Boolean,
     onClick: () -> Unit,
 ) {
     Box(modifier = Modifier.size(cellSize), Alignment.Center) {
@@ -74,7 +69,7 @@ fun CellView(
         Box(
             modifier = Modifier
                 .size(cellSize)
-                .clickable(clickable, onClick = { onClick() })
+                .clickable( onClick = { onClick() })
                 .background(if(center) Color.Red else Color.Transparent)
         ) {
             if (piece.isNotEmpty()) {

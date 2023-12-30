@@ -21,7 +21,7 @@ import kotlin.runCatching
 
 
 class LobbyScreenViewModel : ViewModel() {
-     private val _lobbyInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> =
+    private val _lobbyInfoFlow: MutableStateFlow<IOState<Either<Error, GameModel?>>> =
         MutableStateFlow(Idle)
     val lobbyInfo: Flow<IOState<Either<Error, GameModel?>>>
         get() = _lobbyInfoFlow.asStateFlow()
@@ -31,8 +31,13 @@ class LobbyScreenViewModel : ViewModel() {
 
         _lobbyInfoFlow.value = Loading
         viewModelScope.launch {
-            val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
-            _lobbyInfoFlow.value = Loaded(result)
+            try {
+                val result = runCatching { service.createLobby(userInfoRepository.getUserInfo()) }
+                _lobbyInfoFlow.value = Loaded(result)
+            } catch (e: Exception) {
+
+            }
+
         }
     }
 

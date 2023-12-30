@@ -33,7 +33,7 @@ import com.example.gomoku.model.PlayInputModel
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}, playerId: Int) {
+fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) {
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull()
 
@@ -69,7 +69,7 @@ fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}, 
                 else -> Text(text = "Loading game") //TODO()
             }*/
             if (table != null) {
-                GameView(table, { input -> onPlay(input) }, playerId)
+                GameView(table, { input -> onPlay(input) })
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
