@@ -63,21 +63,23 @@ fun CellView(
     onClick: () -> Unit,
 ) {
     Box(modifier = Modifier.size(cellSize), Alignment.Center) {
-        val piece = board.moves.filter{it.key.toString() == cell.toString()}.values
-        val center = cell.row.index == board.size / 2 && cell.col.index == board.size / 2 && piece.isEmpty()
+        val piece = board.moves.filter { it.key.toString() == cell.toString() }.values
+        val center =
+            cell.row.index == board.size / 2 && cell.col.index == board.size / 2 && piece.isEmpty()
         DrawLine(Pair(cell.row.index, cell.col.index), board.size)
         Box(
             modifier = Modifier
                 .size(cellSize)
-                .clickable( onClick = { onClick() })
-                .background(if(center) Color.Red else Color.Transparent)
+                .clickable(piece.isEmpty(), onClick = { onClick() })
+                .background(if (center) Color.Red else Color.Transparent)
         ) {
             if (piece.isNotEmpty()) {
-                val imageResource = if (piece.firstOrNull() == Player.W) {
-                    painterResource(id = R.drawable.whitestone)
-                } else {
-                    painterResource(id = R.drawable.blackstone)
-                }
+                val imageResource =
+                    if (piece.first() == Player.W) {
+                        painterResource(id = R.drawable.whitestone)
+                    } else {
+                        painterResource(id = R.drawable.blackstone)
+                    }
                 Image(
                     painter = imageResource,
                     contentDescription = if (turn == Player.W) "White Stone" else "Black Stone"

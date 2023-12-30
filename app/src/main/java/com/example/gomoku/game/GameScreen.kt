@@ -42,7 +42,7 @@ fun GameScreen(
     onDismiss: () -> Unit = {}
 ) {
     var table by remember { mutableStateOf<GameModel?>(null) }
-    if (game is Loaded) table = game.result.getOrNull()
+    if (game is Loaded) table = game.result.getOrNull() ?: table
 
     GomokuTheme {
         Button(
@@ -59,23 +59,22 @@ fun GameScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(100.dp))
-            if (table == null) CircularProgressIndicator()
-            if (error is Loaded) AlertDialog(
-                onDismissRequest = {
-                    onDismiss()
-                },
-                title = { Text(text = "Wrong move") },
-                text = { Text(text = error.result.getOrNull()!!) }, //TODO(Retirar o !!)
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            onDismiss()
+            if (error is Loaded) {
+                AlertDialog(
+                    onDismissRequest = { onDismiss() },
+                    title = { Text(text = "Wrong move") },
+                    text = { Text(text = error.result.getOrNull() ?: "Unknown Error") },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                onDismiss()
+                            }
+                        ) {
+                            Text(text = "OK")
                         }
-                    ) {
-                        Text(text = "OK")
                     }
-                }
-            )
+                )
+            }
             /*when (table) {
                 is BoardRun -> {
                     drawBoard = true
@@ -91,8 +90,11 @@ fun GameScreen(
                 is BoardWin -> Text(text = "Someone won") //TODO()
                 else -> Text(text = "Loading game") //TODO()
             }*/
-            if (table != null) {
-                GameView(table, { input -> onPlay(input) })
+            if (table == null) {
+                CircularProgressIndicator()
+            }
+            else {
+                GameView(table) { input -> onPlay(input) }
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
