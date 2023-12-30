@@ -21,7 +21,4 @@ class Row private constructor(val number: Int, val boardSize: Int) {
 }
 
 fun Int.toRowOrNull() = Row.values.find { it.number == this }
-fun Int.toRow() = this.toRowOrNull() ?: Row(-1) //throw IllegalArgumentException("Invalid row $this")
-
-fun Int.indexToRowOrNull(): Row? = Row.values.find { this == it.index }
-fun Int.indexToRow(): Row = this.indexToRowOrNull() ?: Row (-1) //throw IllegalArgumentException("Invalid row $this")
+fun Int.toRow() = this.toRowOrNull() ?: Row(-1)

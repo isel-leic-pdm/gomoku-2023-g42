@@ -1,7 +1,7 @@
 package com.example.gomoku.model
 
 
-class Column private constructor(val symbol: Char, val boardSize: Int) {
+class Column private constructor(val symbol: Char) {
     val index get() =  symbol - 'A'
 
     companion object {
@@ -14,15 +14,11 @@ class Column private constructor(val symbol: Char, val boardSize: Int) {
 
     class Factory(private val boardSize: Int){
         fun createColumns(): List<Column>  {
-            values = List(boardSize) { Column('A' + it, boardSize) } + Column('?', boardSize)
+            values = List(boardSize) { Column('A' + it) } + Column('?')
             return values
         }
     }
 }
 
-
 fun Char.toColumnOrNull() = Column.values.find { it.symbol == this }
-fun Char.toColumn() = this.toColumnOrNull() ?: Column('?') //throw IllegalArgumentException("Invalid column $this")
-
-fun Int.indexToColumnOrNull(): Column? = Column.values.find { this == it.index }
-fun Int.indexToColumn(): Column = this.indexToColumnOrNull() ?: Column('?')// throw IllegalArgumentException("Invalid column ?")
+fun Char.toColumn() = this.toColumnOrNull() ?: Column('?')
