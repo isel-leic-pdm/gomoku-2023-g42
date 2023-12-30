@@ -52,7 +52,9 @@ class LobbyToGameActivity : ComponentActivity() {
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
             val error by vm.error.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it, id) }, error, onDismiss = { vm.resetError() })
+            GameScreen(gameInfo, onPlay = { play(it, id) }, error, onDismiss = { vm.resetError() }, onBackHome = {
+                AuthorsToHomeActivity.navigateTo(this)
+            })
         }
     }
 

@@ -40,14 +40,15 @@ fun GameScreen(
     game: IOState<GameModel>,
     onPlay: (PlayInputModel) -> Unit = {},
     error: IOState<String>,
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
+    onBackHome:() -> Unit
 ) {
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull() ?: table
 
     GomokuTheme {
         Button(
-            onClick = { /*TODO*/ }
+            onClick = { onBackHome() }
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
