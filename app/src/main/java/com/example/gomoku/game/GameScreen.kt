@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.gomoku.model.BoardRun
 import com.example.gomoku.model.Player
@@ -62,15 +63,15 @@ fun GameScreen(
             if (error is Loaded) {
                 AlertDialog(
                     onDismissRequest = { onDismiss() },
-                    title = { Text(text = "Wrong move") },
-                    text = { Text(text = error.result.getOrNull() ?: "Unknown Error") },
+                    title = { Text(text = stringResource(id = R.string.general_error_label)) },
+                    text = { Text(text = error.result.getOrNull() ?: stringResource(id = R.string.general_error_message)) },
                     confirmButton = {
                         TextButton(
                             onClick = {
                                 onDismiss()
                             }
                         ) {
-                            Text(text = "OK")
+                            Text(text = stringResource(id = R.string.ok_button))
                         }
                     }
                 )
@@ -99,7 +100,7 @@ fun GameScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Turn: ")
+                    Text(text = stringResource(id = R.string.turn_label))
                     if(table?.board is BoardRun) ShowTurn(turn = (table?.board as BoardRun).turn)
                 }
 
@@ -116,14 +117,14 @@ fun GameScreen(
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = ": White")
+                        Text(text = stringResource(id = R.string.white_label))
                         Spacer(modifier = Modifier.width(50.dp))
                         Image(
                             painter = painterResource(id = R.drawable.blackstone),
                             contentDescription = null,
                             Modifier.size(50.dp)
                         )
-                        Text(text = ": Black")
+                        Text(text = stringResource(id = R.string.black_label))
                     }
                 }
             }
@@ -140,7 +141,7 @@ private fun ShowTurn(turn: Player) {
     }
     Image(
         painter = imageResource,
-        contentDescription = if (turn == Player.W) "White Stone" else "Black Stone",
+        contentDescription = if (turn == Player.W) stringResource(id = R.string.w_stone) else stringResource(id = R.string.b_stone),
         Modifier.size(30.dp)
     )
 }

@@ -27,10 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
@@ -74,7 +76,14 @@ fun RankingScreen(
                 if(rankings is Idle) onFetch()
                 if(rankings is Loading) CircularProgressIndicator()
                 if(rankings is Loaded<*>){
-                    RankBox(listOf("Rank", "User", "Games", "W", "L"), 20.dp )
+                    RankBox(listOf(
+                        stringResource(id = R.string.rank_label),
+                        stringResource(id = R.string.user_label),
+                        stringResource(id = R.string.games_label),
+                        stringResource(id = R.string.wins_label),
+                        stringResource(id = R.string.losses_label)
+                        ),
+                        20.dp )
                     Spacer(modifier = Modifier.height(30.dp))
                     rankings.result.getOrNull()?.let { list ->
                         list as List<*>

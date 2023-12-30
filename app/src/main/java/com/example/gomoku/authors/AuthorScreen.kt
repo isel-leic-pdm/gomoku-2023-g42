@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.gomoku.R
 import com.example.gomoku.ui.theme.GomokuTheme
 import kotlinx.coroutines.launch
 
@@ -41,14 +43,14 @@ fun AuthorScreen(onInfoRequested: () -> Unit, onHomeRequested: ()-> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, number -> 48259")
-            Text(fontFamily = FontFamily.Serif, text = "José Borges, number -> 48269")
-            Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, number -> 46080")
+            Text(fontFamily = FontFamily.Serif, text = "Vasco Branco, ${R.string.number_label} -> 48259")
+            Text(fontFamily = FontFamily.Serif, text = "José Borges, ${R.string.number_label} -> 48269")
+            Text(fontFamily = FontFamily.Serif, text = "Sérgio Capela, ${R.string.number_label} -> 46080")
             Button(onClick = {
                 scope.launch {
                     onInfoRequested()
                 }
-            }) { Text(text = "Send a message to support the creators") }
+            }) { Text(text = stringResource(id = R.string.support_message)) }
         }
     }
 }

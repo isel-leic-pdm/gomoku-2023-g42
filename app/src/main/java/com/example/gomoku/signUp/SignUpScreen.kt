@@ -21,10 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.gomoku.R
 import com.example.gomoku.domain.IOState
 import com.example.gomoku.domain.Idle
 import com.example.gomoku.domain.Loaded
@@ -83,21 +85,21 @@ fun SignUpScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Enter your credentials",
+                        text =stringResource(id = R.string.enter_creds),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
                     OutlinedTextField(
                         value = username.value,
                         onValueChange = { username.value = it },
-                        label = { Text(text = "Username") },
+                        label = { Text(text = stringResource(id = R.string.username_label)) },
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
                     OutlinedTextField(
                         value = password.value,
                         onValueChange = { password.value = it },
-                        label = { Text(text = "Password") },
+                        label = { Text(text = stringResource(id = R.string.password_label)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -106,7 +108,7 @@ fun SignUpScreen(
                     OutlinedTextField(
                         value = confirmPassword.value,
                         onValueChange = { confirmPassword.value = it },
-                        label = { Text(text = "Confirm Password") },
+                        label = { Text(text = stringResource(id = R.string.confirm_pass_label)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -119,7 +121,7 @@ fun SignUpScreen(
                             } else notMatchPass.value = true
                         }
                     ) {
-                        Text(text = "Sign Up")
+                        Text(text = stringResource(id = R.string.sign_up_label))
                     }
                 }
             }
@@ -138,15 +140,15 @@ fun SignUpScreen(
             if (notMatchPass.value) {
                 AlertDialog(
                     onDismissRequest = { notMatchPass.value = false },
-                    title = { Text(text = "Passwords do not match!") },
-                    text = { Text(text = "Insert matching passwords") },
+                    title = { Text(text = stringResource(id = R.string.password_not_matching_label)) },
+                    text = { Text(text = stringResource(id = R.string.password_not_matching_message))},
                     confirmButton = {
                         TextButton(
                             onClick = {
                                 notMatchPass.value = false
                             }
                         ) {
-                            Text(text = "OK")
+                            Text(text = stringResource(id = R.string.ok_button))
                         }
                     }
                 )
@@ -155,8 +157,8 @@ fun SignUpScreen(
             if (confirmPopUp.value) {
                 AlertDialog(
                     onDismissRequest = { confirmPopUp.value = false },
-                    title = { Text(text = "User Created!") },
-                    text = { Text(text = "Your user has been created successfully.") },
+                    title = { Text(text = stringResource(id = R.string.user_created_label)) },
+                    text = { Text(text = stringResource(id = R.string.user_created_message)) },
                     confirmButton = {
                         TextButton(
                             onClick = {
@@ -164,7 +166,7 @@ fun SignUpScreen(
                                 onLoginSuccess()
                             }
                         ) {
-                            Text(text = "OK")
+                            Text(text = stringResource(id = R.string.ok_button))
                         }
                     }
                 )
@@ -173,7 +175,7 @@ fun SignUpScreen(
             if (apiError.value) {
                 AlertDialog(
                     onDismissRequest = { apiError.value = false },
-                    title = { Text(text = "Error!") },
+                    title = { Text(text = stringResource(id = R.string.general_error_label)) },
                     text = { Text(text = error.value) },
                     confirmButton = {
                         TextButton(
@@ -181,7 +183,7 @@ fun SignUpScreen(
                                 apiError.value = false
                             }
                         ) {
-                            Text(text = "OK")
+                            Text(text = stringResource(id = R.string.ok_button))
                         }
                     }
                 )

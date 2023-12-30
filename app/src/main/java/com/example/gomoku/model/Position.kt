@@ -42,21 +42,3 @@ fun String.toPosition(boardSize: Int): Position {
 }
 
 operator fun Position.plus(dir: Direction): Position = Position(row.index + dir.difRow, col.index + dir.difCol, row.boardSize)
-
-
-fun cellsInDirection(moves: Moves, player: Player, from: Position, dir: Direction): Int {
-    var counter = 1
-    var currentCell = from + dir
-    var currDir = dir
-    while (currentCell != Position.INVALID && moves[currentCell] == player) {
-        counter++
-        currentCell += currDir
-    }
-    currDir = dir.reverse()
-    currentCell = from + currDir
-    while (currentCell != Position.INVALID && moves[currentCell] == player) {
-        counter++
-        currentCell += currDir
-    }
-    return counter
-}

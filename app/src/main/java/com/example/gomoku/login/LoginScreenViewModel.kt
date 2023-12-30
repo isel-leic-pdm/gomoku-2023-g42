@@ -17,7 +17,6 @@ import kotlinx.coroutines.runBlocking
 
 class LoginScreenViewModel: ViewModel() {
 
-
     var user by mutableStateOf<IOState<Any>>(Idle)
         private set
 
