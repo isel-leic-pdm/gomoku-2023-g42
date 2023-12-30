@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -74,7 +75,7 @@ fun HomeScreen(
                 if ((userInfo is Loaded) && (userInfo.result.getOrNull() != null)) {
                     Text(
                         fontFamily = FontFamily.Serif,
-                        text = "Welcome, " + (userInfo.result.getOrNull()?.first as LoggedUser).username,
+                        text = stringResource(id = R.string.welcome) + (userInfo.result.getOrNull()?.first as LoggedUser).username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -83,7 +84,7 @@ fun HomeScreen(
                 }
                 Text(
                     fontFamily = FontFamily.Serif,
-                    text = "Gomoku",
+                    text = stringResource(id = R.string.app_name),
                     fontSize = 50.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -118,7 +119,7 @@ fun HomeScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "Choose the board size: "
+                                    text = stringResource(id = R.string.choose_size)
                                 )
 
                                 Row(
@@ -143,7 +144,7 @@ fun HomeScreen(
                                 }
 
                                 Text(
-                                    text = "Choose the rules: "
+                                    text = stringResource(id = R.string.choose_rules)
                                 )
 
                                 Row(
@@ -168,7 +169,7 @@ fun HomeScreen(
                                 }
 
                                 Text(
-                                    text = "Choose the gameplay variant: "
+                                    text = stringResource(id = R.string.choose_variant)
                                 )
                                 Row(
                                     modifier = Modifier
@@ -188,7 +189,7 @@ fun HomeScreen(
                                         onClick = { selectedVariant = Variant.SWAP },
                                         modifier = Modifier.padding(end = 8.dp)
                                     )
-                                    Text(text = "Swap")
+                                    Text(text = stringResource(id = R.string.swap))
                                 }
 
                                 Row(
@@ -199,14 +200,14 @@ fun HomeScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Button(onClick = { showLobbySettings = false }) {
-                                        Text("Cancel")
+                                        Text(stringResource(id = R.string.cancel_button ))
                                     }
 
                                     Button(onClick = {
                                         onUpdateLobby(selectedRules.string(),selectedVariant.string(),selectedSize.string())
                                         onLobbyRequested()
                                     }) {
-                                        Text("Confirm")
+                                        Text(stringResource(id = R.string.join_button))
                                     }
                                 }
                             }
@@ -220,7 +221,7 @@ fun HomeScreen(
                         onRankingsRequested()
                     }
                 })
-                { Text(text = "Rankings") }
+                { Text(text = stringResource(id = R.string.rankings_button)) }
 
                 Spacer(modifier = Modifier.width(10.dp))
                 Button(onClick = {
@@ -228,7 +229,7 @@ fun HomeScreen(
                         onAuthorsRequested()
                     }
                 })
-                { Text(text = "Authors") }
+                { Text(text = stringResource(id = R.string.authors_button)) }
             }
         }
     }

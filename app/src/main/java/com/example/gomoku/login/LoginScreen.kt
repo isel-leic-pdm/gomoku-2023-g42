@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -66,7 +67,7 @@ fun LoginScreen(
             ) {
                 Text(
                     fontFamily = FontFamily.Serif,
-                    text = "Gomoku",
+                    text = stringResource(id = R.string.app_name),
                     fontSize = 50.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -82,12 +83,12 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = username.value,
                         onValueChange = { username.value = it },
-                        label = { Text(text = "Username") },
+                        label = { stringResource(id = R.string.username_label) },
                     )
                     OutlinedTextField(
                         value = password.value,
                         onValueChange = { password.value = it },
-                        label = { Text(text = "Password") },
+                        label = { Text(text = stringResource(id = R.string.password_label)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                     )
@@ -97,7 +98,7 @@ fun LoginScreen(
                         Button(onClick = {
                             scope.launch { onSignUp() }
                         })
-                        { Text("Sign Up") }
+                        { Text(stringResource(id = R.string.sign_up_label)) }
 
                         Spacer(modifier = Modifier.width(10.dp))
 
@@ -105,7 +106,7 @@ fun LoginScreen(
                             scope.launch { onLogin(username.value, password.value) }
 
                         })
-                        { Text("Log in") }
+                        { Text(stringResource(id = R.string.login_label)) }
 
                     }
 
@@ -128,15 +129,15 @@ fun LoginScreen(
                             onDismissRequest = {
                                 setIdle()
                             },
-                            title = { Text(text = "Failed to Log in!") },
-                            text = { Text(text = "Insert a valid combination of username and password.") },
+                            title = { Text(text = stringResource(id = R.string.failed_log_label)) },
+                            text = { Text(text = stringResource(id = R.string.failed_log_message)) },
                             confirmButton = {
                                 TextButton(
                                     onClick = {
                                         setIdle()
                                     }
                                 ) {
-                                    Text(text = "OK")
+                                    Text(stringResource(id = R.string.ok_button))
                                 }
                             }
                         )

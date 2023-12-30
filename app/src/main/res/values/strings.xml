@@ -1,3 +1,40 @@
 <resources>
-    <string name="app_name">Gomoku</string>
+    <string name="app_name" translatable="false">Gomoku</string>
+    <string name="number_label">number</string>
+    <string name="support_message">Send a message to support the creators</string>
+    <string name="general_error_label">An error was found</string>
+    <string name="general_error_message">Unknown error!</string>
+    <string name="ok_button" translatable="false">Ok</string>
+    <string name="turn_label">"Turn: "</string>
+    <string name="white_label">: White</string>
+    <string name="black_label">: Black</string>
+    <string name="w_stone">White Stone</string>
+    <string name="b_stone">Black Stone</string>
+    <string name="welcome">"Welcome, "</string>
+    <string name="choose_size">"Choose a board size: "</string>
+    <string name="choose_rules">"Choose the game rules: "</string>
+    <string name="choose_variant">"Choose the gameplay variant: "</string>
+    <string name="swap">Swap</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="join_button">Join</string>
+    <string name="rankings_button" translatable="false">"Rankings "</string>
+    <string name="authors_button">Authors</string>
+    <string name="waiting_opp">Waiting for opponent!</string>
+    <string name="username_label" translatable="false">Username</string>
+    <string name="password_label">Password</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="login_label">Log in</string>
+    <string name="failed_log_label">Failed to Log in!Failed to Log in!</string>
+    <string name="failed_log_message">Insert a valid combination of username and password.</string>
+    <string name="rank_label" translatable="false">Rank</string>
+    <string name="user_label" translatable="false">User</string>
+    <string name="games_label">Games</string>
+    <string name="wins_label">W</string>
+    <string name="losses_label">L</string>
+    <string name="enter_creds">Enter your credentials</string>
+    <string name="confirm_pass_label">Confirm your password</string>
+    <string name="password_not_matching_label">Passwords do not match!</string>
+    <string name="password_not_matching_message">Insert matching passwords.</string>
+    <string name="user_created_label">User Created!</string>
+    <string name="user_created_message">User has been created successfully!</string>
 </resources>

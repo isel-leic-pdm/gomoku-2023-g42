@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_label">número</string>
+    <string name="support_message">Envie uma mensagem de suporte aos criadores</string>
+    <string name="general_error_label">Foi encontrado um erro!</string>
+    <string name="general_error_message">Erro desconhecido!</string>
+    <string name="turn_label">"Turno: "</string>
+    <string name="white_label">: Branco</string>
+    <string name="black_label">: Preto</string>
+    <string name="b_stone">Peça preta</string>
+    <string name="w_stone">Peça branca</string>
+    <string name="welcome">"Bem-vindo, "</string>
+    <string name="choose_size">"Escolha a dimensão do tabuleiro: "</string>
+    <string name="choose_rules">"Escolha as  regras de jogo: "</string>
+    <string name="choose_variant">"Escolha a variante do jogo: "</string>
+    <string name="swap">Troca</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="join_button">Entrar</string>
+    <string name="authors_button">Autores</string>
+    <string name="waiting_opp">A espera de oponente!</string>
+    <string name="password_label">Palavra-passe</string>
+    <string name="sign_up_label">Inscrever-se</string>
+    <string name="login_label">Conectar-se</string>
+    <string name="failed_log_label">Falha ao conectar!</string>
+    <string name="failed_log_message">Insira uma combinação válida de username e palavra-passe.</string>
+    <string name="games_label">Jogos</string>
+    <string name="wins_label">V</string>
+    <string name="losses_label">D</string>
+    <string name="enter_creds">Insira as suas credênciais</string>
+    <string name="confirm_pass_label">Confirme a sua palavra-passe</string>
+    <string name="password_not_matching_label">As palavras-passe não coincidem!</string>
+    <string name="password_not_matching_message">Insira palavras-passe coincidentes.</string>
+    <string name="user_created_label">Usuário criado!</string>
+    <string name="user_created_message">Usuário criado com sucesso!</string>
+</resources>
