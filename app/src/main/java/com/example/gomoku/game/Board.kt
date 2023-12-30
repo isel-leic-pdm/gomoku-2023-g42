@@ -27,23 +27,26 @@ import com.example.gomoku.model.PlayInputModel
 val cellSize = 20.dp
 val lineSize = (cellSize.value * 1.5).toFloat()
 
-//TODO rever esta function
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun GameView(gameState: GameModel?, onPlay: (PlayInputModel) -> Unit = {}) {
-    if (gameState != null) {
-        val boardSize = gameState.boardSize
+fun GameView(game: GameModel?, onPlay: (PlayInputModel) -> Unit = {}, playerId: Int) {
+    if (game != null) {
+        val boardSize = game.boardSize
         Position.Factory(boardSize).createPositions()
         Column {
             repeat(boardSize) { r ->
                 Row {
                     repeat(boardSize) { c ->
                         val cell = Position(r, c, boardSize)
-                        if (gameState.board is BoardRun) {
+                        val clickable = game.board is BoardRun &&
+                                ((playerId == game.playerB && game.board.turn.string == "B") ||
+                                (playerId == game.playerW && game.board.turn.string == "W"))
+                        if (game.board is BoardRun) {
                             CellView(
                                 cell = cell,
-                                turn = gameState.board.turn,
-                                board = gameState.board,
+                                turn = game.board.turn,
+                                board = game.board,
+                                clickable
                             ) {
                                 val input = PlayInputModel(r, c)
                                 onPlay(input)
@@ -61,20 +64,21 @@ fun CellView(
     cell: Position,
     turn: Player?,
     board: Board,
+    clickable: Boolean,
     onClick: () -> Unit,
 ) {
     Box(modifier = Modifier.size(cellSize), Alignment.Center) {
-        //TODO(O qualquer acesso a moves retorna null mesmo que a pocição esteja ocupada)
-        val piece = board.moves[cell]
+        val piece = board.moves.filter{it.key.toString() == cell.toString()}.values
+        val center = cell.row.index == board.size / 2 && cell.col.index == board.size / 2 && piece.isEmpty()
         DrawLine(Pair(cell.row.index, cell.col.index), board.size)
         Box(
             modifier = Modifier
                 .size(cellSize)
-                .clickable(piece == null, onClick = { onClick() })
-                .background(Color.Transparent)
+                .clickable(clickable, onClick = { onClick() })
+                .background(if(center) Color.Red else Color.Transparent)
         ) {
-            if (piece != null) {
-                val imageResource = if (piece == Player.W) {
+            if (piece.isNotEmpty()) {
+                val imageResource = if (piece.firstOrNull() == Player.W) {
                     painterResource(id = R.drawable.whitestone)
                 } else {
                     painterResource(id = R.drawable.blackstone)

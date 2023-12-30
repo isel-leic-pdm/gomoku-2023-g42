@@ -14,6 +14,7 @@ import com.example.gomoku.game.GameScreen
 import com.example.gomoku.game.GameScreenViewModel
 import com.example.gomoku.http.MenuApplication
 import com.example.gomoku.model.PlayInputModel
+import com.example.gomoku.user.LoggedUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,9 +41,10 @@ class LobbyToGameActivity : ComponentActivity() {
         val id = intent.getIntExtra("id", -1)
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
+            val playerId = (app.userInfoRepository.getUserInfo().first as LoggedUser).playerId
             vm.gameInfo.collectLatest {
                 while (true) {
-                    delay(5000)
+                    delay(3000)
                     if (it !is Loading) vm.getGameInfo(app.gameService, app.userInfoRepository)
                 }
             }
@@ -50,7 +52,7 @@ class LobbyToGameActivity : ComponentActivity() {
 
         setContent {
             val gameInfo by vm.gameInfo.collectAsState(initial = Idle)
-            GameScreen(gameInfo, onPlay = { play(it,id) })
+            GameScreen(gameInfo, onPlay = { play(it,id) }, playerId)
         }
     }
 
@@ -58,6 +60,6 @@ class LobbyToGameActivity : ComponentActivity() {
         val userInfo = runBlocking {
             app.userInfoRepository.getUserInfo()
         }
-        vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id, vm.gameInfo)
+        vm.play(app.gameService, userInfo, playInputModel.row, playInputModel.col, id)
     }
 }

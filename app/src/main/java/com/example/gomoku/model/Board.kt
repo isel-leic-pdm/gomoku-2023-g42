@@ -1,6 +1,5 @@
 package com.example.demo.domain
 
-
 import com.example.gomoku.model.Direction
 import com.example.gomoku.model.Position
 import com.example.gomoku.model.cellsInDirection
@@ -15,12 +14,9 @@ interface Option {
     fun string(): String
 }
 
-
 typealias Moves = Map<Position, Player>
 
 fun whichSize(size: Int) = if (size == 15) BoardSize.SMALL else BoardSize.BIG
-
-//private val MAX_MOVES get() = (whichSize(?) + 1).toDouble().pow(2)
 
 fun maxMoves(size: Int): Double {
     val boardSize = whichSize(size)
@@ -43,7 +39,6 @@ enum class Variant : Option {
     override fun string(): String {
         return if (this == FREESTYLE) "Freestyle" else "Swap after 1st move"
     }
-
 }
 
 enum class BoardSize(val size: Int) : Option {
@@ -108,9 +103,7 @@ sealed class Board(val moves: Moves, val size: Int, val rules: String, val varia
                     }
                 }
                 isOver(position, moves + (position to player), turn, size)
-
             }
-
             is BoardDraw, is BoardWin -> this
         }
     }
@@ -122,7 +115,6 @@ sealed class Board(val moves: Moves, val size: Int, val rules: String, val varia
             rules,
             variant
         )
-        //val board = this as BoardRun
         Direction.values().forEach { dir ->
             //Ver as peças numa certa direção
             if (cellsInDirection(moves, turn, position, dir) >= 5)

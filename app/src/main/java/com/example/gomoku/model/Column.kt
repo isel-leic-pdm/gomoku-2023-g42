@@ -2,7 +2,7 @@ package com.example.gomoku.model
 
 
 class Column private constructor(val symbol: Char, val boardSize: Int) {
-    val index get() = values.indexOf(this)
+    val index get() =  symbol - 'A'
 
     companion object {
         lateinit var values: List<Column>

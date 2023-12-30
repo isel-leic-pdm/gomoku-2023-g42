@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +33,7 @@ import com.example.gomoku.model.PlayInputModel
 import com.example.gomoku.ui.theme.GomokuTheme
 
 @Composable
-fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) {
+fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}, playerId: Int) {
     var table by remember { mutableStateOf<GameModel?>(null) }
     if (game is Loaded) table = game.result.getOrNull()
 
@@ -51,6 +52,7 @@ fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) 
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(100.dp))
+            CircularProgressIndicator()
             /*when (table) {
                 is BoardRun -> {
                     drawBoard = true
@@ -67,7 +69,7 @@ fun GameScreen(game: IOState<GameModel>, onPlay: (PlayInputModel) -> Unit = {}) 
                 else -> Text(text = "Loading game") //TODO()
             }*/
             if (table != null) {
-                (GameView(table) { input -> onPlay(input) })
+                GameView(table, { input -> onPlay(input) }, playerId)
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
