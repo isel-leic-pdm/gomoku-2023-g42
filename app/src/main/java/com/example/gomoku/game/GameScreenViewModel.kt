@@ -48,11 +48,18 @@ class GameScreenViewModel : ViewModel() {
         ) {
         _gameInfoFlow.value = Loading
         viewModelScope.launch {
-            val result =
-                runCatching {
-                    service.play(userInfoRepository,row,col,id)
-                }
+            try {
+                val result =
+                    runCatching {
+                        service.play(userInfoRepository,row,col,id)
+                    }
+                //TODO(The code reaches this part even when an exception should be thrown in the other TODO in GameRequest)
                 _gameInfoFlow.value = Loaded(result)
+            } catch (e: Exception) {
+                _gameInfoFlow.value = Idle
+                val msg = e.message ?: "Unknown error"
+                _errorFlow.value = Loaded(success(msg))
+            }
         }
     }
 

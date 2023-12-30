@@ -40,7 +40,7 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                     val body = response.body
                     val bodyString = body?.string()
                     if (!response.isSuccessful || body == null) response.body?.let { bd ->
-                        cont.resume(TODO())
+                        cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
                     }
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
@@ -78,7 +78,9 @@ class GameRequest(private val client: OkHttpClient, private val gson: Gson): Gam
                     val body = response.body
                     val bodyString = body?.string()
                     if (!response.isSuccessful || body == null)
-                        cont.resumeWithException(Exception(response.message))
+                        cont.resumeWithException(Exception(bodyString ?: "Unknown error"))
+                        //TODO(When this happens, although an exception should be thrown,
+                        // try catch continues the try part)
                     else {
                         cont.resume(gson.fromJson(bodyString, SirenMapToModel::class.java).toGame())
                     }
